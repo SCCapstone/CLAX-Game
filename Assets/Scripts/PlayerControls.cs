@@ -17,16 +17,34 @@ public class PlayerControls : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && bulletShootCooldown == 0)
         {
-            Instantiate(normalBulletPrefab, gameObject.transform.position, Quaternion.identity);
+            var bullet = Instantiate(normalBulletPrefab, gameObject.transform.position, Quaternion.identity);
             bulletShootCooldown = maxBulletCooldown;
+            Destroy(bullet.gameObject, 5);
+
 
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.W))
         {
             gameObject.transform.position -= new Vector3(0, 0, 3) * Time.deltaTime;
 
         }
+        if (Input.GetKey(KeyCode.S))
+        {
+            gameObject.transform.position += new Vector3(0, 0, 3) * Time.deltaTime;
+
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            gameObject.transform.position += new Vector3(3, 0, 0) * Time.deltaTime;
+
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            gameObject.transform.position -= new Vector3(3, 0, 0) * Time.deltaTime;
+
+        }
+
     }
 
     void fireBullet()
