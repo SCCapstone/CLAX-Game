@@ -122,7 +122,6 @@ public class PlayerController : MonoBehaviour
 
         /*
          * TODO:
-         * Make sure the camera can't rotate past absolute up or down
          * Let the camera distance/boom be configurable
          */
     }
