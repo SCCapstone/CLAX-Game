@@ -8,18 +8,24 @@ public class PlayerControls : MonoBehaviour
     // Start is called before the first frame update
     float fixedFramesPerSecond = 50;
     float bulletShootCooldown = 0;
-    float maxBulletCooldown = 1.5f;
+    float maxBulletCooldown = 0.5f;
+    public float x, y, z = 0;
     void Start()
     {
         maxBulletCooldown *= fixedFramesPerSecond;
+        x = 45;
+        y = 45;
     }
 
     void playerMovement()
     {
         if (Input.GetKey(KeyCode.Space) && bulletShootCooldown <= 0)
         {
-            var bullet = Instantiate(normalBulletPrefab, gameObject.transform.position, Quaternion.identity);
+            var bullet = Instantiate(normalBulletPrefab, gameObject.transform.position + new Vector3(5, 0, 0),
+                new Quaternion(x, y, z, 0));
             bulletShootCooldown = maxBulletCooldown;
+            bullet.GetComponent<Rigidbody>().velocity = new Vector3(2, 0, 0);
+
             Destroy(bullet.gameObject, 5);
 
 

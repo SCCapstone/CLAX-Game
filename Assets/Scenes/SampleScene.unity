@@ -386,13 +386,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.0064151864, y: 0.98921555, z: -0.13902517, w: -0.04564643}
-  m_LocalPosition: {x: 1, y: 4.47, z: 16}
+  m_LocalRotation: {x: -0.0010377372, y: 0.96619546, z: -0.2536565, w: -0.046083353}
+  m_LocalPosition: {x: 1, y: 6.42, z: 23.14}
   m_LocalScale: {x: 1, y: 0.7842278, z: 1.2830662}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 16, y: 185.284, z: 0}
+  m_LocalEulerAnglesHint: {x: 29.358, y: 185.829, z: 1.405}
 --- !u!1 &1625935146
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,6 +512,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8507299994879067013, guid: 2b0b40d211639274db634cbb43907ea7, type: 3}
   m_PrefabInstance: {fileID: 8507299996550427447}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &1684205748
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684205742}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 16
+  m_CollisionDetection: 0
 --- !u!850595691 &1835259328
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -713,6 +729,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   normalBulletPrefab: {fileID: 1684205742}
+  x: 0
+  y: 0
+  z: 0
 --- !u!1001 &8507299996550427447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -771,6 +790,10 @@ PrefabInstance:
     - target: {fileID: 8507299994879067033, guid: 2b0b40d211639274db634cbb43907ea7, type: 3}
       propertyPath: m_Name
       value: StandardBullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 8507299994879067033, guid: 2b0b40d211639274db634cbb43907ea7, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b0b40d211639274db634cbb43907ea7, type: 3}
