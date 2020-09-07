@@ -232,9 +232,9 @@ GameObject:
   - component: {fileID: 163374825}
   - component: {fileID: 163374824}
   - component: {fileID: 163374829}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -260,8 +260,10 @@ MonoBehaviour:
   cameraEnabled: 1
   cameraDistance: 10
   hideCharacterDistance: 1
-  walkSpeed: 5
-  gravity: {x: 0, y: -0.1, z: 0}
+  walkSpeed: 10
+  velocity: {x: 0, y: 0, z: 0}
+  gravity: {x: 0, y: -9.8, z: 0}
+  drag: 0.02
   projectileSpeed: 0.1
   bulletPrefab: {fileID: 2155125630583193527, guid: 637087b854c7a184ba64a2186ac6188b, type: 3}
 --- !u!136 &163374825
@@ -368,7 +370,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 163374824}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: f007b524-3daf-41e6-8954-8fb67c4939b4
     m_ActionName: World/Jump[/Keyboard/space]
   - m_PersistentCalls:
@@ -539,7 +553,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -641,7 +655,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000001
+  m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
@@ -693,7 +707,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625935146}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1625935150
 Transform:
   m_ObjectHideFlags: 0
@@ -702,8 +716,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625935146}
   m_LocalRotation: {x: -0.53416705, y: -0.2922488, z: -0.38074014, w: 0.6959118}
-  m_LocalPosition: {x: -0.00000028322302, y: 2.54, z: -0.0000005421597}
-  m_LocalScale: {x: 9.8116, y: 4.2648, z: 1}
+  m_LocalPosition: {x: 0, y: -1.35, z: -1.04}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1

@@ -16,10 +16,14 @@ public class PlayerController : MonoBehaviour
 
     public bool cameraEnabled = true;
     public float cameraDistance = 0.0f;
+    // Not implemented yet
     public float hideCharacterDistance = 1.0f;
 
-    public float walkSpeed = 5.0f;
-    public Vector3 gravity = new Vector3(0.0f, -0.1f, 0.0f);
+    public float walkSpeed = 10.0f;
+
+    public Vector3 velocity = Vector3.zero;
+    public Vector3 gravity = new Vector3(0.0f, -9.8f, 0.0f);
+    public float drag = 0.02f;
 
     public float projectileSpeed = 0.1f;
 
@@ -38,6 +42,23 @@ public class PlayerController : MonoBehaviour
         moveAxis = inputAxis.normalized;
     }
 
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.phase != InputActionPhase.Performed)
+        {
+            return;
+        }
+
+        /*
+         * TODO:
+         * Check if on ground
+         * Jump cooldown
+         * Jump counter to support mid-air jumps (i.e. double jumping)
+         */
+
+        velocity += new Vector3(0.0f, 10.0f, 0.0f);
+    }
+
     public void OnLook(InputAction.CallbackContext context)
     {
         Vector2 inputAxis = context.ReadValue<Vector2>();
@@ -47,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (context.phase != InputActionPhase.Started)
+        if (context.phase != InputActionPhase.Performed)
         {
             return;
         }
@@ -111,14 +132,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         bool hasHit = Physics.Raycast(focus, cameraBoomDirection, out hit, cameraDistance);
 
-        if (hasHit)
-        {
-            playerCamera.transform.position = hit.point;
-        }
-        else
-        {
-            playerCamera.transform.position = focus + (cameraBoomDirection * cameraDistance);
-        }
+        playerCamera.transform.position = hasHit ? hit.point : focus + (cameraBoomDirection * cameraDistance);
 
         /*
          * TODO:
@@ -135,24 +149,31 @@ public class PlayerController : MonoBehaviour
         moveVector.y = 0.0f;
         moveVector.Normalize();
 
-        transform.position += moveVector * walkSpeed * Time.fixedDeltaTime;
+        moveVector *= walkSpeed;
+
+        velocity.x = moveVector.x;
+        velocity.z = moveVector.z;
 
         /*
          * Rudimentary gravity and raycast check
          */
 
-        Vector3 nextPosition = transform.position + gravity;
+        Vector3 nextPosition = transform.position + (velocity * Time.fixedDeltaTime) + (gravity * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2.0f));
+        Vector3 nextVelocity = (velocity * (1.0f - drag)) + (gravity * Time.fixedDeltaTime);
 
         RaycastHit hit;
 
-        bool hasHit = Physics.Raycast(nextPosition + new Vector3(0.0f, 1.0f, 0.0f), gravity, out hit, 2.0f);
+        bool hasHit = Physics.Raycast(nextPosition + Vector3.up, Vector3.down, out hit, 2.0f);
 
         if (hasHit)
         {
+            nextVelocity.y = 0.0f;
+            velocity = nextVelocity;
             transform.position = hit.point + new Vector3(0.0f, 1.0f, 0.0f);
         }
         else
         {
+            velocity = nextVelocity;
             transform.position = nextPosition;
         }
     }
