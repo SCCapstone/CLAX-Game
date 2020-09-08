@@ -1,11 +1,10 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     public Camera playerCamera;
+    public GameObject bulletPrefab;
 
     public float lookSensitivityScale = 90.0f;
     public float lookSensitivityX = 0.6f;
@@ -15,7 +14,8 @@ public class PlayerController : MonoBehaviour
     public float maxPitch = 89.9f;
 
     public bool cameraEnabled = true;
-    public float cameraDistance = 0.0f;
+    public Vector3 cameraTargetOffset = Vector3.zero;
+    public Vector3 cameraOffsets = Vector3.zero;
     // Not implemented yet
     public float hideCharacterDistance = 1.0f;
 
@@ -25,9 +25,9 @@ public class PlayerController : MonoBehaviour
     public Vector3 gravity = new Vector3(0.0f, -9.8f, 0.0f);
     public float drag = 0.02f;
 
-    public float projectileSpeed = 0.1f;
-
-    public GameObject bulletPrefab;
+    public float projectileSpeed = 25.0f;
+    public bool projectileInheritVelocity = true;
+    public bool projectileInheritVerticalVelocity = false;
 
     private Vector2 moveAxis = Vector3.zero;
     private Vector2 lookAxis = Vector3.zero;
@@ -82,9 +82,16 @@ public class PlayerController : MonoBehaviour
 
         Projectile projectile = instance.GetComponent<Projectile>();
 
+        Vector3 inheritedVelocity = projectileInheritVelocity ? velocity : Vector3.zero;
+
+        if (!projectileInheritVerticalVelocity)
+        {
+            inheritedVelocity.y = 0.0f;
+        }
+
         // TODO: Allow editor-friendly editing of projectile spawn position/orientation
         projectile.position = transform.position + offset;
-        projectile.velocity = offset * projectileSpeed;
+        projectile.velocity = inheritedVelocity + (offset * projectileSpeed);
 
         Debug.Log("Projectile fired");
     }
@@ -126,18 +133,15 @@ public class PlayerController : MonoBehaviour
         // Set rotation before performing the following steps
         playerCamera.transform.rotation = Quaternion.Euler(cameraEulerAngles);
 
-        Vector3 focus = transform.position;
-        Vector3 cameraBoomDirection = -playerCamera.transform.forward;
+        Vector3 cameraTarget = transform.position + cameraTargetOffset;
+        Vector3 offsetX = playerCamera.transform.right * cameraOffsets.x;
+        Vector3 offsetY = playerCamera.transform.up * cameraOffsets.y;
+        Vector3 offsetZ = playerCamera.transform.forward * cameraOffsets.z;
 
         RaycastHit hit;
-        bool hasHit = Physics.Raycast(focus, cameraBoomDirection, out hit, cameraDistance);
+        bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out hit, Mathf.Abs(cameraOffsets.z));
 
-        playerCamera.transform.position = hasHit ? hit.point : focus + (cameraBoomDirection * cameraDistance);
-
-        /*
-         * TODO:
-         * Let the camera distance/boom be configurable
-         */
+        playerCamera.transform.position = hasHit ? hit.point : cameraTarget + offsetX + offsetY + offsetZ;
     }
 
     void UpdatePosition()
