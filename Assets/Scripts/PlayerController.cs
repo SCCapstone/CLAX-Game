@@ -3,8 +3,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Prefabs")]
     public Camera playerCamera;
     public GameObject bulletPrefab;
+
+    [Header("Camera")]
+    public bool cameraEnabled = true;
 
     public float lookSensitivityScale = 90.0f;
     public float lookSensitivityX = 0.6f;
@@ -13,27 +17,36 @@ public class PlayerController : MonoBehaviour
     public float minPitch = -89.9f;
     public float maxPitch = 89.9f;
 
-    public bool cameraEnabled = true;
     public Vector3 cameraTargetOffset = Vector3.zero;
     public Vector3 cameraOffsets = Vector3.zero;
     // Not implemented yet
     public float hideCharacterDistance = 1.0f;
 
+    [Header("Movement")]
     public float walkSpeed = 10.0f;
-
-    public Vector3 velocity = Vector3.zero;
     public Vector3 gravity = new Vector3(0.0f, -9.8f, 0.0f);
     public float drag = 0.02f;
 
+    public float jumpSpeed = 10.0f;
+    public int maxJumps = 1;
+    public bool countGroundJump = false;
+    public float jumpLandingLag = 0.03f;
+
+    [Header("Projectile")]
     public float projectileSpeed = 25.0f;
     public bool projectileInheritVelocity = true;
     public bool projectileInheritVerticalVelocity = false;
+
+    private Vector3 velocity = Vector3.zero;
+    private bool onGround = true;
+    private float lastLandingTime = 0;
+    private int jumpCounter = 0;
 
     private Vector2 moveAxis = Vector3.zero;
     private Vector2 lookAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
 
-    private PlayerInputActions inputs;
+    private PlayerInputActions inputActions;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -44,19 +57,17 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.phase != InputActionPhase.Performed)
+        if (jumpCounter >= maxJumps || Time.time - lastLandingTime < jumpLandingLag)
         {
             return;
         }
 
-        /*
-         * TODO:
-         * Check if on ground
-         * Jump cooldown
-         * Jump counter to support mid-air jumps (i.e. double jumping)
-         */
+        if (countGroundJump || !onGround)
+        {
+            ++jumpCounter;
+        }
 
-        velocity += new Vector3(0.0f, 10.0f, 0.0f);
+        velocity.y = jumpSpeed;
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -66,13 +77,8 @@ public class PlayerController : MonoBehaviour
         lookAxis = inputAxis;
     }
 
-    public void OnShoot(InputAction.CallbackContext context)
+    public void OnUse(InputAction.CallbackContext context)
     {
-        if (context.phase != InputActionPhase.Performed)
-        {
-            return;
-        }
-
         GameObject instance = Instantiate(bulletPrefab);
 
         Vector3 offset = playerCamera.transform.forward;
@@ -92,26 +98,35 @@ public class PlayerController : MonoBehaviour
         // TODO: Allow editor-friendly editing of projectile spawn position/orientation
         projectile.position = transform.position + offset;
         projectile.velocity = inheritedVelocity + (offset * projectileSpeed);
-
-        Debug.Log("Projectile fired");
     }
 
     private void Awake()
     {
-        inputs = new PlayerInputActions();
+        // Connect input events to callbacks
+
+        inputActions = new PlayerInputActions();
+
+        inputActions.World.Move.started += OnMove;
+        inputActions.World.Move.performed += OnMove;
+        inputActions.World.Move.canceled += OnMove;
+
+        inputActions.World.Look.performed += OnLook;
+
+        inputActions.World.Jump.performed += OnJump;
+        inputActions.World.Use.performed += OnUse;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        /*
-         * TODO:
-         * Initialize camera boom
-         * Initialize player controls if necessary
-         */
+        inputActions.Enable();
     }
 
-    void UpdateCamera()
+    private void OnDisable()
+    {
+        inputActions.Disable();
+    }
+
+    private void Update()
     {
         if (!cameraEnabled || !Application.isFocused)
         {
@@ -144,16 +159,17 @@ public class PlayerController : MonoBehaviour
         playerCamera.transform.position = hasHit ? hit.point : cameraTarget + offsetX + offsetY + offsetZ;
     }
 
-    void UpdatePosition()
+    void FixedUpdate()
     {
         Vector3 moveVector = Vector3.zero;
 
         moveVector += playerCamera.transform.forward * moveAxis.y;
         moveVector += playerCamera.transform.right * moveAxis.x;
-        moveVector.y = 0.0f;
-        moveVector.Normalize();
 
-        moveVector *= walkSpeed;
+        // Ignore y component
+        moveVector.y = 0.0f;
+
+        moveVector = moveVector.normalized * walkSpeed;
 
         velocity.x = moveVector.x;
         velocity.z = moveVector.z;
@@ -166,31 +182,28 @@ public class PlayerController : MonoBehaviour
         Vector3 nextVelocity = (velocity * (1.0f - drag)) + (gravity * Time.fixedDeltaTime);
 
         RaycastHit hit;
-
         bool hasHit = Physics.Raycast(nextPosition + Vector3.up, Vector3.down, out hit, 2.0f);
 
         if (hasHit)
         {
             nextVelocity.y = 0.0f;
-            velocity = nextVelocity;
             transform.position = hit.point + new Vector3(0.0f, 1.0f, 0.0f);
+
+            // Restore jumps on ground
+            jumpCounter = 0;
+
+            // Initiate landing lag if landed
+            if (!onGround)
+            {
+                lastLandingTime = Time.time;
+            }
         }
         else
         {
-            velocity = nextVelocity;
             transform.position = nextPosition;
         }
-    }
 
-    private void Update()
-    {
-        // Update every render frame
-        UpdateCamera();
-    }
-
-    void FixedUpdate()
-    {
-        // Update every physics frame
-        UpdatePosition();
+        velocity = nextVelocity;
+        onGround = hasHit;
     }
 }

@@ -230,8 +230,6 @@ GameObject:
   - component: {fileID: 163374827}
   - component: {fileID: 163374826}
   - component: {fileID: 163374825}
-  - component: {fileID: 163374824}
-  - component: {fileID: 163374829}
   m_Layer: 2
   m_Name: Character
   m_TagString: Player
@@ -239,36 +237,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &163374824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 163374823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd4c6634e873654f9993e07426f9c58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 963194227}
-  bulletPrefab: {fileID: 2155125630583193527, guid: 637087b854c7a184ba64a2186ac6188b, type: 3}
-  lookSensitivityScale: 90
-  lookSensitivityX: 0.8
-  lookSensitivityY: 0.8
-  minPitch: -89.9
-  maxPitch: 89.9
-  cameraEnabled: 1
-  cameraTargetOffset: {x: 0, y: 0, z: 0}
-  cameraOffsets: {x: 0, y: 0, z: -10}
-  hideCharacterDistance: 1
-  walkSpeed: 10
-  velocity: {x: 0, y: 0, z: 0}
-  gravity: {x: 0, y: -9.8, z: 0}
-  drag: 0.02
-  projectileSpeed: 25
-  projectileInheritVelocity: 1
-  projectileInheritVerticalVelocity: 0
 --- !u!136 &163374825
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -346,112 +314,6 @@ Transform:
   m_Father: {fileID: 1241321801}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &163374829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 163374823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 82d3c986543103f4ea3c35e144758036, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 163374824}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnJump
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: f007b524-3daf-41e6-8954-8fb67c4939b4
-    m_ActionName: World/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c90db89e-d25f-4805-bb6b-3704a7d6d959
-    m_ActionName: World/Shift[/Keyboard/leftShift]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a3eddaaf-cd25-4216-a57d-573bbd081191
-    m_ActionName: World/Control[/Keyboard/leftCtrl]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1e4749b2-249d-4b97-ade7-7a02a920e678
-    m_ActionName: World/Interact[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 163374824}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 3bc0c98c-6344-4316-b44e-ac8bb78705ae
-    m_ActionName: World/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 163374824}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnLook
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 50b75d2b-09c6-4ef2-be1e-f5932adde69b
-    m_ActionName: World/Look[/Mouse/delta/y,/Mouse/delta/y,/Mouse/delta/x,/Mouse/delta/x]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 163374824}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnShoot
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 0e9bb8f4-d61a-4098-88f9-3f7152c137a3
-    m_ActionName: World/Use[/Mouse/leftButton]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Default
-  m_DefaultActionMap: World
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,6 +498,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1241321801}
+  - component: {fileID: 1241321802}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -659,6 +522,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1241321802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241321800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd4c6634e873654f9993e07426f9c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 963194227}
+  bulletPrefab: {fileID: 2155125630583193527, guid: 637087b854c7a184ba64a2186ac6188b, type: 3}
+  cameraEnabled: 1
+  lookSensitivityScale: 90
+  lookSensitivityX: 0.8
+  lookSensitivityY: 0.8
+  minPitch: -89.9
+  maxPitch: 89.9
+  cameraTargetOffset: {x: 0, y: 0, z: 0}
+  cameraOffsets: {x: 0, y: 0, z: -10}
+  hideCharacterDistance: 1
+  walkSpeed: 10
+  gravity: {x: 0, y: -9.8, z: 0}
+  drag: 0.02
+  jumpSpeed: 10
+  maxAirJumps: 1
+  jumpLandingLag: 0.2
+  projectileSpeed: 25
+  projectileInheritVelocity: 1
+  projectileInheritVerticalVelocity: 0
 --- !u!1 &1625935146
 GameObject:
   m_ObjectHideFlags: 0
