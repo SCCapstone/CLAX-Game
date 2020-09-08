@@ -7,7 +7,7 @@ public class levelScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Looks like something is working:");
+        //Debug.Log("Looks like something is working:");
 
     }
 
