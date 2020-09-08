@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public float hideCharacterDistance = 1.0f;
 
     [Header("Movement")]
+    public float centerHeight = 1.0f;
+
     public float walkSpeed = 10.0f;
     public Vector3 gravity = new Vector3(0.0f, -9.8f, 0.0f);
     public float drag = 0.02f;
@@ -182,12 +184,12 @@ public class PlayerController : MonoBehaviour
         Vector3 nextVelocity = (velocity * (1.0f - drag)) + (gravity * Time.fixedDeltaTime);
 
         RaycastHit hit;
-        bool hasHit = Physics.Raycast(nextPosition + Vector3.up, Vector3.down, out hit, 2.0f);
+        bool hasHit = Physics.Raycast(nextPosition, Vector3.down, out hit, onGround ? centerHeight * 1.1f : centerHeight);
 
         if (hasHit)
         {
             nextVelocity.y = 0.0f;
-            transform.position = hit.point + new Vector3(0.0f, 1.0f, 0.0f);
+            transform.position = hit.point + (Vector3.up * centerHeight);
 
             // Restore jumps on ground
             jumpCounter = 0;
