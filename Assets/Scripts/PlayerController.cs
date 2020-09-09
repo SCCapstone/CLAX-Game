@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
 
+    public float health = 100;
+
     private PlayerInputActions inputs;
 
     public void OnMove(InputAction.CallbackContext context)
@@ -73,7 +75,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        GameObject instance = Instantiate(bulletPrefab);
+        //make a new bullet and initialize who the enemy is (9 is the enemy layer)
+        Projectile instance = Instantiate(bulletPrefab).GetComponent<Projectile>();
+        instance.Initialize(9);
+
 
         Vector3 offset = playerCamera.transform.forward;
 
@@ -86,7 +91,8 @@ public class PlayerController : MonoBehaviour
         projectile.position = transform.position + offset;
         projectile.velocity = offset * projectileSpeed;
 
-        Debug.Log("Projectile fired");
+        //debug text not needed now that it works
+        //Debug.Log("Projectile fired");
     }
 
     private void Awake()
