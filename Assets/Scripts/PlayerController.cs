@@ -36,8 +36,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Projectile")]
     public float projectileSpeed = 25.0f;
-    public bool projectileInheritVelocity = true;
-    public bool projectileInheritVerticalVelocity = false;
 
     private Vector3 velocity = Vector3.zero;
     private bool onGround = true;
@@ -94,7 +92,6 @@ public class PlayerController : MonoBehaviour
         Projectile instance = Instantiate(bulletPrefab).GetComponent<Projectile>();
         instance.Initialize(9);
 
-
         Vector3 offset = playerCamera.transform.forward;
 
         offset.y = 0.0f;
@@ -102,42 +99,34 @@ public class PlayerController : MonoBehaviour
 
         Projectile projectile = instance.GetComponent<Projectile>();
 
-        Vector3 inheritedVelocity = projectileInheritVelocity ? velocity : Vector3.zero;
-
-        if (!projectileInheritVerticalVelocity)
-        {
-            inheritedVelocity.y = 0.0f;
-        }
-
-        // TODO: Allow editor-friendly editing of projectile spawn position/orientation
         projectile.position = transform.position + offset;
-        projectile.velocity = inheritedVelocity + (offset * projectileSpeed);
+        projectile.velocity = offset * projectileSpeed;
     }
 
     private void Awake()
     {
         // Connect input events to callbacks
 
-        inputActions = new PlayerInputActions();
+        inputs = new PlayerInputActions();
 
-        inputActions.World.Move.started += OnMove;
-        inputActions.World.Move.performed += OnMove;
-        inputActions.World.Move.canceled += OnMove;
+        inputs.World.Move.started += OnMove;
+        inputs.World.Move.performed += OnMove;
+        inputs.World.Move.canceled += OnMove;
 
-        inputActions.World.Look.performed += OnLook;
+        inputs.World.Look.performed += OnLook;
 
-        inputActions.World.Jump.performed += OnJump;
-        inputActions.World.Use.performed += OnUse;
+        inputs.World.Jump.performed += OnJump;
+        inputs.World.Use.performed += OnUse;
     }
 
     private void OnEnable()
     {
-        inputActions.Enable();
+        inputs.Enable();
     }
 
     private void OnDisable()
     {
-        inputActions.Disable();
+        inputs.Disable();
     }
 
     private void Update()
@@ -182,13 +171,13 @@ public class PlayerController : MonoBehaviour
         Vector3 moveVector = forward + right;
 
         moveVector.y = 0.0f;
+        moveVector.Normalize();
 
         if (onGround && groundNormal != Vector3.zero)
         {
             moveVector = Vector3.ProjectOnPlane(moveVector, groundNormal);
         }
 
-        moveVector.Normalize();
         moveVector *= walkSpeed;
 
         /*
