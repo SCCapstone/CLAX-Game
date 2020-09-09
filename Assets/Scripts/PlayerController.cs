@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 velocity = Vector3.zero;
     private bool onGround = true;
+    private Vector3 groundNormal = Vector3.zero;
     private float lastLandingTime = 0;
     private int jumpCounter = 0;
 
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour
         }
 
         velocity.y = jumpSpeed;
+        onGround = false;
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -163,28 +165,33 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 moveVector = Vector3.zero;
+        // Move player
 
-        moveVector += playerCamera.transform.forward * moveAxis.y;
-        moveVector += playerCamera.transform.right * moveAxis.x;
+        Vector3 forward = playerCamera.transform.forward * moveAxis.y;
+        Vector3 right = playerCamera.transform.right * moveAxis.x;
+        Vector3 moveVector = forward + right;
 
-        // Ignore y component
         moveVector.y = 0.0f;
 
-        moveVector = moveVector.normalized * walkSpeed;
+        if (onGround && groundNormal != Vector3.zero)
+        {
+            moveVector = Vector3.ProjectOnPlane(moveVector, groundNormal);
+        }
 
-        velocity.x = moveVector.x;
-        velocity.z = moveVector.z;
+        moveVector.Normalize();
+        moveVector *= walkSpeed;
 
         /*
          * Rudimentary gravity and raycast check
          */
 
-        Vector3 nextPosition = transform.position + (velocity * Time.fixedDeltaTime) + (gravity * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2.0f));
+        Vector3 realizedVelocity = velocity + moveVector;
+
+        Vector3 nextPosition = transform.position + (realizedVelocity * Time.fixedDeltaTime) + (gravity * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2.0f));
         Vector3 nextVelocity = (velocity * (1.0f - drag)) + (gravity * Time.fixedDeltaTime);
 
         RaycastHit hit;
-        bool hasHit = Physics.Raycast(nextPosition, Vector3.down, out hit, onGround ? centerHeight * 1.1f : centerHeight);
+        bool hasHit = Physics.Raycast(nextPosition, Vector3.down, out hit, centerHeight);
 
         if (hasHit)
         {
@@ -207,5 +214,6 @@ public class PlayerController : MonoBehaviour
 
         velocity = nextVelocity;
         onGround = hasHit;
+        groundNormal = hasHit ? hit.normal : Vector3.zero;
     }
 }
