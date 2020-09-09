@@ -49,7 +49,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
 
-    private PlayerInputActions inputActions;
+    public float health = 100;
+
+    private PlayerInputActions inputs;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -83,7 +85,15 @@ public class PlayerController : MonoBehaviour
 
     public void OnUse(InputAction.CallbackContext context)
     {
-        GameObject instance = Instantiate(bulletPrefab);
+        if (context.phase != InputActionPhase.Performed)
+        {
+            return;
+        }
+
+        //make a new bullet and initialize who the enemy is (9 is the enemy layer)
+        Projectile instance = Instantiate(bulletPrefab).GetComponent<Projectile>();
+        instance.Initialize(9);
+
 
         Vector3 offset = playerCamera.transform.forward;
 
