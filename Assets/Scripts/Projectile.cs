@@ -51,6 +51,22 @@ public class Projectile : MonoBehaviour
 
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Collided");
+        if (collision.gameObject.name == "Boss1")
+        {
+            Debug.Log("hit boss");
+
+        }
+
+        //foreach (var c in collision.contacts)
+        //{
+        //    Debug.Log("hit " + c);
+
+        //}
+    }
+
 
     // Update is called once per frame
     void Update()
