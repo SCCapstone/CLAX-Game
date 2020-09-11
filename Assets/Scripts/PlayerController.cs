@@ -1,11 +1,14 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Prefabs")]
     public Camera playerCamera;
+    public GameObject bulletPrefab;
+
+    [Header("Camera")]
+    public bool cameraEnabled = true;
 
     public float lookSensitivityScale = 90.0f;
     public float lookSensitivityX = 0.6f;
@@ -14,20 +17,31 @@ public class PlayerController : MonoBehaviour
     public float minPitch = -89.9f;
     public float maxPitch = 89.9f;
 
-    public bool cameraEnabled = true;
-    public float cameraDistance = 0.0f;
+    public Vector3 cameraTargetOffset = Vector3.zero;
+    public Vector3 cameraOffsets = Vector3.zero;
     // Not implemented yet
     public float hideCharacterDistance = 1.0f;
 
-    public float walkSpeed = 10.0f;
+    [Header("Movement")]
+    public float centerHeight = 1.0f;
 
-    public Vector3 velocity = Vector3.zero;
+    public float walkSpeed = 10.0f;
     public Vector3 gravity = new Vector3(0.0f, -9.8f, 0.0f);
     public float drag = 0.02f;
 
-    public float projectileSpeed = 0.1f;
+    public float jumpSpeed = 10.0f;
+    public int maxJumps = 1;
+    public bool countGroundJump = false;
+    public float jumpLandingLag = 0.03f;
 
-    public GameObject bulletPrefab;
+    [Header("Projectile")]
+    public float projectileSpeed = 25.0f;
+
+    private Vector3 velocity = Vector3.zero;
+    private bool onGround = true;
+    private Vector3 groundNormal = Vector3.zero;
+    private float lastLandingTime = 0;
+    private int jumpCounter = 0;
 
     private Vector2 moveAxis = Vector3.zero;
     private Vector2 lookAxis = Vector3.zero;
@@ -46,19 +60,18 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.phase != InputActionPhase.Performed)
+        if (jumpCounter >= maxJumps || Time.time - lastLandingTime < jumpLandingLag)
         {
             return;
         }
 
-        /*
-         * TODO:
-         * Check if on ground
-         * Jump cooldown
-         * Jump counter to support mid-air jumps (i.e. double jumping)
-         */
+        if (countGroundJump || !onGround)
+        {
+            ++jumpCounter;
+        }
 
-        velocity += new Vector3(0.0f, 10.0f, 0.0f);
+        velocity.y = jumpSpeed;
+        onGround = false;
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -68,7 +81,7 @@ public class PlayerController : MonoBehaviour
         lookAxis = inputAxis;
     }
 
-    public void OnShoot(InputAction.CallbackContext context)
+    public void OnUse(InputAction.CallbackContext context)
     {
         if (context.phase != InputActionPhase.Performed)
         {
@@ -79,7 +92,6 @@ public class PlayerController : MonoBehaviour
         Projectile instance = Instantiate(bulletPrefab).GetComponent<Projectile>();
         instance.Initialize(9);
 
-
         Vector3 offset = playerCamera.transform.forward;
 
         offset.y = 0.0f;
@@ -87,30 +99,37 @@ public class PlayerController : MonoBehaviour
 
         Projectile projectile = instance.GetComponent<Projectile>();
 
-        // TODO: Allow editor-friendly editing of projectile spawn position/orientation
         projectile.position = transform.position + offset;
         projectile.velocity = offset * projectileSpeed;
-
-        //debug text not needed now that it works
-        //Debug.Log("Projectile fired");
     }
 
     private void Awake()
     {
+        // Connect input events to callbacks
+
         inputs = new PlayerInputActions();
+
+        inputs.World.Move.started += OnMove;
+        inputs.World.Move.performed += OnMove;
+        inputs.World.Move.canceled += OnMove;
+
+        inputs.World.Look.performed += OnLook;
+
+        inputs.World.Jump.performed += OnJump;
+        inputs.World.Use.performed += OnUse;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        /*
-         * TODO:
-         * Initialize camera boom
-         * Initialize player controls if necessary
-         */
+        inputs.Enable();
     }
 
-    void UpdateCamera()
+    private void OnDisable()
+    {
+        inputs.Disable();
+    }
+
+    private void Update()
     {
         if (!cameraEnabled || !Application.isFocused)
         {
@@ -132,67 +151,68 @@ public class PlayerController : MonoBehaviour
         // Set rotation before performing the following steps
         playerCamera.transform.rotation = Quaternion.Euler(cameraEulerAngles);
 
-        Vector3 focus = transform.position;
-        Vector3 cameraBoomDirection = -playerCamera.transform.forward;
+        Vector3 cameraTarget = transform.position + cameraTargetOffset;
+        Vector3 offsetX = playerCamera.transform.right * cameraOffsets.x;
+        Vector3 offsetY = playerCamera.transform.up * cameraOffsets.y;
+        Vector3 offsetZ = playerCamera.transform.forward * cameraOffsets.z;
 
         RaycastHit hit;
-        bool hasHit = Physics.Raycast(focus, cameraBoomDirection, out hit, cameraDistance);
+        bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out hit, Mathf.Abs(cameraOffsets.z));
 
-        playerCamera.transform.position = hasHit ? hit.point : focus + (cameraBoomDirection * cameraDistance);
-
-        /*
-         * TODO:
-         * Let the camera distance/boom be configurable
-         */
+        playerCamera.transform.position = hasHit ? hit.point : cameraTarget + offsetX + offsetY + offsetZ;
     }
 
-    void UpdatePosition()
+    void FixedUpdate()
     {
-        Vector3 moveVector = Vector3.zero;
+        // Move player
 
-        moveVector += playerCamera.transform.forward * moveAxis.y;
-        moveVector += playerCamera.transform.right * moveAxis.x;
+        Vector3 forward = playerCamera.transform.forward * moveAxis.y;
+        Vector3 right = playerCamera.transform.right * moveAxis.x;
+        Vector3 moveVector = forward + right;
+
         moveVector.y = 0.0f;
         moveVector.Normalize();
 
-        moveVector *= walkSpeed;
+        if (onGround && groundNormal != Vector3.zero)
+        {
+            moveVector = Vector3.ProjectOnPlane(moveVector, groundNormal);
+        }
 
-        velocity.x = moveVector.x;
-        velocity.z = moveVector.z;
+        moveVector *= walkSpeed;
 
         /*
          * Rudimentary gravity and raycast check
          */
 
-        Vector3 nextPosition = transform.position + (velocity * Time.fixedDeltaTime) + (gravity * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2.0f));
+        Vector3 realizedVelocity = velocity + moveVector;
+
+        Vector3 nextPosition = transform.position + (realizedVelocity * Time.fixedDeltaTime) + (gravity * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2.0f));
         Vector3 nextVelocity = (velocity * (1.0f - drag)) + (gravity * Time.fixedDeltaTime);
 
         RaycastHit hit;
-
-        bool hasHit = Physics.Raycast(nextPosition + Vector3.up, Vector3.down, out hit, 2.0f);
+        bool hasHit = Physics.Raycast(nextPosition, Vector3.down, out hit, centerHeight);
 
         if (hasHit)
         {
             nextVelocity.y = 0.0f;
-            velocity = nextVelocity;
-            transform.position = hit.point + new Vector3(0.0f, 1.0f, 0.0f);
+            transform.position = hit.point + (Vector3.up * centerHeight);
+
+            // Restore jumps on ground
+            jumpCounter = 0;
+
+            // Initiate landing lag if landed
+            if (!onGround)
+            {
+                lastLandingTime = Time.time;
+            }
         }
         else
         {
-            velocity = nextVelocity;
             transform.position = nextPosition;
         }
-    }
 
-    private void Update()
-    {
-        // Update every render frame
-        UpdateCamera();
-    }
-
-    void FixedUpdate()
-    {
-        // Update every physics frame
-        UpdatePosition();
+        velocity = nextVelocity;
+        onGround = hasHit;
+        groundNormal = hasHit ? hit.normal : Vector3.zero;
     }
 }

@@ -79,8 +79,12 @@ public class Projectile : MonoBehaviour
 
         // TODO: Check for collisions with projectile
 
-        velocity += gravity;
-        position += velocity;
+        if (gravity != Vector3.zero)
+        {
+            velocity += gravity * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2.0f);
+        }
+
+        position += velocity * Time.deltaTime;
 
         transform.position = position;
     }
