@@ -12,9 +12,7 @@ public class RollingBossScript : MonoBehaviour
     public float maxYSize = 10.5f;
     public float expansionAmount = .5f;
 
-    float lastWallExpandTime;
-    float maxWallHeight = 20;
-    float wallExpandFrequency = .05f;
+
     public GameObject wallPrefab;
 
     bool hasActiveWall = false;
@@ -46,7 +44,6 @@ public class RollingBossScript : MonoBehaviour
                 if (madeWall == null)
                 {
                     madeWall = Instantiate(wallPrefab);
-                    lastWallExpandTime = Time.time;
                 }
             }
 
@@ -54,28 +51,15 @@ public class RollingBossScript : MonoBehaviour
 
     }
 
-    void wallExpand()
-    {
-        if (madeWall != null && Time.time - lastWallExpandTime >= wallExpandFrequency)
-        {
-            var curPos = madeWall.transform.position;
-            var curScale = madeWall.transform.localScale;
 
-            madeWall.transform.localScale = new Vector3(curScale.x + 1, Mathf.Min(curScale.y + 3, maxWallHeight), 0);
-            madeWall.transform.position = new Vector3(curPos.x, 0, curPos.z);
-
-            lastWallExpandTime = Time.time;
-        }
-    }
 
 
     // Update is called once per frame
     void Update()
     {
-        //var direction = gameObject.transform.localScale;
         //if (Input.GetKeyDown(KeyCode.R))
         ballExpand();
-        wallExpand();
+        //wallExpand();
 
 
     }
