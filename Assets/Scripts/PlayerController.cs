@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour
     public float maxPitch = 89.9f;
 
     public Vector3 cameraTargetOffset = Vector3.zero;
-    public Vector3 cameraOffsets = Vector3.zero;
+    //public Vector3 cameraOffsets = Vector3.zero;
+    public Vector3 cameraOffsets = new Vector3(0, 0, -5);
     // Not implemented yet
     public float hideCharacterDistance = 1.0f;
 
@@ -93,13 +94,21 @@ public class PlayerController : MonoBehaviour
         instance.Initialize(9);
 
         Vector3 offset = playerCamera.transform.forward;
+        //Debug.Log("offset " + offset);
+
 
         offset.y = 0.0f;
         offset.Normalize();
+        //Debug.Log("after offset " + offset);
+
 
         Projectile projectile = instance.GetComponent<Projectile>();
 
         projectile.position = transform.position + offset;
+        //Debug.Log("proj speed " + projectileSpeed);
+
+        //Debug.Log("setting to " + offset * projectileSpeed);
+
         projectile.velocity = offset * projectileSpeed;
     }
 

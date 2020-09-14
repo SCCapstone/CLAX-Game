@@ -9,7 +9,7 @@ public class RollingBossScript : MonoBehaviour
     //Vector3 scale;
     float lastExpandedTime;
     float expandFrequency = .3f;
-    float maxYSize = 5.5f;
+    float maxYSize = 4.8f;
     float expansionAmount = .3f;
 
 
@@ -31,8 +31,8 @@ public class RollingBossScript : MonoBehaviour
 
         if (Time.time - lastExpandedTime >= expandFrequency)
         {
-            Debug.Log(transform.localScale.y + expansionAmount);
-            Debug.Log(maxYSize);
+            //Debug.Log(transform.localScale.y + expansionAmount);
+            //Debug.Log(maxYSize);
 
             if (transform.localScale.y + expansionAmount < maxYSize)
             {
