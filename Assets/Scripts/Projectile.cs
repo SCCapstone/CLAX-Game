@@ -41,7 +41,9 @@ public class Projectile : MonoBehaviour
         if (other.gameObject.layer == enemyLayerNum)
         {
             var enemy = other.gameObject.GetComponent<AliveObject>();
-            enemy.health -= damage;
+            enemy.takeDamage(damage);
+            Destroy(gameObject);
+
 
         }
 

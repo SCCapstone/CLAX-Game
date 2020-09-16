@@ -10,6 +10,7 @@ public class expandingWallScript : MonoBehaviour
     float wallExpandFrequency = .03f;
     float maxHorizontalLength = 60;
     float growAmount = 0.7f;
+    public float damageAmount = 10;
 
     bool isGrowing = true;
 
@@ -32,7 +33,7 @@ public class expandingWallScript : MonoBehaviour
         if (!isGrowing)
             direction = -1;
 
-
+        //only expand every so often
         if (Time.time - lastWallExpandTime >= wallExpandFrequency)
         {
             var curPos = transform.position;
@@ -44,6 +45,22 @@ public class expandingWallScript : MonoBehaviour
 
             lastWallExpandTime = Time.time;
         }
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+
+
+        //Debug.Log("other tag" + other.tag);
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            var enemy = other.gameObject.GetComponent<AliveObject>();
+            enemy.takeDamage(damageAmount);
+
+        }
+
     }
 
     // Update is called once per frame
