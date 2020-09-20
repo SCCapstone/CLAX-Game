@@ -13,12 +13,10 @@ public class RollingBossScript : MonoBehaviour
     float normalSize;
     float expansionAmount = .3f;
 
-
     public GameObject wallPrefab;
 
-    bool hasActiveWall = false;
-
     bool isMoving = false;
+    bool isGrowing = true;
 
     GameObject madeWall;
     bool isFacingTarget = false;
@@ -27,6 +25,14 @@ public class RollingBossScript : MonoBehaviour
     float startMovingTime;
     float rollTime = 2;
     Rigidbody body;
+
+
+    enum bossPhases
+    {
+        spinAttack, moveAndMakeWall
+    }
+
+    bossPhases currentPhase = bossPhases.moveAndMakeWall;
 
 
     // Start is called before the first frame update
@@ -38,37 +44,46 @@ public class RollingBossScript : MonoBehaviour
         normalSize = transform.localScale.y;
     }
 
-    void ballExpand()
+    bool changeSize()
     {
+        if (isGrowing)
+            expansionAmount = Mathf.Abs(expansionAmount);
+        else
+            expansionAmount = -1 * Mathf.Abs(expansionAmount);
 
         if (Time.time - lastExpandedTime >= expandFrequency)
         {
-            //Debug.Log(transform.localScale.y + expansionAmount);
-            //Debug.Log(maxYSize);
 
-            if (transform.localScale.y + expansionAmount < maxYSize)
+            if ((isGrowing && transform.localScale.y + expansionAmount < maxYSize) ||
+                (isGrowing == false && transform.localScale.y + expansionAmount > normalSize))
             {
-
                 transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + expansionAmount,
                     transform.localScale.z);
                 lastExpandedTime = Time.time;
+                //ball successfully changed size
+                return true;
             }
-            else
+            //the ball is already the correct size
+            return false;
+
+        }
+        //did not attempt to change size
+        return true;
+
+    }
+
+    void ballExpand()
+    {
+        bool changedSize = changeSize();
+        if (changedSize == false)
+        {
+            //if the ball has expanded to the correct size, then make the new wall
+            if (madeWall == null)
             {
-                //if the ball has expanded to the correct size, then make the new wall
-                if (madeWall == null)
-                {
-                    madeWall = Instantiate(wallPrefab, transform.position,
-                        transform.rotation);
-                    //var curRotatation = madeWall.transform.rotation;
-                    //madeWall.transform.rotation = new Quaternion(curRotatation.x, curRotatation.y, curRotatation.z + 90, curRotatation.w);
-                    madeWall.transform.Rotate(new Vector3(90, 90, 0));
-
-
-                    //madeWall.transform.RotateArou
-                }
+                madeWall = Instantiate(wallPrefab, transform.position,
+                    transform.rotation);
+                madeWall.transform.Rotate(new Vector3(90, 90, 0));
             }
-
         }
 
     }
@@ -112,6 +127,15 @@ public class RollingBossScript : MonoBehaviour
         }
     }
 
+    void choosePhase()
+    {
+
+    }
+
+    void moveMakeWallAttack()
+    {
+        //ballExpand()
+    }
 
     // Update is called once per frame
     void Update()
