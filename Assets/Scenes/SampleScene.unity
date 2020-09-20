@@ -344,7 +344,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163374823}
   m_LocalRotation: {x: -0, y: 0.97473955, z: -0, w: -0.22334468}
-  m_LocalPosition: {x: -48.97, y: 2, z: -18.36}
+  m_LocalPosition: {x: -55.76, y: 2, z: -4.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 963194228}
@@ -712,6 +712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallPrefab: {fileID: 507809147483118245, guid: fa670bdf0f42e404293540d7f9e2747b, type: 3}
+  goalTransform: {fileID: 163374828}
 --- !u!114 &450725648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,7 +738,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
