@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions.Comparers;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -34,6 +35,8 @@ public class PlayerController : MonoBehaviour
     public bool countGroundJump = false;
     public float jumpLandingLag = 0.03f;
 
+    public bool usePrototypeMovement = false;
+
     [Header("Projectile")]
     public float projectileSpeed = 25.0f;
 
@@ -47,10 +50,13 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
 
+    Rigidbody rigidBody;
+
     public float health = 100;
 
     private PlayerInputActions inputs;
 
+<<<<<<< Updated upstream
     public void OnMove(InputAction.CallbackContext context)
     {
         Vector2 inputAxis = context.ReadValue<Vector2>();
@@ -103,6 +109,8 @@ public class PlayerController : MonoBehaviour
         projectile.velocity = offset * projectileSpeed;
     }
 
+=======
+>>>>>>> Stashed changes
     private void Awake()
     {
         // Connect input events to callbacks
@@ -117,6 +125,8 @@ public class PlayerController : MonoBehaviour
 
         inputs.World.Jump.performed += OnJump;
         inputs.World.Use.performed += OnUse;
+
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -162,57 +172,118 @@ public class PlayerController : MonoBehaviour
         playerCamera.transform.position = hasHit ? hit.point : cameraTarget + offsetX + offsetY + offsetZ;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        // Move player
+        RaycastHit hitInfo;
+        bool hasHit;
 
-        Vector3 forward = playerCamera.transform.forward * moveAxis.y;
-        Vector3 right = playerCamera.transform.right * moveAxis.x;
-        Vector3 moveVector = forward + right;
+        // Get movement direction
 
-        moveVector.y = 0.0f;
-        moveVector.Normalize();
+        Vector3 moveVector = Vector3.zero;
 
-        if (onGround && groundNormal != Vector3.zero)
+        if (moveAxis != Vector2.zero)
         {
-            moveVector = Vector3.ProjectOnPlane(moveVector, groundNormal);
+            Vector3 forward = playerCamera.transform.forward * moveAxis.y;
+            Vector3 right = playerCamera.transform.right * moveAxis.x;
+            moveVector = forward + right;
+
+            moveVector.y = 0.0f;
+            moveVector.Normalize();
+
+            // Move player
+
+            rigidBody.MovePosition(rigidBody.transform.position + moveVector * walkSpeed * Time.fixedDeltaTime);
+
+            Vector3 newVelocity = rigidBody.velocity;
+
+            newVelocity.x = 0;
+            newVelocity.z = 0;
+
+            rigidBody.velocity = newVelocity;
         }
 
-        moveVector *= walkSpeed;
+        // Check collision downwards
 
-        /*
-         * Rudimentary gravity and raycast check
-         */
-
-        Vector3 realizedVelocity = velocity + moveVector;
-
-        Vector3 nextPosition = transform.position + (realizedVelocity * Time.fixedDeltaTime) + (gravity * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2.0f));
-        Vector3 nextVelocity = (velocity * (1.0f - drag)) + (gravity * Time.fixedDeltaTime);
-
-        RaycastHit hit;
-        bool hasHit = Physics.Raycast(nextPosition, Vector3.down, out hit, centerHeight);
+        //hasHit = Physics.Raycast(transform.position, Vector3.down, out hitInfo, centerHeight + (2.0f * FloatComparer.kEpsilon));
+        hasHit = rigidBody.SweepTest(Vector3.down, out hitInfo, Mathf.Abs(rigidBody.velocity.y));
 
         if (hasHit)
         {
-            nextVelocity.y = 0.0f;
-            transform.position = hit.point + (Vector3.up * centerHeight);
-
-            // Restore jumps on ground
+            onGround = true;
             jumpCounter = 0;
 
-            // Initiate landing lag if landed
-            if (!onGround)
-            {
-                lastLandingTime = Time.time;
-            }
+            lastLandingTime = Time.time;
         }
         else
         {
-            transform.position = nextPosition;
+            // Apply gravity in air
+
+            rigidBody.AddForce(gravity, ForceMode.Acceleration);
+        }
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        Vector2 inputAxis = context.ReadValue<Vector2>();
+
+        moveAxis = inputAxis.normalized;
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (Time.time - lastLandingTime < jumpLandingLag || jumpCounter >= maxJumps)
+        {
+            return;
         }
 
-        velocity = nextVelocity;
-        onGround = hasHit;
-        groundNormal = hasHit ? hit.normal : Vector3.zero;
+        if (countGroundJump || !onGround)
+        {
+            ++jumpCounter;
+        }
+
+        Vector3 newVelocity = rigidBody.velocity;
+
+        newVelocity.y = jumpSpeed;
+
+        rigidBody.velocity = newVelocity;
+
+        onGround = false;
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        Vector2 inputAxis = context.ReadValue<Vector2>();
+
+        lookAxis = inputAxis;
+    }
+
+    public void OnUse(InputAction.CallbackContext context)
+    {
+        if (context.phase != InputActionPhase.Performed)
+        {
+            return;
+        }
+
+        //make a new bullet and initialize who the enemy is (9 is the enemy layer)
+        Projectile instance = Instantiate(bulletPrefab).GetComponent<Projectile>();
+        instance.Initialize(9);
+
+        Vector3 offset = playerCamera.transform.forward;
+        //Debug.Log("offset " + offset);
+
+
+        offset.y = 0.0f;
+        offset.Normalize();
+        //Debug.Log("after offset " + offset);
+
+
+        Projectile projectile = instance.GetComponent<Projectile>();
+
+        projectile.position = transform.position + offset;
+        //Debug.Log("proj speed " + projectileSpeed);
+
+        //Debug.Log("setting to " + offset * projectileSpeed);
+
+        projectile.velocity = offset * projectileSpeed;
     }
 }
