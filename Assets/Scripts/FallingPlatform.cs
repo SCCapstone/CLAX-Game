@@ -17,7 +17,7 @@ public class FallingPlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             isFalling = true;
-            //Debug.Log("Trigger");
+            Debug.Log("Trigger");
 
         }
     }

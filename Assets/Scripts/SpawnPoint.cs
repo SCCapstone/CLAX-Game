@@ -21,5 +21,11 @@ public class SpawnPoint : MonoBehaviour
         
     }
 
-
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Collision has occured");
+        }
+    }
 }

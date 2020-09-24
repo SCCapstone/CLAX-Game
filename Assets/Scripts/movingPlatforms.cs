@@ -33,10 +33,13 @@ public class movingPlatforms : MonoBehaviour
             goal = start;
         stage.transform.position = Vector3.Lerp(current.position, goal.position, speed * Time.deltaTime);
     }
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider other)
     {
-        collision.gameObject.transform.parent = stage.transform;
-
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Collision has occured");
+            other.gameObject.transform.parent = stage.transform;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
