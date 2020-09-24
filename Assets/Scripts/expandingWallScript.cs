@@ -11,6 +11,7 @@ public class expandingWallScript : MonoBehaviour
     float maxHorizontalLength = 60;
     float growAmount = 0.7f;
 
+    public bool isDone = false;
     bool isGrowing = true;
 
     // Start is called before the first frame update
@@ -27,7 +28,10 @@ public class expandingWallScript : MonoBehaviour
             //return;
         }
         if (!isGrowing && transform.localScale.x < 3)
+        {
+            isDone = true;
             return;
+        }
         int direction = 1;
         if (!isGrowing)
             direction = -1;

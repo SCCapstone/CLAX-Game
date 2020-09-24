@@ -15,7 +15,11 @@ public class FallingPlatform : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
+        {
             isFalling = true;
+            //Debug.Log("Trigger");
+
+        }
     }
 
 
@@ -28,9 +32,9 @@ public class FallingPlatform : MonoBehaviour
     {
         if (isFalling)
         {
-            downSpeed += Time.deltaTime;
+            //downSpeed += ;
             transform.parent.position = new Vector3(transform.position.x,
-                transform.position.y - downSpeed,
+                transform.position.y - Time.deltaTime * 3,
                 transform.position.z);
         }
         //timingFall -= Time.deltaTime;
