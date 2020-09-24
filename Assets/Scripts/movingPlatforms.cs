@@ -37,13 +37,15 @@ public class movingPlatforms : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Collision has occured");
-            other.gameObject.transform.parent = stage.transform;
+            other.gameObject.transform.root.parent = stage.transform;
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        other.transform.parent = null;
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.transform.root.parent = null;
+            Debug.Log("Collision has stopped");
+        }
     }
-
 }
