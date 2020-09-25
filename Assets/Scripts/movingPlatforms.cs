@@ -42,10 +42,10 @@ public class movingPlatforms : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log("Collision has stopped");
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.transform.root.parent = null;
-            Debug.Log("Collision has stopped");
+            other.gameObject.transform.parent.parent= null;
         }
     }
 }
