@@ -57,15 +57,19 @@ MonoBehaviour:
   cameraOffsets: {x: 0, y: 0, z: -10}
   hideCharacterDistance: 1
   centerHeight: 1
-  walkSpeed: 10
-  gravity: {x: 0, y: -9.8, z: 0}
-  drag: 0.02
+  maxAngle: 45
+  maxSpeed: 10
+  groundAcceleration: 20
+  airAcceleration: 20
+  groundFriction: 1
+  airFriction: 1
+  gravity: {x: 0, y: -19.6, z: 0}
   jumpSpeed: 10
   maxJumps: 1
   countGroundJump: 0
   jumpLandingLag: 0.03
-  projectileSpeed: 25
   health: 100
+  projectileSpeed: 25
 --- !u!1 &6257623720314369246
 GameObject:
   m_ObjectHideFlags: 0
