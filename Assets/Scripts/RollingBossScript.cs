@@ -71,8 +71,12 @@ public class RollingBossScript : MonoBehaviour
                 //lastExpandedTime = Time.time;
 
             }
-            //the ball is already the correct size
-            return false;
+
+            if (transform.localScale.y + expansionAmount >= maxYSize)
+            {
+                //the ball is already the correct size
+                return false;
+            }
 
         }
         //did not attempt to change size
@@ -104,7 +108,7 @@ public class RollingBossScript : MonoBehaviour
 
     void moveTowardPoint(int power = 15)
     {
-        transform.LookAt(goalTransform, new Vector3(1, 0, 0));
+        transform.LookAt(new Vector3(goalTransform.position.x, transform.position.y, goalTransform.position.z), new Vector3(1, 0, 0));
 
         Vector3 distance = (goalTransform.position - this.transform.position) * power;
 

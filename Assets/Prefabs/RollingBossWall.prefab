@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -4861091664498932934}
   - component: {fileID: 1440804126768125309}
   - component: {fileID: 302656711972608121}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RollingBossWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
