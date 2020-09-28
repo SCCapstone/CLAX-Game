@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
     private bool onGround = true;
     private float groundEpsilon = 1e-1f;
     private Vector3 groundNormal = Vector3.zero;
+    private GameObject ground;
 
     private bool holdJump = false;
     private int jumpCounter = 0;
@@ -129,49 +130,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Get movement direction
-
-        Vector3 forward = playerCamera.transform.forward;
-        Vector3 right = playerCamera.transform.right;
-
-        forward.y = 0.0f;
-        right.y = 0.0f;
-
-        forward.Normalize();
-        right.Normalize();
-
-        Vector3 moveDir = (forward * moveAxis.y) + (right * moveAxis.x);
-        moveDir.y = 0.0f;
-        moveDir.Normalize();
-
-        Vector3 prevVelocity = rigidBody.velocity;
-        float speed = prevVelocity.magnitude;
-
-        // Friction
-
-        if (speed > 0.0f)
-        {
-            float friction = onGround ? groundFriction : airFriction;
-            float drop = speed * friction * Time.fixedDeltaTime;
-
-            prevVelocity.Normalize();
-            prevVelocity *= Mathf.Max(speed - drop, 0.0f);
-        }
-
-        // Movement
-
-        float projectedSpeed = Vector3.Dot(moveDir, prevVelocity);
-
-        float accMagnitude = onGround ? groundAcceleration : airAcceleration;
-        accMagnitude *= Time.fixedDeltaTime;
-
-        if (projectedSpeed + accMagnitude > maxSpeed)
-        {
-            accMagnitude = maxSpeed - projectedSpeed;
-        }
-
-        rigidBody.velocity = prevVelocity + (moveDir * accMagnitude);
-
         rigidBody.AddForce(gravity, ForceMode.Acceleration);
 
         // Ground check
@@ -201,6 +159,56 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        // Movement
+
+        Accelerate();
+    }
+
+    private void Accelerate()
+    {
+        // Get movement direction
+
+        Vector3 forward = playerCamera.transform.forward;
+        Vector3 right = playerCamera.transform.right;
+
+        forward.y = 0.0f;
+        right.y = 0.0f;
+
+        forward.Normalize();
+        right.Normalize();
+
+        Vector3 moveDir = (forward * moveAxis.y) + (right * moveAxis.x);
+        moveDir.y = 0.0f;
+
+        float moveSpeed = moveDir.magnitude;
+        moveDir.Normalize();
+
+        Vector3 prevVelocity = rigidBody.velocity;
+        float speed = prevVelocity.magnitude;
+
+        // Friction
+
+        if (speed > 0.0f)
+        {
+            float friction = onGround ? groundFriction : airFriction;
+            float drop = speed * friction * Time.fixedDeltaTime;
+
+            prevVelocity *= Mathf.Max(speed - drop, 0.0f) / speed;
+        }
+
+        // Movement
+
+        float projectedSpeed = Vector3.Dot(prevVelocity, moveDir);
+        float accMagnitude = onGround ? groundAcceleration : airAcceleration;
+        accMagnitude *= Time.fixedDeltaTime;
+
+        if (projectedSpeed + accMagnitude > maxSpeed)
+        {
+            accMagnitude = maxSpeed - projectedSpeed;
+        }
+
+        rigidBody.velocity = prevVelocity + (moveDir * accMagnitude);
     }
 
     private void Jump()
@@ -234,11 +242,11 @@ public class PlayerController : MonoBehaviour
         RaycastHit hitResult;
         //bool hasHit = Physics.Raycast(transform.position, Vector3.down, out hitResult);
         bool hasHit = Physics.SphereCast(transform.position, 0.5f, Vector3.down, out hitResult);
-        
 
         if (hasHit)
         {
             groundNormal = hitResult.normal;
+            ground = hitResult.collider.gameObject;
 
             float angle = Vector3.Angle(Vector3.up, groundNormal);
 

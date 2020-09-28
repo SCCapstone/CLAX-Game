@@ -59,15 +59,15 @@ MonoBehaviour:
   centerHeight: 1
   maxAngle: 45
   maxSpeed: 10
-  groundAcceleration: 20
-  airAcceleration: 20
-  groundFriction: 1
-  airFriction: 1
+  groundAcceleration: 50
+  airAcceleration: 10
+  groundFriction: 5
+  airFriction: 0.5
   gravity: {x: 0, y: -19.6, z: 0}
   jumpSpeed: 10
   maxJumps: 1
   countGroundJump: 0
-  jumpLandingLag: 0.03
+  jumpLandingLag: 0
   health: 100
   projectileSpeed: 25
 --- !u!1 &6257623720314369246
@@ -159,7 +159,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6257623720314369246}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: fb30291dd03a832418dde5158e7afac9, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
