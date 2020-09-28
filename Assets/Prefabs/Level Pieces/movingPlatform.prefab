@@ -26,8 +26,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e545898e6d7e3e34eaf7d9cbf9d03143, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   startStage: {fileID: 6082209957405042398}
   endStage: {fileID: 6082209957358694459}
   stage: {fileID: 6082209958007320290}
