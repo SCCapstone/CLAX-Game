@@ -106,13 +106,18 @@ public class RollingBossScript : MonoBehaviour
     }
 
 
-    void moveTowardPoint(int power = 15)
+    void moveTowardPoint(int power = 60)
     {
         transform.LookAt(new Vector3(goalTransform.position.x, transform.position.y, goalTransform.position.z), new Vector3(1, 0, 0));
 
         Vector3 distance = (goalTransform.position - this.transform.position) * power;
 
+
         body.AddForce(distance);
+        //body.velocity = (goalTransform.position - this.transform.position);
+        Debug.Log("moved " + distance);
+
+
 
     }
 
