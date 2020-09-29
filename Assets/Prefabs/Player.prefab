@@ -63,9 +63,9 @@ MonoBehaviour:
   groundAcceleration: 50
   airAcceleration: 10
   groundFriction: 5
-  airFriction: 0.5
+  airFriction: 0
   gravity: {x: 0, y: -19.6, z: 0}
-  jumpSpeed: 10
+  jumpSpeed: 12
   maxJumps: 1
   countGroundJump: 0
   jumpLandingLag: 0

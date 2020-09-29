@@ -12,26 +12,10 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &840352427720488661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6082209958007320290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e545898e6d7e3e34eaf7d9cbf9d03143, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  startStage: {fileID: 6082209957405042398}
-  endStage: {fileID: 6082209957358694459}
-  stage: {fileID: 6082209958007320290}
-  speed: 1
 --- !u!1 &8387599227283869521
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,8 +25,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8387599227283869523}
+  - component: {fileID: 3284403555622848519}
   m_Layer: 0
-  m_Name: movingPlatform
+  m_Name: MovingPlatform
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,6 +50,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3284403555622848519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8387599227283869521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e078bc6addc8b8e47b6df94323e8badb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startStage: {fileID: 6082209957405042398}
+  endStage: {fileID: 6082209957358694459}
+  stage: {fileID: 6082209958007320290}
+  travelDuration: 3
+  stayDuration: 1.5
 --- !u!1001 &8387599227036964496
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77,16 +79,16 @@ PrefabInstance:
       value: Platform
       objectReference: {fileID: 0}
     - target: {fileID: 2310035128715294837, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2310035128715294837, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
       propertyPath: m_Center.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2310035128715294837, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
       propertyPath: m_Size.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310035128715294837, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2310035128715294838, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
       propertyPath: m_LocalPosition.x
@@ -153,7 +155,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2310035128715294834, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
       propertyPath: m_Name
-      value: end
+      value: End
       objectReference: {fileID: 0}
     - target: {fileID: 2310035128715294837, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
       propertyPath: m_IsTrigger
@@ -237,7 +239,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2310035128715294834, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
       propertyPath: m_Name
-      value: start
+      value: Start
       objectReference: {fileID: 0}
     - target: {fileID: 2310035128715294837, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
       propertyPath: m_IsTrigger

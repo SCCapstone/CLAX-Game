@@ -26,41 +26,44 @@ public class PlayerController : MonoBehaviour
     public float hideCharacterDistance = 1.0f;
 
     [Header("Movement")]
-    public float centerHeight = 1.0f;
-    public float maxAngle = 45.0f;
+    public float centerHeight;
+    public float maxAngle;
 
-    public float maxSpeed = 10.0f;
-    public float groundAcceleration = 1.0f;
-    public float airAcceleration = 1.0f;
-    public float groundFriction = 0.02f;
-    public float airFriction = 0.0f;
+    public float maxSpeed;
+    public float groundAcceleration;
+    public float airAcceleration;
+    public float groundFriction;
+    public float airFriction;
     public Vector3 gravity = new Vector3(0.0f, -9.8f, 0.0f);
 
-    public float jumpSpeed = 10.0f;
-    public int maxJumps = 1;
-    public bool countGroundJump = false;
-    public float jumpLandingLag = 0.03f;
+    public float jumpSpeed;
+    public int maxJumps;
+    public bool countGroundJump;
+    public float jumpLandingLag;
 
     [Header("Character")]
-    public float health = 100;
+    public float health;
 
     [Header("Projectile")]
-    public float projectileSpeed = 25.0f;
+    public float projectileSpeed;
 
-    private bool onGround = true;
+    private bool prevOnGround = false;
+    private bool onGround = false;
     private float groundEpsilon = 1e-1f;
     private Vector3 groundNormal = Vector3.zero;
     private GameObject ground;
+    private Vector3 groundLastPosition;
+    private Quaternion groundLastRotation;
 
     private bool holdJump = false;
     private int jumpCounter = 0;
-    private float lastLandingTime = 0;
+    private float onGroundTime = 0;
 
     private Vector2 moveAxis = Vector3.zero;
     private Vector2 lookAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
 
-    Rigidbody rigidBody;
+    new Rigidbody rigidbody;
 
     private PlayerInputActions inputs;
 
@@ -82,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
         inputs.World.Use.performed += OnUse;
 
-        rigidBody = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -130,39 +133,39 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidBody.AddForce(gravity, ForceMode.Acceleration);
+        rigidbody.AddForce(gravity, ForceMode.Acceleration);
 
-        // Ground check
+        // Movement
 
-        bool prevOnGround = onGround;
+        Accelerate();
 
-        onGround = GetGrounded();
-
-        if (onGround)
-        {
-            jumpCounter = 0;
-
-            if (!prevOnGround)
-            {
-                lastLandingTime = Time.time;
-            }
-
-            Vector3 nextVelocity = rigidBody.velocity;
-            nextVelocity.y = 0.0f;
-
-            rigidBody.velocity = nextVelocity;
-        }
-
-        // Hold jump check
+        // Jump check
 
         if (holdJump && onGround)
         {
             Jump();
         }
 
-        // Movement
+        // Ground check
 
-        Accelerate();
+        prevOnGround = onGround;
+        onGround = GetGrounded();
+
+        if (onGround)
+        {
+            jumpCounter = 0;
+
+            if (prevOnGround)
+            {
+                onGroundTime += Time.fixedDeltaTime;
+            }
+
+            if (ground)
+            {
+                groundLastPosition = ground.transform.position;
+                groundLastRotation = ground.transform.rotation;
+            }
+        }
     }
 
     private void Accelerate()
@@ -184,17 +187,23 @@ public class PlayerController : MonoBehaviour
         float moveSpeed = moveDir.magnitude;
         moveDir.Normalize();
 
-        Vector3 prevVelocity = rigidBody.velocity;
+        Vector3 prevVelocity = rigidbody.velocity;
         float speed = prevVelocity.magnitude;
 
         // Friction
 
-        if (speed > 0.0f)
-        {
-            float friction = onGround ? groundFriction : airFriction;
-            float drop = speed * friction * Time.fixedDeltaTime;
+        float friction = onGround ? groundFriction : airFriction;
+        prevVelocity = Vector3.Lerp(prevVelocity, Vector3.zero, friction * Time.fixedDeltaTime);
 
-            prevVelocity *= Mathf.Max(speed - drop, 0.0f) / speed;
+        // Movement with ground
+
+        if (ground && prevOnGround)
+        {
+            Vector3 dv = ground.transform.position - groundLastPosition;
+            //Vector3 dr = ground.transform.rotation.eulerAngles - groundLastRotation.eulerAngles;
+
+            rigidbody.MovePosition(rigidbody.position + dv);
+            //rigidbody.MoveRotation(Quaternion.Euler(rigidbody.rotation.eulerAngles + dr));
         }
 
         // Movement
@@ -208,12 +217,12 @@ public class PlayerController : MonoBehaviour
             accMagnitude = maxSpeed - projectedSpeed;
         }
 
-        rigidBody.velocity = prevVelocity + (moveDir * accMagnitude);
+        rigidbody.velocity = prevVelocity + (moveDir * accMagnitude);
     }
 
     private void Jump()
     {
-        if (Time.time - lastLandingTime < jumpLandingLag || jumpCounter >= maxJumps)
+        if (onGroundTime < jumpLandingLag || jumpCounter >= maxJumps)
         {
             return;
         }
@@ -223,21 +232,24 @@ public class PlayerController : MonoBehaviour
             ++jumpCounter;
         }
 
-        Vector3 newVelocity = rigidBody.velocity;
+        Vector3 newVelocity = rigidbody.velocity;
 
         newVelocity.y = jumpSpeed;
 
-        rigidBody.velocity = newVelocity;
+        rigidbody.velocity = newVelocity;
 
         onGround = false;
     }
 
     public bool GetGrounded()
     {
-        if (rigidBody.velocity.y > 0.0f)
+        groundNormal = Vector3.zero;
+        ground = null;
+
+        /*if (rigidbody.velocity.y > 0.0f)
         {
             return false;
-        }
+        }*/
 
         RaycastHit hitResult;
         //bool hasHit = Physics.Raycast(transform.position, Vector3.down, out hitResult);
@@ -245,13 +257,13 @@ public class PlayerController : MonoBehaviour
 
         if (hasHit)
         {
-            groundNormal = hitResult.normal;
-            ground = hitResult.collider.gameObject;
-
-            float angle = Vector3.Angle(Vector3.up, groundNormal);
+            float angle = Vector3.Angle(Vector3.up, hitResult.normal);
 
             if (Mathf.Abs(angle) <= maxAngle && Mathf.Abs(hitResult.distance - centerHeight + 0.5f) <= groundEpsilon)
             {
+                groundNormal = hitResult.normal;
+                ground = hitResult.collider.gameObject;
+
                 return true;
             }
         }

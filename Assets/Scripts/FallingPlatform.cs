@@ -5,38 +5,45 @@ public class FallingPlatform : MonoBehaviour
 {
     [Header("Falling")]
     public bool collisionFall = true;
+    public float fallSpeed;
+    public float fallAcceleration;
+    public float fallDelay;
+    public float destroyAtHeight;
 
-    public float timingFall = 600;
-    bool isFalling = false;
-    private float downSpeed = 0;
+    private bool isFalling = false;
+    private float fallTimer = 0.0f;
 
-
-    // Start is called before the first frame update
-    private void OnTriggerStay(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             isFalling = true;
-            Debug.Log("Trigger");
-
+            fallTimer = fallDelay;
         }
     }
 
-
-    //private void OnTriggerStay(Collider collision)
-    //{
-
-    //}
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (isFalling)
         {
-            //downSpeed += ;
-            transform.parent.position = new Vector3(transform.position.x,
-                transform.position.y - Time.deltaTime * 3,
-                transform.position.z);
+            if (transform.position.y <= destroyAtHeight)
+            {
+                Destroy(gameObject);
+
+                return;
+            }
+
+            if (fallTimer <= 0.0f)
+            {
+                float speed = (fallAcceleration * Mathf.Pow(Mathf.Abs(fallTimer), 2.0f)) + fallSpeed;
+
+                Vector3 nextPosition = transform.position;
+                nextPosition.y -= speed * Time.fixedDeltaTime;
+
+                transform.position = nextPosition;
+            }
+
+            fallTimer -= Time.fixedDeltaTime;
         }
-        //timingFall -= Time.deltaTime;
     }
 }

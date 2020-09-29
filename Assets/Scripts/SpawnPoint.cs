@@ -25,7 +25,7 @@ public class SpawnPoint : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Collision has occured");
+            //Debug.Log("Collision has occured");
         }
     }
 }
