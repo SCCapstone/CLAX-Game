@@ -200,7 +200,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""736e8172-9d5c-4016-aeb8-806011f6f274"",
-                    ""path"": ""<Pointer>/delta/y"",
+                    ""path"": ""<Mouse>/delta/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Default"",
@@ -211,7 +211,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""95e6092e-5b8d-4e0d-ad93-3d082e0d561e"",
-                    ""path"": ""<Pointer>/delta/x"",
+                    ""path"": ""<Mouse>/delta/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Default"",
