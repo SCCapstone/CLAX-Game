@@ -8,10 +8,12 @@ public class RollingBossScript : MonoBehaviour
 
     //Vector3 scale;
     float lastExpandedTime;
-    float expandFrequency = .15f;
-    float maxYSize = 4.8f;
+    float expandFrequency = .05f;
+    float maxYSize = 4.0f;
     float normalSize;
     float expansionAmount = .15f;
+    float distanceToPlayerForAttack = 8.0f;
+    float rollPower = 40.0f;
 
     int currentPhaseNum = 0;
 
@@ -105,12 +107,12 @@ public class RollingBossScript : MonoBehaviour
 
     }
 
-
-    void moveTowardPoint(int power = 60)
+    void moveTowardPoint(float powerMuliplier = 1)
     {
-        transform.LookAt(new Vector3(goalTransform.position.x, transform.position.y, goalTransform.position.z), new Vector3(1, 0, 0));
+        transform.LookAt(new Vector3(goalTransform.position.x, transform.position.y, goalTransform.position.z),
+            new Vector3(1, 0, 0));
 
-        Vector3 distance = (goalTransform.position - this.transform.position) * power;
+        Vector3 distance = (goalTransform.position - this.transform.position) * powerMuliplier * rollPower;
 
 
         body.AddForce(distance);
@@ -138,6 +140,23 @@ public class RollingBossScript : MonoBehaviour
         }
     }
 
+    void spinAttack()
+    {
+        wallPrefab.GetComponent<expandingWallScript>().lockWallSize = true;
+        ballExpand();
+        float rotateAmount = .4f;
+        transform.Rotate(new Vector3(0, 0, rotateAmount));
+        if (madeWall != null)
+        {
+            madeWall.transform.Rotate(-rotateAmount, 0, 0);
+
+
+        }
+        //mad.GetComponent<Transform>().Rotate(new Vector3(0, 0, 2));
+
+
+    }
+
     void choosePhase()
     {
         if (doneWithCurrentPhase)
@@ -162,17 +181,24 @@ public class RollingBossScript : MonoBehaviour
 
     void moveAndMakeWallAttack()
     {
+        if (Vector3.Distance(transform.position, goalTransform.position) < distanceToPlayerForAttack)
+        {
+            body.velocity = Vector3.zero;
+            isGrowing = true;
+        }
+
         if (hasStartedMoveAndWall == false)
         {
             moveTowardPoint();
             startMovingTime = Time.time;
             hasStartedMoveAndWall = true;
-            isGrowing = true;
+            //isGrowing = true;
             lastExpandedTime = Time.time;
         }
         else
         {
             stopMomentum();
+            //isGrowing = true;
             ballExpand();
         }
 
@@ -182,7 +208,8 @@ public class RollingBossScript : MonoBehaviour
     void Update()
     {
         //if (Input.GetKeyDown(KeyCode.R))
-        moveAndMakeWallAttack();
+        //moveAndMakeWallAttack();
+        spinAttack();
         //wallExpand();
 
 

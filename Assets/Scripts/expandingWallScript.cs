@@ -7,12 +7,14 @@ public class expandingWallScript : MonoBehaviour
 
     float lastWallExpandTime;
     float maxWallHeight = 50;
-    float wallExpandFrequency = .03f;
+    float wallExpandFrequency = .015f;
     float maxHorizontalLength = 60;
     float growAmount = 0.7f;
 
     public bool isDone = false;
     bool isGrowing = true;
+
+    public bool lockWallSize = false;
 
     // Start is called before the first frame update
     void Start()
@@ -32,9 +34,15 @@ public class expandingWallScript : MonoBehaviour
             isDone = true;
             return;
         }
+
         int direction = 1;
         if (!isGrowing)
             direction = -1;
+
+        if (isGrowing == false && lockWallSize)
+        {
+            direction = 0;
+        }
 
         //only expand every so often
         if (Time.time - lastWallExpandTime >= wallExpandFrequency)
