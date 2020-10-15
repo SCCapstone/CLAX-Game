@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour
 {
+    [Header("Prefabs")]
     public GameObject spawnPoint;
-    bool respawn = false;
     public GameObject player;
+    
+    bool respawn = false;
     // Start is called before the first frame update
     void Start()
     {
