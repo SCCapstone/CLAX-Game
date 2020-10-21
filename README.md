@@ -35,8 +35,10 @@ To be added
 
 ## Authors
 
-Colter Boudinot coboudinot@gmail.com
+<b>C</b>olter Boudinot coboudinot@gmail.com
 
-Xavier Sidney x.b.sidney@gmail.com
+<b>L</b>andin Thorsted landin3thorsted@gmail.com
 
-Landin Thorsted landin3thorsted@gmail.com
+<b>A</b>lex Tsai alextsai222@gmail.com
+
+<b>X</b>avier Sidney x.b.sidney@gmail.com
