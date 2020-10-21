@@ -36,3 +36,5 @@ To be added
 ## Authors
 
 Colter Boudinot coboudinot@gmail.com
+Xavier Sidney x.b.sidney@gmail.com
+
