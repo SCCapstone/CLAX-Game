@@ -39,3 +39,4 @@ Colter Boudinot coboudinot@gmail.com
 
 Xavier Sidney x.b.sidney@gmail.com
 
+Landin Thorsted landin3thorsted@gmail.com
