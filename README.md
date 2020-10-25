@@ -1,7 +1,7 @@
 ## CLAX-Game
 
 CLAX-Game is a boss fighting game in which the player must fight geometric shaped bosses.
-![More info here](https://github.com/SCCapstone/CLAX-Game/wiki/Design)
+[More info here](https://github.com/SCCapstone/CLAX-Game/wiki/Design)
 
 ## External Requirements
 
@@ -32,6 +32,10 @@ To be added
 ## Running Tests
 
 To be added
+
+## Style Guide
+
+https://wiki.unity3d.com/index.php/Csharp_Coding_Guidelines
 
 ## Authors
 
