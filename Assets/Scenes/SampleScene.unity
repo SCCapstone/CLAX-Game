@@ -235,6 +235,11 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!4 &88338314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 617520817669108826, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
+  m_PrefabInstance: {fileID: 617520817496847188}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &163374823
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +299,7 @@ MonoBehaviour:
   jumpLandingLag: 0.03
   health: 100
   projectileSpeed: 25
+  currentTarget: {fileID: 0}
 --- !u!136 &163374825
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -820,6 +826,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4320024602640257524, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+      propertyPath: currentTarget
+      value: 
+      objectReference: {fileID: 88338314}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
 --- !u!1001 &1469147169

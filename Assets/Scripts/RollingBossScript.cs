@@ -22,7 +22,6 @@ public class RollingBossScript : MonoBehaviour
     Rigidbody body;
 
     bool isGrowing = true;
-    bool doneWithCurrentPhase = true;
 
     public Transform goalTransform;
     float startMovingTime;
@@ -30,10 +29,13 @@ public class RollingBossScript : MonoBehaviour
 
     bool hasStartedMoveAndWall = false;
 
+    float phaseTimeCooldown = 0;
+    float cooldownUpdateTime = .5f;
+
 
     enum bossPhases
     {
-        moveAndMakeWall = 0, spinAttack
+        moveAndMakeWall = 0, spinAttackPhase
     }
 
     bossPhases currentPhase = bossPhases.moveAndMakeWall;
@@ -46,6 +48,15 @@ public class RollingBossScript : MonoBehaviour
         lastExpandedTime = Time.time;
         body = GetComponent<Rigidbody>();
         normalSize = transform.localScale.y;
+
+        InvokeRepeating("cooldowns", .5f, cooldownUpdateTime);
+
+    }
+
+    void cooldowns()
+    {
+        phaseTimeCooldown = Mathf.Max(phaseTimeCooldown - cooldownUpdateTime, 0);
+
     }
 
     bool changeSize()
@@ -142,6 +153,8 @@ public class RollingBossScript : MonoBehaviour
 
     void spinAttack()
     {
+        //Debug.Log("Changed lock to true");
+
         wallPrefab.GetComponent<expandingWallScript>().lockWallSize = true;
         ballExpand();
         float rotateAmount = .4f;
@@ -149,8 +162,6 @@ public class RollingBossScript : MonoBehaviour
         if (madeWall != null)
         {
             madeWall.transform.Rotate(-rotateAmount, 0, 0);
-
-
         }
         //mad.GetComponent<Transform>().Rotate(new Vector3(0, 0, 2));
 
@@ -159,20 +170,25 @@ public class RollingBossScript : MonoBehaviour
 
     void choosePhase()
     {
-        if (doneWithCurrentPhase)
+        if (phaseTimeCooldown == 0)
         {
             //get the total number of phases the boss can have
             int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
             currentPhase = (bossPhases)(currentPhaseNum % totalPhases);
             currentPhaseNum++;
-            doneWithCurrentPhase = false;
+            Debug.Log("Changed phase");
+            phaseTimeCooldown = 10f;
+
+
         }
         switch (currentPhase)
         {
             case bossPhases.moveAndMakeWall:
                 moveAndMakeWallAttack();
                 break;
-            case bossPhases.spinAttack:
+            case bossPhases.spinAttackPhase:
+                spinAttack();
+
                 break;
             default:
                 break;
@@ -207,9 +223,11 @@ public class RollingBossScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        choosePhase();
+
         //if (Input.GetKeyDown(KeyCode.R))
         //moveAndMakeWallAttack();
-        spinAttack();
+        //spinAttack();
         //wallExpand();
 
 

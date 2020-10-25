@@ -19,6 +19,8 @@ public class expandingWallScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("lock wall is " + lockWallSize);
+        lockWallSize = false;
 
     }
 
@@ -43,6 +45,8 @@ public class expandingWallScript : MonoBehaviour
         {
             direction = 0;
         }
+        //Debug.Log("direction is " + direction);
+
 
         //only expand every so often
         if (Time.time - lastWallExpandTime >= wallExpandFrequency)
@@ -58,7 +62,7 @@ public class expandingWallScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
         wallExpand();

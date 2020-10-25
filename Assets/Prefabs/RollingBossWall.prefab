@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -4861091664498932934}
   - component: {fileID: 1440804126768125309}
   - component: {fileID: 302656711972608121}
-  m_Layer: 11
+  m_Layer: 2
   m_Name: RollingBossWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDone: 0
-  lockWallSize: 1
+  lockWallSize: 0
 --- !u!54 &1440804126768125309
 Rigidbody:
   m_ObjectHideFlags: 0
