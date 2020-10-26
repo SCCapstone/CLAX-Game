@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputActions inputs;
 
+    public Transform currentTarget;
+
     private void Awake()
     {
         // Connect input events to callbacks
@@ -86,6 +88,9 @@ public class PlayerController : MonoBehaviour
         inputs.World.Use.performed += OnUse;
 
         rigidbody = GetComponent<Rigidbody>();
+
+        //transform.LookAt(currentTarget);
+
     }
 
     private void OnEnable()
