@@ -108,6 +108,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fcc1e53ae7852245bb32b24a4c96c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  platform: {fileID: 6710720429360070911}
+  start: {fileID: 2100000, guid: 3867060d33576514ab7b189ffdd4a36a, type: 2}
+  end: {fileID: 2100000, guid: 883ef10fab6340c489b4f4db559a73e7, type: 2}
   collisionFall: 1
   fallSpeed: 3
   fallAcceleration: 2
