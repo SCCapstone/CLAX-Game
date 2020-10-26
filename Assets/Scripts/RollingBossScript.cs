@@ -32,6 +32,9 @@ public class RollingBossScript : MonoBehaviour
     float phaseTimeCooldown = 0;
     float cooldownUpdateTime = .5f;
 
+    bool isDoneWithCurrentPhase = true;
+    bool hasDoneOneTimePhaseCode = false;
+
 
     enum bossPhases
     {
@@ -97,7 +100,7 @@ public class RollingBossScript : MonoBehaviour
 
     }
 
-    void ballExpand()
+    void ballExpandAndMakeWall(bool lockSize)
     {
         if (madeWall != null && madeWall.GetComponent<expandingWallScript>().isDone)
         {
@@ -110,12 +113,20 @@ public class RollingBossScript : MonoBehaviour
             //if the ball has expanded to the correct size, then make the new wall
             if (madeWall == null && body.velocity == Vector3.zero)
             {
-                madeWall = Instantiate(wallPrefab, this.transform.position,
-                    this.transform.rotation);
-                madeWall.transform.Rotate(new Vector3(90, 90, 0));
+                Debug.Log("Made wall");
+
+                makeWall(lockSize);
             }
         }
 
+    }
+
+    void makeWall(bool lockSize)
+    {
+        madeWall = Instantiate(wallPrefab, this.transform.position,
+                    this.transform.rotation);
+        madeWall.transform.Rotate(new Vector3(90, 90, 0));
+        madeWall.GetComponent<expandingWallScript>().lockWallSize = lockSize;
     }
 
     void moveTowardPoint(float powerMuliplier = 1)
@@ -128,18 +139,10 @@ public class RollingBossScript : MonoBehaviour
 
         body.AddForce(distance);
         //body.velocity = (goalTransform.position - this.transform.position);
-        Debug.Log("moved " + distance);
+        //Debug.Log("moved " + distance);
 
 
 
-    }
-
-    void updateWallPos()
-    {
-        //if (madeWall)
-        //{
-        //    madeWall.transform.position = transform.position;
-        //}
     }
 
     void stopMomentum()
@@ -154,49 +157,68 @@ public class RollingBossScript : MonoBehaviour
     void spinAttack()
     {
         //Debug.Log("Changed lock to true");
+        //if (madeWall == null)
+        //    makeWall();
+        //if (isDoneWithCurrentPhase)
+        //    return;
 
-        wallPrefab.GetComponent<expandingWallScript>().lockWallSize = true;
-        ballExpand();
+        ballExpandAndMakeWall(true);
+
+        if (hasDoneOneTimePhaseCode == false)
+        {
+            if (madeWall != null)
+            {
+                madeWall.GetComponent<expandingWallScript>().lockWallSize = true;
+                Debug.Log("locked wall size");
+
+                hasDoneOneTimePhaseCode = true;
+                phaseTimeCooldown = 5f;
+            }
+            return;
+        }
+        //Debug.Log(madeWall);
+
+
         float rotateAmount = .4f;
         transform.Rotate(new Vector3(0, 0, rotateAmount));
         if (madeWall != null)
         {
             madeWall.transform.Rotate(-rotateAmount, 0, 0);
+            madeWall.GetComponent<expandingWallScript>().lockWallSize = true;
+        }
+        //Debug.Log("phase cooldown " + phaseTimeCooldown);
+
+        if (phaseTimeCooldown <= 0)
+        {
+            if (madeWall != null)
+            {
+                madeWall.GetComponent<expandingWallScript>().lockWallSize = false;
+                Debug.Log("set to false");
+                if (madeWall.GetComponent<expandingWallScript>().isDone)
+                {
+
+                    Destroy(madeWall);
+                    isDoneWithCurrentPhase = true;
+                }
+            }
+
         }
         //mad.GetComponent<Transform>().Rotate(new Vector3(0, 0, 2));
 
 
     }
 
-    void choosePhase()
-    {
-        if (phaseTimeCooldown == 0)
-        {
-            //get the total number of phases the boss can have
-            int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
-            currentPhase = (bossPhases)(currentPhaseNum % totalPhases);
-            currentPhaseNum++;
-            Debug.Log("Changed phase");
-            phaseTimeCooldown = 10f;
-
-
-        }
-        switch (currentPhase)
-        {
-            case bossPhases.moveAndMakeWall:
-                moveAndMakeWallAttack();
-                break;
-            case bossPhases.spinAttackPhase:
-                spinAttack();
-
-                break;
-            default:
-                break;
-        }
-    }
-
     void moveAndMakeWallAttack()
     {
+        if (hasDoneOneTimePhaseCode == false)
+        {
+            hasDoneOneTimePhaseCode = true;
+            phaseTimeCooldown = 10f;
+        }
+
+
+
+
         if (Vector3.Distance(transform.position, goalTransform.position) < distanceToPlayerForAttack)
         {
             body.velocity = Vector3.zero;
@@ -215,9 +237,54 @@ public class RollingBossScript : MonoBehaviour
         {
             stopMomentum();
             //isGrowing = true;
-            ballExpand();
+            ballExpandAndMakeWall(false);
         }
 
+        if (phaseTimeCooldown <= 0)
+        {
+            if (madeWall != null)
+            {
+
+                if (madeWall.GetComponent<expandingWallScript>().isDone)
+                {
+
+                    Destroy(madeWall);
+                    isDoneWithCurrentPhase = true;
+                }
+            }
+
+        }
+
+    }
+
+    void choosePhase()
+    {
+        if (phaseTimeCooldown <= 0 && isDoneWithCurrentPhase)
+        {
+            //get the total number of phases the boss can have
+            int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
+            currentPhase = (bossPhases)(currentPhaseNum % totalPhases);
+            currentPhaseNum++;
+            Debug.Log("Changed phase");
+            isDoneWithCurrentPhase = false;
+            hasDoneOneTimePhaseCode = false;
+
+        }
+        Debug.Log("current phase " + currentPhase.ToString());
+        Debug.Log("phase cooldown " + phaseTimeCooldown);
+
+        switch (currentPhase)
+        {
+            case bossPhases.moveAndMakeWall:
+                moveAndMakeWallAttack();
+                break;
+            case bossPhases.spinAttackPhase:
+                spinAttack();
+
+                break;
+            default:
+                break;
+        }
     }
 
     // Update is called once per frame
