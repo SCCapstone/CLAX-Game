@@ -140,16 +140,16 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody.AddForce(gravity, ForceMode.Acceleration);
 
-        // Movement
-
-        Accelerate();
-
         // Jump check
 
         if (holdJump && onGround)
         {
             Jump();
         }
+
+        // Movement
+
+        Accelerate();
 
         // Ground check
 
