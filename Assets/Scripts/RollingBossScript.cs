@@ -56,6 +56,15 @@ public class RollingBossScript : MonoBehaviour
 
     }
 
+    // Cleanup before destruction
+    private void OnDestroy()
+    {
+        if (madeWall)
+        {
+            Destroy(madeWall);
+        }
+    }
+
     void cooldowns()
     {
         phaseTimeCooldown = Mathf.Max(phaseTimeCooldown - cooldownUpdateTime, 0);
