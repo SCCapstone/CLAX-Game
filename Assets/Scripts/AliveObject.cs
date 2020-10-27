@@ -1,59 +1,67 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AliveObject : MonoBehaviour
 {
-    //main class for anything that should have health
-    public float health = 500;
-    float lastHealth = 500;
-    public float maxHitCooldown = .5f;
-    public float hitCooldown = .5f;
+    public float health;
+    public float maxHealth;
 
-    // Start is called before the first frame update
+    public float hitCooldown = 0.5f;
+
+    float lastHitTime = 0.0f;
+
     void Start()
     {
-        InvokeRepeating("reduceHitCooldown", .01f, .1f);
-        lastHealth = health;
-
-    }
-    void reduceHitCooldown()
-    {
-        hitCooldown = Mathf.Max(0, hitCooldown - .1f);
+        health = maxHealth;
     }
 
-    void CheckHealth()
+    void FixedUpdate()
     {
-        //mainly for debugging to know each time this object was hit
-        if (lastHealth != health)
+        if (health <= 0.0f)
         {
-            Debug.Log("New health for " + transform.name + ": " + health);
-            lastHealth = health;
-            //hitCooldown = maxHitCooldown;
-        }
-        if (health <= 0)
-        {
-            //TODO
-            //Show death of some kind
+            kill();
         }
     }
 
-    //should be called by things trying to damage this object
-    public void takeDamage(float amount)
+    public float getHealth()
     {
-        //give some invincible frames between hits
-        if (hitCooldown <= 0)
-        {
-            health -= amount;
-            hitCooldown = maxHitCooldown;
-        }
-
+        return health;
     }
 
-
-    // Update is called once per frame
-    void Update()
+    /*
+     * Deal damage this object
+     * Returns how much real damage was dealt
+     */
+    public void damage(float amount)
     {
-        CheckHealth();
+        // Check if hit cooldown is not active
+        if (Time.time - lastHitTime > hitCooldown)
+        {
+            lastHitTime = Time.time;
+
+            setHealth(health - amount);
+        }
+    }
+
+    /*
+     * Sets the health of the object
+     * Does not trigger hit cooldowns
+     */
+    public void setHealth(float amount)
+    {
+        health = amount;
+
+        if (health < 0.0f)
+        {
+            health = 0.0f;
+        }
+    }
+
+    // Kills the object
+    public void kill()
+    {
+        // TODO: Death events and animations
+        // TODO: OnKill event
+
+        Destroy(gameObject);
     }
 }

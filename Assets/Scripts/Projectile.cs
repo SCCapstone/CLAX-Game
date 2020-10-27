@@ -13,7 +13,6 @@ public class Projectile : MonoBehaviour
     public int enemyLayerNum;
     bool wasInitialized = false;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -29,22 +28,20 @@ public class Projectile : MonoBehaviour
         this.enemyLayerNum = enemyLayerNum;
         this.damage = damage;
         //this.velocity = this.transform.forward;
-
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Triggered");
 
-        //9 is the layer id for enemy
+        // 9 is the layer id for enemy
         if (other.gameObject.layer == enemyLayerNum)
         {
-            var enemy = other.gameObject.GetComponent<AliveObject>();
-            enemy.takeDamage(damage);
+            AliveObject enemy = other.gameObject.GetComponent<AliveObject>();
+
+            enemy.damage(damage);
+
             Destroy(gameObject);
-
-
         }
 
     }
@@ -65,11 +62,11 @@ public class Projectile : MonoBehaviour
     //    //}
     //}
 
-
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //velocity = new Vector3(50, 0, 0);
+
         // Skip update
         if (velocity == Vector3.zero && gravity == Vector3.zero)
         {

@@ -16,8 +16,7 @@ public class damagePlayerOnTouch : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             var enemy = other.gameObject.GetComponent<AliveObject>();
-            enemy.takeDamage(damageAmount);
-
+            enemy.damage(damageAmount);
         }
     }
 

@@ -50,8 +50,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2155125630583193527, guid: 637087b854c7a184ba64a2186ac6188b, type: 3}
   cameraEnabled: 1
   lookSensitivityScale: 90
-  lookSensitivityX: 0.8
-  lookSensitivityY: 0.8
+  lookSensitivityX: 0.5
+  lookSensitivityY: 0.5
   minPitch: -89.9
   maxPitch: 89.9
   cameraTargetOffset: {x: 0, y: 1, z: 0}
@@ -71,6 +71,7 @@ MonoBehaviour:
   jumpLandingLag: 0
   health: 100
   projectileSpeed: 25
+  currentTarget: {fileID: 0}
 --- !u!54 &6054908338268949753
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -197,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  maxHitCooldown: 0.5
+  maxHealth: 500
   hitCooldown: 0.5
 --- !u!1 &6257623721124609864
 GameObject:
