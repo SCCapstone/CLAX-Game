@@ -8,7 +8,7 @@ public class RollingBossScript : MonoBehaviour
 
     //Vector3 scale;
     float lastExpandedTime;
-    float expandFrequency = .05f;
+    float expandInverseFrequency = .03f;
     float maxYSize = 4.0f;
     float normalSize;
     float expansionAmount = .15f;
@@ -52,24 +52,24 @@ public class RollingBossScript : MonoBehaviour
         body = GetComponent<Rigidbody>();
         normalSize = transform.localScale.y;
 
-        InvokeRepeating("cooldowns", .5f, cooldownUpdateTime);
+        InvokeRepeating("Cooldowns", .5f, cooldownUpdateTime);
 
     }
 
-    void cooldowns()
+    void Cooldowns()
     {
         phaseTimeCooldown = Mathf.Max(phaseTimeCooldown - cooldownUpdateTime, 0);
 
     }
 
-    bool changeSize()
+    bool ChangeSize()
     {
         if (isGrowing)
             expansionAmount = Mathf.Abs(expansionAmount);
         else
             expansionAmount = -1 * Mathf.Abs(expansionAmount);
 
-        if (Time.time - lastExpandedTime >= expandFrequency)
+        if (Time.time - lastExpandedTime >= expandInverseFrequency)
         {
 
             if ((isGrowing && transform.localScale.y + expansionAmount < maxYSize) ||
@@ -100,14 +100,14 @@ public class RollingBossScript : MonoBehaviour
 
     }
 
-    void ballExpandAndMakeWall(bool lockSize)
+    void BallExpandAndMakeWall(bool lockSize)
     {
         if (madeWall != null && madeWall.GetComponent<expandingWallScript>().isDone)
         {
             Destroy(madeWall);
             isGrowing = false;
         }
-        bool changedSize = changeSize();
+        bool changedSize = ChangeSize();
         if (changedSize == false)
         {
             //if the ball has expanded to the correct size, then make the new wall
@@ -115,13 +115,13 @@ public class RollingBossScript : MonoBehaviour
             {
                 Debug.Log("Made wall");
 
-                makeWall(lockSize);
+                MakeWall(lockSize);
             }
         }
 
     }
 
-    void makeWall(bool lockSize)
+    void MakeWall(bool lockSize)
     {
         madeWall = Instantiate(wallPrefab, this.transform.position,
                     this.transform.rotation);
@@ -129,8 +129,9 @@ public class RollingBossScript : MonoBehaviour
         madeWall.GetComponent<expandingWallScript>().lockWallSize = lockSize;
     }
 
-    void moveTowardPoint(float powerMuliplier = 1)
+    void MoveTowardPoint(float powerMuliplier = 1)
     {
+        //have to do this the long way since we want to keep the current y rotation
         transform.LookAt(new Vector3(goalTransform.position.x, transform.position.y, goalTransform.position.z),
             new Vector3(1, 0, 0));
 
@@ -143,7 +144,7 @@ public class RollingBossScript : MonoBehaviour
 
     }
 
-    void stopMomentum()
+    void StopMomentum()
     {
         if (Time.time - startMovingTime > rollTime)
         {
@@ -152,11 +153,8 @@ public class RollingBossScript : MonoBehaviour
         }
     }
 
-    void spinAttack()
+    void SpinAttack()
     {
-        //Debug.Log("Changed lock to true");
-        //if (madeWall == null)
-        //    makeWall();
 
         //debug code when only testing the spin attack phase
         //if (isDoneWithCurrentPhase)
@@ -176,7 +174,7 @@ public class RollingBossScript : MonoBehaviour
 
         }
 
-        ballExpandAndMakeWall(true);
+        BallExpandAndMakeWall(true);
 
         if (hasDoneOneTimePhaseCode == false)
         {
@@ -186,20 +184,23 @@ public class RollingBossScript : MonoBehaviour
                 Debug.Log("locked wall size");
 
                 hasDoneOneTimePhaseCode = true;
-                phaseTimeCooldown = 5f;
+                phaseTimeCooldown = 15f;
+                madeWall.transform.eulerAngles =
+                    new Vector3(madeWall.transform.eulerAngles.x, madeWall.transform.eulerAngles.y, 0);
+                madeWall.transform.position = transform.position;
+
 
             }
             return;
         }
-        //Debug.Log(madeWall);
 
-
-        float rotateAmount = .6f;
+        float rotateAmount = 1.0f;
         transform.Rotate(new Vector3(0, 0, rotateAmount));
         if (madeWall != null)
         {
-            madeWall.transform.Rotate(-rotateAmount, 0, 0);
+            madeWall.transform.Rotate(0, -rotateAmount, 0);
             madeWall.GetComponent<expandingWallScript>().lockWallSize = true;
+            //madeWall.transform.position = transform.position;
         }
         //Debug.Log("phase cooldown " + phaseTimeCooldown);
 
@@ -208,6 +209,8 @@ public class RollingBossScript : MonoBehaviour
             if (madeWall != null)
             {
                 madeWall.GetComponent<expandingWallScript>().lockWallSize = false;
+                //Debug.Break();
+
                 //Debug.Log("set to false");
                 //Debug.Log("is done: " + madeWall.GetComponent<expandingWallScript>().isDone);
 
@@ -222,15 +225,18 @@ public class RollingBossScript : MonoBehaviour
         }
         //mad.GetComponent<Transform>().Rotate(new Vector3(0, 0, 2));
 
-
     }
 
-    void moveAndMakeWallAttack()
+    void MoveAndMakeWallAttack()
     {
         if (hasDoneOneTimePhaseCode == false)
         {
             hasDoneOneTimePhaseCode = true;
             phaseTimeCooldown = 10f;
+            //have to do this the long way since we want to keep the current y rotation
+            transform.LookAt(new Vector3(goalTransform.position.x, transform.position.y, goalTransform.position.z),
+            new Vector3(1, 0, 0));
+
         }
 
 
@@ -244,7 +250,7 @@ public class RollingBossScript : MonoBehaviour
 
         if (hasStartedMoveAndWall == false)
         {
-            moveTowardPoint();
+            MoveTowardPoint();
             startMovingTime = Time.time;
             hasStartedMoveAndWall = true;
             //isGrowing = true;
@@ -252,9 +258,9 @@ public class RollingBossScript : MonoBehaviour
         }
         else
         {
-            stopMomentum();
+            StopMomentum();
             //isGrowing = true;
-            ballExpandAndMakeWall(false);
+            BallExpandAndMakeWall(false);
         }
 
         if (phaseTimeCooldown <= 0)
@@ -274,7 +280,7 @@ public class RollingBossScript : MonoBehaviour
 
     }
 
-    void choosePhase()
+    void ChoosePhase()
     {
         if (phaseTimeCooldown <= 0 && isDoneWithCurrentPhase)
         {
@@ -289,16 +295,16 @@ public class RollingBossScript : MonoBehaviour
             hasDoneOneTimePhaseCode = false;
 
         }
-        Debug.Log("current phase " + currentPhase.ToString());
-        Debug.Log("phase cooldown " + phaseTimeCooldown);
+        //Debug.Log("current phase " + currentPhase.ToString());
+        //Debug.Log("phase cooldown " + phaseTimeCooldown);
 
         switch (currentPhase)
         {
             case bossPhases.moveAndMakeWall:
-                moveAndMakeWallAttack();
+                MoveAndMakeWallAttack();
                 break;
             case bossPhases.spinAttackPhase:
-                spinAttack();
+                SpinAttack();
 
                 break;
             default:
@@ -309,11 +315,11 @@ public class RollingBossScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        choosePhase();
+        ChoosePhase();
 
         //if (Input.GetKeyDown(KeyCode.R))
         //moveAndMakeWallAttack();
-        //spinAttack();
+        //SpinAttack();
         //wallExpand();
 
 
