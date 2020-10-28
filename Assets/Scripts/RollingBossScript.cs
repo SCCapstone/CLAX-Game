@@ -141,8 +141,6 @@ public class RollingBossScript : MonoBehaviour
         //body.velocity = (goalTransform.position - this.transform.position);
         //Debug.Log("moved " + distance);
 
-
-
     }
 
     void stopMomentum()
@@ -159,8 +157,24 @@ public class RollingBossScript : MonoBehaviour
         //Debug.Log("Changed lock to true");
         //if (madeWall == null)
         //    makeWall();
+
+        //debug code when only testing the spin attack phase
         //if (isDoneWithCurrentPhase)
-        //    return;
+        //{
+        //    isDoneWithCurrentPhase = false;
+        //    hasDoneOneTimePhaseCode = false;
+        //    isGrowing = true;
+        //}
+
+        //purposely have this if statement twice
+        if (hasDoneOneTimePhaseCode == false)
+        {
+            Debug.Log("before rotation " + transform.eulerAngles);
+            //transform.eulerAngles = 
+            transform.eulerAngles = new Vector3(90, transform.eulerAngles.y, 0);
+            Debug.Log("after rotation " + transform.eulerAngles);
+
+        }
 
         ballExpandAndMakeWall(true);
 
@@ -173,13 +187,14 @@ public class RollingBossScript : MonoBehaviour
 
                 hasDoneOneTimePhaseCode = true;
                 phaseTimeCooldown = 5f;
+
             }
             return;
         }
         //Debug.Log(madeWall);
 
 
-        float rotateAmount = .4f;
+        float rotateAmount = .6f;
         transform.Rotate(new Vector3(0, 0, rotateAmount));
         if (madeWall != null)
         {
@@ -193,7 +208,9 @@ public class RollingBossScript : MonoBehaviour
             if (madeWall != null)
             {
                 madeWall.GetComponent<expandingWallScript>().lockWallSize = false;
-                Debug.Log("set to false");
+                //Debug.Log("set to false");
+                //Debug.Log("is done: " + madeWall.GetComponent<expandingWallScript>().isDone);
+
                 if (madeWall.GetComponent<expandingWallScript>().isDone)
                 {
 
@@ -267,6 +284,8 @@ public class RollingBossScript : MonoBehaviour
             currentPhaseNum++;
             Debug.Log("Changed phase");
             isDoneWithCurrentPhase = false;
+            isGrowing = true;
+
             hasDoneOneTimePhaseCode = false;
 
         }
