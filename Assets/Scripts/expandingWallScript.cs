@@ -6,9 +6,9 @@ public class expandingWallScript : MonoBehaviour
 {
 
     float lastWallExpandTime;
-    float maxWallHeight = 50;
+    float maxWallHeight = 20;
     float wallExpandFrequency = .015f;
-    float maxHorizontalLength = 60;
+    float maxHorizontalLength = 80;
     float growAmount = 0.7f;
 
     public bool isDone = false;
@@ -55,7 +55,7 @@ public class expandingWallScript : MonoBehaviour
             var curScale = transform.localScale;
 
             transform.localScale = new Vector3(curScale.x + growAmount * direction,
-                Mathf.Min(Mathf.Max(curScale.y + .5f * direction, .2f), maxWallHeight), .2f);
+                Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength), .2f), maxWallHeight), .2f);
             transform.position = new Vector3(curPos.x, 0, curPos.z);
 
             lastWallExpandTime = Time.time;
