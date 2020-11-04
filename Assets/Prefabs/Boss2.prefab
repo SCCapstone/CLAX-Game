@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 500
-  maxHitCooldown: 0.5
+  maxHealth: 500
   hitCooldown: 0.5
 --- !u!54 &617520817669108805
 Rigidbody:
