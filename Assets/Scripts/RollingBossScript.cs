@@ -333,7 +333,6 @@ public class RollingBossScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         ChoosePhase();
