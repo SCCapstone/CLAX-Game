@@ -14,7 +14,7 @@ public class RollingBossScript : MonoBehaviour
     float expansionAmount = 1.25f;
     float distanceToPlayerForAttack = 8.0f;
     float rollPower = 40.0f;
-    float rotateAmount = 40.0f;
+    float rotateAmount = 140.0f;
 
     int currentPhaseNum = 0;
 

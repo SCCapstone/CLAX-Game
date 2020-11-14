@@ -7,9 +7,9 @@ public class expandingWallScript : MonoBehaviour
 
     float lastWallExpandTime;
     float maxWallHeight = 20;
-    public float wallExpandFrequency = .15f;
-    float maxHorizontalLength = 80;
-    public float growAmount = 1.7f;
+    //public float wallExpandFrequency = .15f;
+    float maxHorizontalLength = 60;
+    float growAmount = 25f;
 
     public bool isDone = false;
     bool isGrowing = true;
@@ -66,19 +66,22 @@ public class expandingWallScript : MonoBehaviour
         if (bossAlivePercent > .67f)
         {
             //low wall
-            scale.Set(scale.x, Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength / 10), .2f),
+            scale.Set(scale.x,
+                Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength / 4), .2f),
                 maxWallHeight), scale.z);
         }
         else if (bossAlivePercent > .33f)
         {
             //medium wall to out run
-            scale.Set(scale.x, Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength / 5), .2f),
+            scale.Set(scale.x,
+                Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength / 2), .2f),
                 maxWallHeight), scale.z);
         }
         else
         {
             //higher wall
-            scale.Set(scale.x, Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength), .2f),
+            scale.Set(scale.x,
+                Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength), .2f),
                 maxWallHeight), scale.z);
         }
 
@@ -93,7 +96,7 @@ public class expandingWallScript : MonoBehaviour
     }
 
     //Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         wallExpand();
     }
