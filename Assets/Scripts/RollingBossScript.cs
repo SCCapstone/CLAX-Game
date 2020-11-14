@@ -11,9 +11,10 @@ public class RollingBossScript : MonoBehaviour
     float expandInverseFrequency = .03f;
     float maxYSize = 4.0f;
     float normalSize;
-    float expansionAmount = .15f;
+    float expansionAmount = 1.25f;
     float distanceToPlayerForAttack = 8.0f;
     float rollPower = 40.0f;
+    float rotateAmount = 40.0f;
 
     int currentPhaseNum = 0;
 
@@ -97,7 +98,6 @@ public class RollingBossScript : MonoBehaviour
         }
         //did not attempt to change size
         return true;
-
     }
 
     void BallExpandAndMakeWall(bool lockSize)
@@ -194,14 +194,23 @@ public class RollingBossScript : MonoBehaviour
             return;
         }
 
-        float rotateAmount = 1.0f;
-        transform.Rotate(new Vector3(0, 0, rotateAmount));
+        var tempRotation = rotateAmount;
+        var bossHealthPercent = GetComponentInParent<AliveObject>().health / GetComponentInParent<AliveObject>().maxHealth;
+        //if the boss is in phase 2 in terms of health, turn slower
+        if (bossHealthPercent > .33f && bossHealthPercent < .67f)
+        {
+            rotateAmount /= 3;
+        }
+
+        transform.Rotate(new Vector3(0, 0, rotateAmount * Time.fixedDeltaTime));
         if (madeWall != null)
         {
-            madeWall.transform.Rotate(0, -rotateAmount, 0);
+            madeWall.transform.Rotate(0, -rotateAmount * Time.fixedDeltaTime, 0);
             madeWall.GetComponent<expandingWallScript>().lockWallSize = true;
             //madeWall.transform.position = transform.position;
         }
+
+        rotateAmount = tempRotation;
         //Debug.Log("phase cooldown " + phaseTimeCooldown);
 
         if (phaseTimeCooldown <= 0)
@@ -286,7 +295,11 @@ public class RollingBossScript : MonoBehaviour
         {
             //get the total number of phases the boss can have
             int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
+            // TODO: take this out after testing
+            //currentPhaseNum++;
             currentPhase = (bossPhases)(currentPhaseNum % totalPhases);
+
+            // TODO: put this back********************************************************************************
             currentPhaseNum++;
             Debug.Log("Changed phase");
             isDoneWithCurrentPhase = false;

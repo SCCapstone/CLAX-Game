@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  maxHealth: 500
+  maxHealth: 100
   hitCooldown: 0.5
 --- !u!1 &6257623721124609864
 GameObject:

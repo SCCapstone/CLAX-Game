@@ -22,11 +22,6 @@ public class AliveObject : MonoBehaviour
         }
     }
 
-    public float getHealth()
-    {
-        return health;
-    }
-
     /*
      * Deal damage this object
      * Returns how much real damage was dealt
@@ -39,7 +34,11 @@ public class AliveObject : MonoBehaviour
             lastHitTime = Time.time;
 
             setHealth(health - amount);
+            Debug.Log("New Health " + health);
+
         }
+
+
     }
 
     /*

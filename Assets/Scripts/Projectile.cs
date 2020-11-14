@@ -32,7 +32,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered");
+        //Debug.Log("Triggered");
 
         // 9 is the layer id for enemy
         if (other.gameObject.layer == enemyLayerNum)
