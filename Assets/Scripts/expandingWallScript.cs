@@ -7,20 +7,24 @@ public class expandingWallScript : MonoBehaviour
 
     float lastWallExpandTime;
     float maxWallHeight = 20;
-    float wallExpandFrequency = .015f;
+    public float wallExpandFrequency = .15f;
     float maxHorizontalLength = 80;
-    float growAmount = 0.7f;
+    public float growAmount = 1.7f;
 
     public bool isDone = false;
     bool isGrowing = true;
 
     public bool lockWallSize = false;
 
+    GameObject boss;
+
     // Start is called before the first frame update
     void Start()
     {
         lockWallSize = false;
         //Debug.Log("lock wall is " + lockWallSize);
+        boss = GameObject.FindGameObjectWithTag("Boss");
+
 
     }
 
@@ -49,17 +53,43 @@ public class expandingWallScript : MonoBehaviour
 
 
         //only expand every so often
-        if (Time.time - lastWallExpandTime >= wallExpandFrequency)
+        //if (Time.time - lastWallExpandTime >= wallExpandFrequency)
+        //{
+        var curPos = transform.position;
+        var curScale = transform.localScale;
+
+        var bossAliveComponent = boss.GetComponent<AliveObject>();
+        var bossAlivePercent = bossAliveComponent.health / bossAliveComponent.maxHealth;
+
+        Vector3 scale = new Vector3(curScale.x + growAmount * direction * Time.fixedDeltaTime,
+               0, .2f);
+        if (bossAlivePercent > .67f)
         {
-            var curPos = transform.position;
-            var curScale = transform.localScale;
-
-            transform.localScale = new Vector3(curScale.x + growAmount * direction,
-                Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength), .2f), maxWallHeight), .2f);
-            transform.position = new Vector3(curPos.x, 0, curPos.z);
-
-            lastWallExpandTime = Time.time;
+            //low wall
+            scale.Set(scale.x, Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength / 10), .2f),
+                maxWallHeight), scale.z);
         }
+        else if (bossAlivePercent > .33f)
+        {
+            //medium wall to out run
+            scale.Set(scale.x, Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength / 5), .2f),
+                maxWallHeight), scale.z);
+        }
+        else
+        {
+            //higher wall
+            scale.Set(scale.x, Mathf.Min(Mathf.Max(curScale.y + .5f * direction * (maxWallHeight / maxHorizontalLength), .2f),
+                maxWallHeight), scale.z);
+        }
+
+        transform.localScale = scale;
+
+
+
+        transform.position = new Vector3(curPos.x, 0, curPos.z);
+
+        //lastWallExpandTime = Time.time;
+        //}
     }
 
     //Update is called once per frame

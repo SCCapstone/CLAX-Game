@@ -110,6 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b8cc43618901ea4a91d924aac9cff9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallExpandFrequency: -0.62
+  growAmount: 8.8
   isDone: 0
   lockWallSize: 0
 --- !u!54 &1440804126768125309
