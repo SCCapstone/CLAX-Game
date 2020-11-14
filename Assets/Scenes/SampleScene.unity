@@ -1265,26 +1265,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 617520817669108804, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
-      propertyPath: hitCooldown
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 617520817669108804, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
-      propertyPath: maxHealth
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 617520817669108805, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 617520817669108805, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 617520817669108824, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: e79a289de70c6b44dbac86ec395333f8, type: 2}
     - target: {fileID: 617520817669108826, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -36
