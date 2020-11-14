@@ -904,6 +904,14 @@ PrefabInstance:
       propertyPath: currentTarget
       value: 
       objectReference: {fileID: 88338314}
+    - target: {fileID: 5867384267254062812, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6257623720314369235, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 05baf77de5e9aaa4b8813f23b6c4d1ed, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
 --- !u!114 &1010852648 stripped
@@ -1273,6 +1281,10 @@ PrefabInstance:
       propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 617520817669108824, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e79a289de70c6b44dbac86ec395333f8, type: 2}
     - target: {fileID: 617520817669108826, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -36
@@ -1324,6 +1336,10 @@ PrefabInstance:
     - target: {fileID: 617520817669108830, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
       propertyPath: m_Name
       value: Boss2
+      objectReference: {fileID: 0}
+    - target: {fileID: 617520817669108830, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
+      propertyPath: m_TagString
+      value: Boss
       objectReference: {fileID: 0}
     - target: {fileID: 617520817669108831, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
       propertyPath: m_IsTrigger
