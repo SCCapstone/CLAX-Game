@@ -9,7 +9,7 @@ public class expandingWallScript : MonoBehaviour
     float maxWallHeight = 20;
     //public float wallExpandFrequency = .15f;
     float maxHorizontalLength = 60;
-    float growAmount = 25f;
+    float growAmount = 50f;
 
     public bool isDone = false;
     bool isGrowing = true;
