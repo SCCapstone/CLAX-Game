@@ -57,6 +57,12 @@ public class RollingBossScript : MonoBehaviour
 
     }
 
+    private void Awake()
+    {
+        if (goalTransform == null)
+            goalTransform = GameObject.Find("Player").transform;
+    }
+
     void OnDestroy()
     {
         if (madeWall)
