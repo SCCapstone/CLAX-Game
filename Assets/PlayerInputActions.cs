@@ -220,6 +220,33 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Interface"",
+            ""id"": ""9c496cb0-7b27-49de-9736-f1874021558b"",
+            ""actions"": [
+                {
+                    ""name"": ""PauseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""b248048c-2118-4e2c-87e0-acd840be8a3b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""18f480d8-75a3-4838-9de6-f43508210531"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -250,6 +277,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_World_Control = m_World.FindAction("Control", throwIfNotFound: true);
         m_World_Interact = m_World.FindAction("Interact", throwIfNotFound: true);
         m_World_Use = m_World.FindAction("Use", throwIfNotFound: true);
+        // Interface
+        m_Interface = asset.FindActionMap("Interface", throwIfNotFound: true);
+        m_Interface_PauseMenu = m_Interface.FindAction("PauseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -376,6 +406,39 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         }
     }
     public WorldActions @World => new WorldActions(this);
+
+    // Interface
+    private readonly InputActionMap m_Interface;
+    private IInterfaceActions m_InterfaceActionsCallbackInterface;
+    private readonly InputAction m_Interface_PauseMenu;
+    public struct InterfaceActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public InterfaceActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PauseMenu => m_Wrapper.m_Interface_PauseMenu;
+        public InputActionMap Get() { return m_Wrapper.m_Interface; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InterfaceActions set) { return set.Get(); }
+        public void SetCallbacks(IInterfaceActions instance)
+        {
+            if (m_Wrapper.m_InterfaceActionsCallbackInterface != null)
+            {
+                @PauseMenu.started -= m_Wrapper.m_InterfaceActionsCallbackInterface.OnPauseMenu;
+                @PauseMenu.performed -= m_Wrapper.m_InterfaceActionsCallbackInterface.OnPauseMenu;
+                @PauseMenu.canceled -= m_Wrapper.m_InterfaceActionsCallbackInterface.OnPauseMenu;
+            }
+            m_Wrapper.m_InterfaceActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PauseMenu.started += instance.OnPauseMenu;
+                @PauseMenu.performed += instance.OnPauseMenu;
+                @PauseMenu.canceled += instance.OnPauseMenu;
+            }
+        }
+    }
+    public InterfaceActions @Interface => new InterfaceActions(this);
     private int m_DefaultSchemeIndex = -1;
     public InputControlScheme DefaultScheme
     {
@@ -394,5 +457,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnControl(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+    }
+    public interface IInterfaceActions
+    {
+        void OnPauseMenu(InputAction.CallbackContext context);
     }
 }
