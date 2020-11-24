@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AliveObject : MonoBehaviour
 {
@@ -49,9 +50,11 @@ public class AliveObject : MonoBehaviour
     {
         health = amount;
 
-        if (health < 0.0f)
+        if (health <= 0.0f)
         {
             health = 0.0f;
+            kill();
+
         }
     }
 
@@ -60,7 +63,24 @@ public class AliveObject : MonoBehaviour
     {
         // TODO: Death events and animations
         // TODO: OnKill event
+        Debug.Log("tag " + gameObject.transform.tag);
+
+        if (gameObject.transform.CompareTag("Player"))
+        {
+            Debug.Log("reloading scene");
+
+            //Invoke("respawnPlayer", 1.0f);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
         Destroy(gameObject);
+    }
+
+    public void respawnPlayer()
+    {
+        Debug.Log("ran respawn");
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
 }
