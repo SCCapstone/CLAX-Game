@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 8387599227283869523}
   - component: {fileID: 3284403555622848519}
   m_Layer: 0
-  m_Name: MovingPlatform
+  m_Name: movingPlatform
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,6 +65,7 @@ MonoBehaviour:
   startStage: {fileID: 6082209957405042398}
   endStage: {fileID: 6082209957358694459}
   stage: {fileID: 6082209958007320290}
+  interpolationMode: 0
   travelDuration: 3
   stayDuration: 1.5
 --- !u!1001 &8387599227036964496
@@ -78,6 +79,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform
       objectReference: {fileID: 0}
+    - target: {fileID: 2310035128715294836, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3867060d33576514ab7b189ffdd4a36a, type: 2}
     - target: {fileID: 2310035128715294837, guid: 8e4668dc60b248246b5e2f3251a02b62, type: 3}
       propertyPath: m_Center.y
       value: 0

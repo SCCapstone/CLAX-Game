@@ -5,6 +5,7 @@ public class FallingPlatform : MonoBehaviour
 {
     [Header("Prefabs")]
     public GameObject platform;
+    private Transform startPosition;
 
     [Header("ColorChange")]
     public Material start;
@@ -19,13 +20,14 @@ public class FallingPlatform : MonoBehaviour
     public float fallSpeed;
     public float fallAcceleration;
     public float fallDelay;
-    public float destroyAtHeight;
+    public float respawnDistance = 30;
 
     private bool isFalling = false;
     private float fallTimer = 0.0f;
 
     void Start()
     {
+        startPosition = platform.transform;
         lerpedColor = start.GetColor("_Color");
         endColor = end.GetColor("_Color");
         startColor = lerpedColor;
@@ -45,11 +47,12 @@ public class FallingPlatform : MonoBehaviour
     {
         if (isFalling)
         {
-            if (transform.position.y <= destroyAtHeight)
+            if (System.Math.Abs(transform.position.y - startPosition.position.y) <= respawnDistance)
             {
-                Destroy(gameObject);
-
-                return;
+                platformRenderer.material.SetColor("_Color", startColor);
+                transform.position = startPosition.position;
+                isFalling = false;
+              
             }
 
             if (fallTimer >= fallDelay)
