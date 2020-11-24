@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -187,6 +191,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: -28
@@ -301,6 +309,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: -36
@@ -358,6 +370,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: -28
@@ -415,6 +431,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: 28
@@ -529,6 +549,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: 36
@@ -586,6 +610,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -643,6 +671,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -700,6 +732,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6710720428676726830, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
+      propertyPath: respawnDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6710720429360070910, guid: 4e9ed980e51efd447991ec67eebc3863, type: 3}
       propertyPath: m_LocalPosition.x
       value: 28
