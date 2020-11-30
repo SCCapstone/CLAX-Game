@@ -19,7 +19,7 @@ public class AliveObject : MonoBehaviour
     {
         if (health <= 0.0f)
         {
-            kill();
+            Kill();
         }
     }
 
@@ -27,14 +27,14 @@ public class AliveObject : MonoBehaviour
      * Deal damage this object
      * Returns how much real damage was dealt
      */
-    public void damage(float amount)
+    public void Damage(float amount)
     {
         // Check if hit cooldown is not active
         if (Time.time - lastHitTime > hitCooldown)
         {
             lastHitTime = Time.time;
 
-            setHealth(health - amount);
+            SetHealth(health - amount);
             Debug.Log("New Health " + health);
 
         }
@@ -46,20 +46,20 @@ public class AliveObject : MonoBehaviour
      * Sets the health of the object
      * Does not trigger hit cooldowns
      */
-    public void setHealth(float amount)
+    public void SetHealth(float amount)
     {
         health = amount;
 
         if (health <= 0.0f)
         {
             health = 0.0f;
-            kill();
+            Kill();
 
         }
     }
 
     // Kills the object
-    public void kill()
+    public void Kill()
     {
         // TODO: Death events and animations
         // TODO: OnKill event
@@ -76,7 +76,7 @@ public class AliveObject : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void respawnPlayer()
+    public void RespawnPlayer()
     {
         Debug.Log("ran respawn");
 

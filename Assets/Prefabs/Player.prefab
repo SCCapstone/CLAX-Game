@@ -71,6 +71,7 @@ MonoBehaviour:
   countGroundJump: 0
   jumpLandingLag: 0
   health: 100
+  dieAtY: -20
   projectileSpeed: 25
   currentTarget: {fileID: 0}
 --- !u!54 &6054908338268949753

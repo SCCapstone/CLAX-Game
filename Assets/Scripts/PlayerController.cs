@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Assertions.Comparers;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
@@ -43,6 +44,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Character")]
     public float health;
+
+    public float dieAtY;
+
 
     [Header("Projectile")]
     public float projectileSpeed;
@@ -103,6 +107,14 @@ public class PlayerController : MonoBehaviour
         inputs.Disable();
     }
 
+    private void CheckY()
+    {
+        if (transform.position.y < dieAtY)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
     private void Update()
     {
         if (!cameraEnabled || !Application.isFocused)
@@ -134,6 +146,8 @@ public class PlayerController : MonoBehaviour
         bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out hit, Mathf.Abs(cameraOffsets.z));
 
         playerCamera.transform.position = hasHit ? hit.point : cameraTarget + offsetX + offsetY + offsetZ;
+
+        CheckY();
     }
 
     private void FixedUpdate()
