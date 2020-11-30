@@ -9,7 +9,7 @@ public class persistMusicThroughReset : MonoBehaviour
     void Awake()
     {
         backgroundMusic = GetComponent<AudioSource>();
-        DontDestroyOnLoad(transform.gameObject);
+        //DontDestroyOnLoad(transform.gameObject);
         playMusic();
     }
     void playMusic()
