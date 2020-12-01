@@ -11,6 +11,8 @@ public class PauseMenu : MonoBehaviour
     //[SerializeField] private bool isGamePaused;
 
     public GameObject pauseMenu;
+    public GameObject optionsMenu;
+    public GameObject timerObject;
     public bool isGamePaused;
 
     private PlayerInputActions inputs;
@@ -28,7 +30,7 @@ public class PauseMenu : MonoBehaviour
         inputs.Enable();
     }
 
-    public void quitGame()
+    public void QuitGame()
     {
         Application.Quit();
     }
@@ -68,14 +70,31 @@ public class PauseMenu : MonoBehaviour
         Debug.Log("ran unpause");
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
         isGamePaused = false;
         //Cursor.visible = false;
         //isGamePaused = false;
     }
 
-    public void options()
+    public void OpenOptions()
     {
+        optionsMenu.SetActive(true);
+        pauseMenu.SetActive(false);
+        Debug.Log("clicked open options");
 
+
+    }
+
+    public void CloseOptions()
+    {
+        pauseMenu.SetActive(true);
+        optionsMenu.SetActive(false);
+
+    }
+
+    public void ToggleTimer()
+    {
+        timerObject.GetComponent<TimerScript>().timerVisible = !timerObject.GetComponent<TimerScript>().timerVisible;
     }
 
     // Update is called once per frame

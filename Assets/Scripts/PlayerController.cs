@@ -336,7 +336,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnUse(InputAction.CallbackContext context)
     {
-        if (context.phase != InputActionPhase.Performed)
+        if (context.phase != InputActionPhase.Performed || menuListener.GetComponent<PauseMenu>().isGamePaused == true)
         {
             return;
         }
