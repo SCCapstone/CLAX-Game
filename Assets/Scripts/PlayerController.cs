@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform currentTarget;
 
+    GameObject menuListener;
 
 
     private void Awake()
@@ -92,13 +93,16 @@ public class PlayerController : MonoBehaviour
         inputs.World.Move.canceled += OnJump;
 
         inputs.World.Use.performed += OnUse;
-        inputs.World.Pause.performed += OnPause;
+
 
         rigidbody = GetComponent<Rigidbody>();
 
         //transform.LookAt(currentTarget);
+        menuListener = GameObject.Find("MenuListen");
 
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
 
     }
@@ -106,6 +110,7 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         inputs.Enable();
+
     }
 
     private void OnDisable()
@@ -130,9 +135,14 @@ public class PlayerController : MonoBehaviour
 
             return;
         }
+        else if (menuListener.GetComponent<PauseMenu>().isGamePaused == false)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
 
         float dPitch = lookAxis.y * lookSensitivityY;
         float dYaw = lookAxis.x * lookSensitivityX;
@@ -315,14 +325,6 @@ public class PlayerController : MonoBehaviour
         {
             holdJump = false;
         }
-    }
-
-
-
-    public void OnPause(InputAction.CallbackContext context)
-    {
-        GameObject.Find("Canvas").GetComponent<PauseMenu>().pauseGameFromMenu();
-
     }
 
     public void OnLook(InputAction.CallbackContext context)
