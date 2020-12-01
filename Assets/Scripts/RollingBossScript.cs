@@ -55,6 +55,23 @@ public class RollingBossScript : MonoBehaviour
 
         InvokeRepeating("Cooldowns", .5f, cooldownUpdateTime);
 
+        Invoke("findPlayer", .5f);
+
+
+
+
+    }
+
+    void Awake()
+    {
+        //if (goalTransform == null)
+        //    goalTransform = GameObject.Find("Player(Clone)").transform;
+    }
+
+    void findPlayer()
+    {
+        if (goalTransform == null)
+            goalTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void OnDestroy()
@@ -335,6 +352,8 @@ public class RollingBossScript : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (goalTransform == null)
+            return;
         ChoosePhase();
 
         //if (Input.GetKeyDown(KeyCode.R))

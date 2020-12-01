@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class FallingPlatform : MonoBehaviour
 {
     [Header("Prefabs")]
     public GameObject platform;
+    private Transform startPosition;
 
     [Header("ColorChange")]
     public Material start;
     public Material end;
-    private Color lerpedColor;
-    private Color startColor;
-    private Color endColor;
+    private Material lerpMaterial;
     private Renderer platformRenderer;
 
     [Header("Falling")]
@@ -19,16 +19,15 @@ public class FallingPlatform : MonoBehaviour
     public float fallSpeed;
     public float fallAcceleration;
     public float fallDelay;
-    public float destroyAtHeight;
+    public float respawnDelay = 30;
+    public float disappearHeight = -10;
 
     private bool isFalling = false;
     private float fallTimer = 0.0f;
 
     void Start()
     {
-        lerpedColor = start.GetColor("_Color");
-        endColor = end.GetColor("_Color");
-        startColor = lerpedColor;
+        startPosition = platform.transform;
         platformRenderer = platform.GetComponentInChildren<Renderer>();
     }
     private void OnCollisionEnter(Collision collision)
@@ -37,6 +36,7 @@ public class FallingPlatform : MonoBehaviour
             if (collision.gameObject.CompareTag("Player"))
             {
                 isFalling = true;
+               
                 //fallTimer = fallDelay;
             }
     }
@@ -45,14 +45,18 @@ public class FallingPlatform : MonoBehaviour
     {
         if (isFalling)
         {
-            if (transform.position.y <= destroyAtHeight)
-            {
-                Destroy(gameObject);
+            
 
-                return;
+            if (fallTimer >= respawnDelay)
+            {
+                fallTimer = 0.0f;
+                isFalling = false;
+                platformRenderer.material = start;
+                platformRenderer.enabled = true;
+                transform.position = startPosition.position;
             }
 
-            if (fallTimer >= fallDelay)
+            if (fallTimer >= fallDelay && platformRenderer.enabled)
             {
                 float speed = (fallAcceleration * Mathf.Pow(Mathf.Abs(fallTimer), 2.0f)) + fallSpeed;
 
@@ -60,6 +64,8 @@ public class FallingPlatform : MonoBehaviour
                 nextPosition.y -= speed * Time.fixedDeltaTime;
 
                 transform.position = nextPosition;
+                if (transform.position.y <= disappearHeight)
+                    platformRenderer.enabled = false;
             }
 
             fallTimer += Time.fixedDeltaTime;
@@ -72,10 +78,8 @@ public class FallingPlatform : MonoBehaviour
     {
         if (change > 1)
             change = 1;
-        if (lerpedColor != endColor)
-        {
-            lerpedColor = Color.Lerp(startColor, endColor, change);
-            platformRenderer.material.SetColor("_Color", lerpedColor);
-        }
+       
+        platformRenderer.material.Lerp(start, end, change);
+        
     }
 }
