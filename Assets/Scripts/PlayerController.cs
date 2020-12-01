@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform currentTarget;
 
-    GameObject pauseMenu;
+
 
     private void Awake()
     {
@@ -317,31 +317,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void PauseGame()
-    {
-        pauseMenu = GameObject.Find("Canvas").gameObject.transform.GetChild(0).gameObject;
-        Debug.Log(pauseMenu);
-        //pauseMenu.ac
 
-        if (pauseMenu.activeInHierarchy == false)
-        {
-            pauseMenu.SetActive(true);
-
-            Time.timeScale = 0;
-        }
-        else
-        {
-            pauseMenu.SetActive(false);
-
-            Time.timeScale = 1;
-            //Cursor.visible = false;
-        }
-        Debug.Log("ran pause");
-    }
 
     public void OnPause(InputAction.CallbackContext context)
     {
-        PauseGame();
+        GameObject.Find("Canvas").GetComponent<PauseMenu>().pauseGameFromMenu();
+
     }
 
     public void OnLook(InputAction.CallbackContext context)
