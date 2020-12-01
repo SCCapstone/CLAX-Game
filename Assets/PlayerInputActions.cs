@@ -73,6 +73,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""bba9eb3e-efc0-4805-ba7b-43c2f1724ecd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -218,6 +226,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf030799-2bee-45c4-9611-0682413fd45f"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -277,6 +296,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_World_Control = m_World.FindAction("Control", throwIfNotFound: true);
         m_World_Interact = m_World.FindAction("Interact", throwIfNotFound: true);
         m_World_Use = m_World.FindAction("Use", throwIfNotFound: true);
+        m_World_Pause = m_World.FindAction("Pause", throwIfNotFound: true);
         // Interface
         m_Interface = asset.FindActionMap("Interface", throwIfNotFound: true);
         m_Interface_PauseMenu = m_Interface.FindAction("PauseMenu", throwIfNotFound: true);
@@ -336,6 +356,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_World_Control;
     private readonly InputAction m_World_Interact;
     private readonly InputAction m_World_Use;
+    private readonly InputAction m_World_Pause;
     public struct WorldActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -347,6 +368,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Control => m_Wrapper.m_World_Control;
         public InputAction @Interact => m_Wrapper.m_World_Interact;
         public InputAction @Use => m_Wrapper.m_World_Use;
+        public InputAction @Pause => m_Wrapper.m_World_Pause;
         public InputActionMap Get() { return m_Wrapper.m_World; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -377,6 +399,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Use.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnUse;
                 @Use.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnUse;
                 @Use.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnUse;
+                @Pause.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_WorldActionsCallbackInterface = instance;
             if (instance != null)
@@ -402,6 +427,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Use.started += instance.OnUse;
                 @Use.performed += instance.OnUse;
                 @Use.canceled += instance.OnUse;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -457,6 +485,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnControl(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IInterfaceActions
     {

@@ -298,6 +298,7 @@ MonoBehaviour:
   countGroundJump: 0
   jumpLandingLag: 0.03
   health: 100
+  dieAtY: 0
   projectileSpeed: 25
   currentTarget: {fileID: 0}
 --- !u!136 &163374825
@@ -516,7 +517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &175696859
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2048,7 +2049,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1309104735
 RectTransform:
   m_ObjectHideFlags: 0
