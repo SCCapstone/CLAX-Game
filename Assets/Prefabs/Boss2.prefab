@@ -250,6 +250,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6492870603391842386, guid: df605f54c5570184783fdb30d38764c4, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6492870603391842388, guid: df605f54c5570184783fdb30d38764c4, type: 3}
       propertyPath: m_Name
       value: BossHealthBar
