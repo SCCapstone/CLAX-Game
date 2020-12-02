@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class timerOptionText : MonoBehaviour
+public class updateDifficulty : MonoBehaviour
 {
     private TextMeshProUGUI textBoxGUI;
-    public GameObject timerObject;
+    public GameObject difficultyObject;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +18,6 @@ public class timerOptionText : MonoBehaviour
     void Update()
     {
 
-        textBoxGUI.SetText("Timer: " + (timerObject.GetComponent<TimerScript>().timerVisible ? "ON" : "OFF"));
+        textBoxGUI.SetText("Difficulty: " + (globals.difficulty));
     }
 }
