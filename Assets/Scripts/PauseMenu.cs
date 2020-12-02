@@ -137,8 +137,8 @@ public class PauseMenu : MonoBehaviour
 
         }
 
-        Debug.Log("player health" + player.GetComponent<AliveObject>().health + " " + player.GetComponent<AliveObject>().maxHealth);
-        Debug.Log("boss health" + boss.GetComponent<AliveObject>().health + " " + boss.GetComponent<AliveObject>().maxHealth);
+        //Debug.Log("player health" + player.GetComponent<AliveObject>().health + " " + player.GetComponent<AliveObject>().maxHealth);
+        //Debug.Log("boss health" + boss.GetComponent<AliveObject>().health + " " + boss.GetComponent<AliveObject>().maxHealth);
 
 
 
