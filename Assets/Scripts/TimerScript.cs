@@ -16,10 +16,10 @@ public class TimerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (timerVisible)
-        //    textBoxGUI.SetText(Time.time.ToString("0.00"));
-        //else
-        //    textBoxGUI.SetText("");
+        if (timerVisible)
+            textBoxGUI.SetText(Time.time.ToString("0.00"));
+        else
+            textBoxGUI.SetText("");
 
     }
 }
