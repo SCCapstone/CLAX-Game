@@ -36,6 +36,8 @@ public class RollingBossScript : MonoBehaviour
     bool isDoneWithCurrentPhase = true;
     bool hasDoneOneTimePhaseCode = false;
 
+    private float startY;
+
 
     enum bossPhases
     {
@@ -57,7 +59,7 @@ public class RollingBossScript : MonoBehaviour
 
         Invoke("findPlayer", .5f);
 
-
+        startY = transform.position.y;
 
 
     }
@@ -355,6 +357,8 @@ public class RollingBossScript : MonoBehaviour
         if (goalTransform == null)
             return;
         ChoosePhase();
+
+        transform.position = new Vector3(transform.position.x, startY, transform.position.z);
 
         //if (Input.GetKeyDown(KeyCode.R))
         //moveAndMakeWallAttack();
