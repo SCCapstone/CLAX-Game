@@ -14,6 +14,7 @@ public class cubeBossScript : MonoBehaviour
     public GameObject cubeAttacker;
 
     float spawnTimeCooldown = 0;
+    float lastSpawnTime = 0;
 
 
     // Start is called before the first frame update
@@ -25,8 +26,8 @@ public class cubeBossScript : MonoBehaviour
 
     void spawnCubes()
     {
-        Vector3 midPoint = new Vector3((transform.position.x + target.position.x) / 2,
-            transform.position.y, (transform.position.z + target.position.z) / 2);
+        //Vector3 midPoint = new Vector3((transform.position.x + target.position.x) / 2,
+        //    transform.position.y, (transform.position.z + target.position.z) / 2);
 
         var side = "";
         if (Mathf.Abs(transform.position.x - target.position.x) >
@@ -35,6 +36,27 @@ public class cubeBossScript : MonoBehaviour
         else
             side = "z";
 
+        Vector3 midPoint = new Vector3();
+        if (side == "x")
+        {
+            if (transform.position.x > target.position.x)
+                distFromBoss = -1 * Mathf.Abs(distFromBoss);
+            else
+                distFromBoss = Mathf.Abs(distFromBoss);
+
+            midPoint = new Vector3((transform.position.x + distFromBoss),
+       transform.position.y, (transform.position.z));
+        }
+        else
+        {
+            if (transform.position.z > target.position.z)
+                distFromBoss = -1 * Mathf.Abs(distFromBoss);
+            else
+                distFromBoss = Mathf.Abs(distFromBoss);
+
+            midPoint = new Vector3(transform.position.x,
+       transform.position.y, (transform.position.z + distFromBoss));
+        }
 
 
         for (int i = -1; i < 2; i++)
@@ -44,10 +66,6 @@ public class cubeBossScript : MonoBehaviour
                 //spawn the grid of cubes on the x side
                 if (side == "x")
                 {
-                    if (transform.position.x > target.position.x)
-                        distFromBoss = -1 * Mathf.Abs(distFromBoss);
-                    else
-                        distFromBoss = Mathf.Abs(distFromBoss);
 
                     Instantiate(cubeAttacker,
                     new Vector3(transform.position.x + distFromBoss,
@@ -57,10 +75,7 @@ public class cubeBossScript : MonoBehaviour
                 //spawn the grid of cubes on the z side
                 else
                 {
-                    if (transform.position.z > target.position.z)
-                        distFromBoss = -1 * Mathf.Abs(distFromBoss);
-                    else
-                        distFromBoss = Mathf.Abs(distFromBoss);
+
                     Instantiate(cubeAttacker,
                     new Vector3(midPoint.x + i * distBetween,
                     midPoint.y + j * distBetween, transform.position.z + distFromBoss),
@@ -72,14 +87,26 @@ public class cubeBossScript : MonoBehaviour
             }
         }
         hasSpawnedCubes = true;
+        lastSpawnTime = Time.time;
 
 
     }
 
+    void destroyCubes()
+    {
+        var lastCubes = GameObject.FindGameObjectsWithTag("cubeAttack");
+        for (int i = 0; i < lastCubes.Length; i++)
+        {
+            Destroy(lastCubes[i]);
+
+        }
+    }
+
     void gridAttack()
     {
-        if (hasSpawnedCubes == false)
+        if (Time.time - lastSpawnTime > 4)
         {
+            destroyCubes();
             spawnCubes();
         }
     }

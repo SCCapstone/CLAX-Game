@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
             return;
         }
-        else if (menuListener.GetComponent<PauseMenu>().isGamePaused == false)
+        else if (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == false)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
