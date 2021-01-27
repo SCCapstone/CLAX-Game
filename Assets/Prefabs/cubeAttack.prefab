@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6948162443550631690}
   m_Layer: 11
   m_Name: cubeAttack
-  m_TagString: Untagged
+  m_TagString: cubeAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 67665cc6fc16fb34886859d5da32dbfb, type: 2}
+  - {fileID: 2100000, guid: 5b061043775c485449947511dc2632b4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
