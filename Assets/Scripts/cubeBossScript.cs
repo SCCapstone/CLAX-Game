@@ -29,7 +29,7 @@ public class cubeBossScript : MonoBehaviour
         //Vector3 midPoint = new Vector3((transform.position.x + target.position.x) / 2,
         //    transform.position.y, (transform.position.z + target.position.z) / 2);
 
-        var side = "";
+        string side;
         if (Mathf.Abs(transform.position.x - target.position.x) >
             Mathf.Abs(transform.position.z - target.position.z))
             side = "x";
@@ -55,7 +55,7 @@ public class cubeBossScript : MonoBehaviour
                 distFromBoss = Mathf.Abs(distFromBoss);
 
             midPoint = new Vector3(transform.position.x,
-       transform.position.y, (transform.position.z + distFromBoss));
+            transform.position.y, (transform.position.z + distFromBoss));
         }
 
 
@@ -66,7 +66,6 @@ public class cubeBossScript : MonoBehaviour
                 //spawn the grid of cubes on the x side
                 if (side == "x")
                 {
-
                     Instantiate(cubeAttacker,
                     new Vector3(transform.position.x + distFromBoss,
                     midPoint.y + j * distBetween, midPoint.z + i * distBetween),
@@ -81,9 +80,6 @@ public class cubeBossScript : MonoBehaviour
                     midPoint.y + j * distBetween, transform.position.z + distFromBoss),
                     new Quaternion());
                 }
-                //Instantiate(cubeAttacker,
-                //    new Vector3(midPoint.x + i * 3, midPoint.y + 5, midPoint.z + j * 3),
-                //    new Quaternion());
             }
         }
         hasSpawnedCubes = true;
