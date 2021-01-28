@@ -29,7 +29,7 @@ namespace Tests
         public void TestSetup()
         {
             Debug.Log("Setup input devices");
-            
+
             gamepad = InputSystem.AddDevice<Gamepad>();
             keyboard = InputSystem.AddDevice<Keyboard>();
             mouse = InputSystem.AddDevice<Mouse>();
@@ -43,7 +43,7 @@ namespace Tests
         {
             isSceneLoaded = false;
             SceneManager.LoadScene(sceneName);
-            
+
             // Wait just in case that the physics may need to settle after loading a scene
             yield return new WaitForSeconds(3);
         }
