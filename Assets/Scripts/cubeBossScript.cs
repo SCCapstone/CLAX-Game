@@ -16,7 +16,7 @@ public class cubeBossScript : MonoBehaviour
     float lastSpawnTime = 0;
 
     float delayBetweenRowLaunch = 1;
-    float delayBetweenNewGrid = 7;
+    public float delayBetweenNewGrid = 7;
 
 
     int gridDimension = 3;
@@ -29,9 +29,18 @@ public class cubeBossScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.Find("Player").transform;
-        lastCubeLaunchTime = delayBetweenNewGrid;
 
+
+    }
+
+    void setup()
+    {
+        var playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            target = playerObject.transform;
+        }
+        lastCubeLaunchTime = delayBetweenNewGrid - 3;
     }
 
     void spawnCubes()
@@ -130,8 +139,9 @@ public class cubeBossScript : MonoBehaviour
     {
         //launch the cubes one at a time
         float timeBetweenSingleCubeLaunch = (delayBetweenNewGrid * .75f) / (gridDimension * gridDimension);
+        //Debug.Log("current cubes " + currentCubes);
 
-        if (Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
+        if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
         {
 
             currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
@@ -152,6 +162,11 @@ public class cubeBossScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (target == null)
+        {
+            setup();
+            return;
+        }
         makeNewBatch();
         launchAsNeeded();
     }

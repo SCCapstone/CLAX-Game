@@ -5,7 +5,7 @@ using UnityEngine;
 public class cubeAttackPlayer : MonoBehaviour
 {
     //private GameObject target;
-    Vector3 goalCoords;
+    public Vector3 goalCoords;
     float xzSpeed = 4;
     float ySpeed = 2;
     public bool shouldMove = false;
@@ -22,7 +22,7 @@ public class cubeAttackPlayer : MonoBehaviour
 
     void getGoal()
     {
-        var target = GameObject.Find("Player");
+        var target = GameObject.FindGameObjectWithTag("Player");
         goalCoords = target.transform.position;
         Debug.Log("goal coords " + goalCoords);
 
