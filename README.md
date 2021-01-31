@@ -25,7 +25,7 @@ Within Unity, open the all of scenes that you want to send out. Then go to file 
 
 To run the tests, open the project in the Unity Editor. Then go to Window -> General -> Test Runner. A new "Test Runner" window will appear. Click "PlayMode", then click "Run All".
 
-The tests that are run are located in the "Assets/Tests" folder. "InputTest.cs" tests player input (behavior test). "CubeBossTest.cs" tests the cube boss projectile firing mechanic.
+The tests that are run are located in the "Assets/Tests" folder. "InputTest.cs" tests player input (behavior test). "CubeBossTest.cs" tests the cube boss projectile firing mechanic (unit test).
 
 ## Testing Technology
 
