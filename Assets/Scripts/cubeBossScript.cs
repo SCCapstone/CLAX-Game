@@ -5,7 +5,6 @@ using UnityEngine;
 public class cubeBossScript : MonoBehaviour
 {
 
-    bool hasSpawnedCubes = false;
 
     Transform target;
     float distBetween = 2;
@@ -16,12 +15,32 @@ public class cubeBossScript : MonoBehaviour
     float spawnTimeCooldown = 0;
     float lastSpawnTime = 0;
 
+    float delayBetweenRowLaunch = 1;
+    public float delayBetweenNewGrid = 7;
+
+
+    int gridDimension = 3;
+    int lastIdLaunched = 0;
+
+    float lastCubeLaunchTime = 0;
+    GameObject[] currentCubes;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
 
+
+    }
+
+    void setup()
+    {
+        var playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            target = playerObject.transform;
+        }
+        lastCubeLaunchTime = delayBetweenNewGrid - 3;
     }
 
     void spawnCubes()
@@ -29,7 +48,11 @@ public class cubeBossScript : MonoBehaviour
         //Vector3 midPoint = new Vector3((transform.position.x + target.position.x) / 2,
         //    transform.position.y, (transform.position.z + target.position.z) / 2);
 
+        currentCubes = new GameObject[gridDimension * gridDimension];
+
+
         string side;
+        //calculate which side to place the cubes on
         if (Mathf.Abs(transform.position.x - target.position.x) >
             Mathf.Abs(transform.position.z - target.position.z))
             side = "x";
@@ -45,7 +68,7 @@ public class cubeBossScript : MonoBehaviour
                 distFromBoss = Mathf.Abs(distFromBoss);
 
             midPoint = new Vector3((transform.position.x + distFromBoss),
-       transform.position.y, (transform.position.z));
+                transform.position.y, (transform.position.z));
         }
         else
         {
@@ -59,14 +82,16 @@ public class cubeBossScript : MonoBehaviour
         }
 
 
-        for (int i = -1; i < 2; i++)
+        int curNum = 0;
+        for (int i = -(gridDimension / 2); i <= (gridDimension / 2); i++)
         {
-            for (int j = -1; j < 2; j++)
+            for (int j = -(gridDimension / 2); j <= (gridDimension / 2); j++)
             {
+                GameObject newCube;
                 //spawn the grid of cubes on the x side
                 if (side == "x")
                 {
-                    Instantiate(cubeAttacker,
+                    newCube = Instantiate(cubeAttacker,
                     new Vector3(transform.position.x + distFromBoss,
                     midPoint.y + j * distBetween, midPoint.z + i * distBetween),
                     new Quaternion());
@@ -75,19 +100,21 @@ public class cubeBossScript : MonoBehaviour
                 else
                 {
 
-                    Instantiate(cubeAttacker,
+                    newCube = Instantiate(cubeAttacker,
                     new Vector3(midPoint.x + i * distBetween,
                     midPoint.y + j * distBetween, transform.position.z + distFromBoss),
                     new Quaternion());
                 }
+                currentCubes[curNum] = newCube;
+                curNum += 1;
             }
         }
-        hasSpawnedCubes = true;
         lastSpawnTime = Time.time;
+        lastIdLaunched = 0;
 
 
     }
-
+    //destroy old cubes
     void destroyCubes()
     {
         var lastCubes = GameObject.FindGameObjectsWithTag("cubeAttack");
@@ -98,9 +125,34 @@ public class cubeBossScript : MonoBehaviour
         }
     }
 
-    void gridAttack()
+    void launchRowByRow()
     {
-        if (Time.time - lastSpawnTime > 4)
+
+        //for (int i = lastIdLaunched; i < lastIdLaunched + gridDimension; i++)
+        //{
+
+        //}
+        //lastIdLaunched += gridDimension;
+    }
+
+    void launchAsNeeded()
+    {
+        //launch the cubes one at a time
+        float timeBetweenSingleCubeLaunch = (delayBetweenNewGrid * .75f) / (gridDimension * gridDimension);
+        //Debug.Log("current cubes " + currentCubes);
+
+        if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
+        {
+
+            currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
+            lastIdLaunched += 1;
+            lastCubeLaunchTime = Time.time;
+        }
+    }
+
+    void makeNewBatch()
+    {
+        if (Time.time - lastSpawnTime > delayBetweenNewGrid)
         {
             destroyCubes();
             spawnCubes();
@@ -110,6 +162,12 @@ public class cubeBossScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gridAttack();
+        if (target == null)
+        {
+            setup();
+            return;
+        }
+        makeNewBatch();
+        launchAsNeeded();
     }
 }
