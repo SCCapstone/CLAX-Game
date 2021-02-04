@@ -336,7 +336,12 @@ public class PlayerController : MonoBehaviour
 
     public void OnUse(InputAction.CallbackContext context)
     {
-        if (context.phase != InputActionPhase.Performed || menuListener.GetComponent<PauseMenu>().isGamePaused == true)
+        if (menuListener == null)
+        {
+            Debug.Log("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
+        }
+        if (context.phase != InputActionPhase.Performed ||
+            (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == true))
         {
             return;
         }
