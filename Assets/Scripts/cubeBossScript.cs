@@ -7,15 +7,23 @@ public class cubeBossScript : MonoBehaviour
 
 
     Transform target;
-    float distBetween = 2;
-    float distFromBoss = 5;
+    float distBetweenCubes = 2;
+    float cubeDistFromBoss = 5;
+
+    //float maxMoveAtATime = 10;
+    //float movedSoFar = 0;
+    float moveAmount = 0.25f;
+
+    int timesDestinationReached = 0;
+    int batchesMade = 0;
+
 
     public GameObject cubeAttacker;
 
-    float spawnTimeCooldown = 0;
+    //float spawnTimeCooldown = 0;
     float lastSpawnTime = 0;
 
-    float delayBetweenRowLaunch = 1;
+    //float delayBetweenRowLaunch = 1;
     public float delayBetweenNewGrid = 7;
 
 
@@ -25,6 +33,19 @@ public class cubeBossScript : MonoBehaviour
     float lastCubeLaunchTime = 0;
     GameObject[] currentCubes;
 
+
+    string side;
+    string movementDirection;
+
+    Vector3 currentTargetPos;
+
+
+    enum bossPhases
+    {
+        singleShot = 0, moving
+    }
+
+    bossPhases currentPhase = bossPhases.moving;
 
     // Start is called before the first frame update
     void Start()
@@ -38,9 +59,21 @@ public class cubeBossScript : MonoBehaviour
         var playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {
+            //Debug.LogError("Recalced target");
+
             target = playerObject.transform;
         }
         lastCubeLaunchTime = delayBetweenNewGrid - 3;
+    }
+
+    string calcSidePlayerOn()
+    {
+        //calculate which side to place the cubes on
+        if (Mathf.Abs(transform.position.x - target.position.x) >
+            Mathf.Abs(transform.position.z - target.position.z))
+            return "x";
+        else
+            return "z";
     }
 
     void spawnCubes()
@@ -50,50 +83,42 @@ public class cubeBossScript : MonoBehaviour
 
         currentCubes = new GameObject[gridDimension * gridDimension];
 
-
-        string side;
-        //calculate which side to place the cubes on
-        if (Mathf.Abs(transform.position.x - target.position.x) >
-            Mathf.Abs(transform.position.z - target.position.z))
-            side = "x";
-        else
-            side = "z";
-
-        Vector3 midPoint = new Vector3();
+        side = calcSidePlayerOn();
+        Vector3 midPoint;
         if (side == "x")
         {
             if (transform.position.x > target.position.x)
-                distFromBoss = -1 * Mathf.Abs(distFromBoss);
+                cubeDistFromBoss = -1 * Mathf.Abs(cubeDistFromBoss);
             else
-                distFromBoss = Mathf.Abs(distFromBoss);
+                cubeDistFromBoss = Mathf.Abs(cubeDistFromBoss);
 
-            midPoint = new Vector3((transform.position.x + distFromBoss),
+            midPoint = new Vector3((transform.position.x + cubeDistFromBoss),
                 transform.position.y, (transform.position.z));
         }
         else
         {
             if (transform.position.z > target.position.z)
-                distFromBoss = -1 * Mathf.Abs(distFromBoss);
+                cubeDistFromBoss = -1 * Mathf.Abs(cubeDistFromBoss);
             else
-                distFromBoss = Mathf.Abs(distFromBoss);
+                cubeDistFromBoss = Mathf.Abs(cubeDistFromBoss);
 
             midPoint = new Vector3(transform.position.x,
-            transform.position.y, (transform.position.z + distFromBoss));
+            transform.position.y, (transform.position.z + cubeDistFromBoss));
         }
 
 
         int curNum = 0;
-        for (int i = -(gridDimension / 2); i <= (gridDimension / 2); i++)
+        for (int j = (gridDimension / 2); j >= -(gridDimension / 2); j--)
         {
-            for (int j = -(gridDimension / 2); j <= (gridDimension / 2); j++)
+            for (int i = (gridDimension / 2); i >= -(gridDimension / 2); i--)
             {
                 GameObject newCube;
                 //spawn the grid of cubes on the x side
                 if (side == "x")
                 {
                     newCube = Instantiate(cubeAttacker,
-                    new Vector3(transform.position.x + distFromBoss,
-                    midPoint.y + j * distBetween, midPoint.z + i * distBetween),
+                    new Vector3(transform.position.x + cubeDistFromBoss,
+                    midPoint.y + j * distBetweenCubes, midPoint.z + i * distBetweenCubes),
                     new Quaternion());
                 }
                 //spawn the grid of cubes on the z side
@@ -101,8 +126,8 @@ public class cubeBossScript : MonoBehaviour
                 {
 
                     newCube = Instantiate(cubeAttacker,
-                    new Vector3(midPoint.x + i * distBetween,
-                    midPoint.y + j * distBetween, transform.position.z + distFromBoss),
+                    new Vector3(midPoint.x + i * distBetweenCubes,
+                    midPoint.y + j * distBetweenCubes, transform.position.z + cubeDistFromBoss),
                     new Quaternion());
                 }
                 currentCubes[curNum] = newCube;
@@ -138,7 +163,7 @@ public class cubeBossScript : MonoBehaviour
     void launchAsNeeded()
     {
         //launch the cubes one at a time
-        float timeBetweenSingleCubeLaunch = (delayBetweenNewGrid * .75f) / (gridDimension * gridDimension);
+        float timeBetweenSingleCubeLaunch = (delayBetweenNewGrid * .65f) / (gridDimension * gridDimension);
         //Debug.Log("current cubes " + currentCubes);
 
         if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
@@ -156,18 +181,96 @@ public class cubeBossScript : MonoBehaviour
         {
             destroyCubes();
             spawnCubes();
+            batchesMade += 1;
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void computeDestination()
+    {
+        if (timesDestinationReached >= 3)
+        {
+            int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
+            currentPhase = (bossPhases)((((int)currentPhase) + 1) % totalPhases);
+            timesDestinationReached = 0;
+            return;
+        }
+        movementDirection = calcSidePlayerOn();
+        currentTargetPos = new Vector3(target.position.x, 0, target.position.z);
+        timesDestinationReached += 1;
+
+    }
+
+    void moveOnAxis()
+    {
+        //set the target at the beginning
+        if (movementDirection == null || currentTargetPos == null)
+        {
+            timesDestinationReached -= 1;
+            computeDestination();
+
+        }
+
+        //Debug.Log("movement direction " + movementDirection);
+
+        //move on different axis based on which one the player is farther away on
+        if (movementDirection == "x")
+        {
+            if (transform.position.x > currentTargetPos.x)
+                moveAmount = -1 * Mathf.Abs(moveAmount);
+            else
+                moveAmount = Mathf.Abs(moveAmount);
+
+            transform.position += new Vector3(moveAmount, 0, 0);
+            if (Mathf.Abs(transform.position.x - currentTargetPos.x) < 0.5f)
+                computeDestination();
+
+        }
+        else if (movementDirection == "z")
+        {
+            if (transform.position.z > currentTargetPos.z)
+                moveAmount = -1 * Mathf.Abs(moveAmount);
+            else
+                moveAmount = Mathf.Abs(moveAmount);
+            transform.position += new Vector3(0, 0, moveAmount);
+            if (Mathf.Abs(transform.position.z - currentTargetPos.z) < 0.5f)
+                computeDestination();
+
+        }
+
+    }
+
+    private void FixedUpdate()
     {
         if (target == null)
         {
             setup();
             return;
         }
-        makeNewBatch();
-        launchAsNeeded();
+
+        switch (currentPhase)
+        {
+            case bossPhases.singleShot:
+                makeNewBatch();
+                launchAsNeeded();
+                break;
+            case bossPhases.moving:
+                moveOnAxis();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //if (target == null)
+        //{
+        //    setup();
+        //    return;
+        //}
+
+
     }
 }

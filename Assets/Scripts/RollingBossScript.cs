@@ -322,11 +322,8 @@ public class RollingBossScript : MonoBehaviour
         {
             //get the total number of phases the boss can have
             int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
-            // TODO: take this out after testing
-            //currentPhaseNum++;
             currentPhase = (bossPhases)(currentPhaseNum % totalPhases);
 
-            // TODO: put this back********************************************************************************
             currentPhaseNum++;
             Debug.Log("Changed phase");
             isDoneWithCurrentPhase = false;

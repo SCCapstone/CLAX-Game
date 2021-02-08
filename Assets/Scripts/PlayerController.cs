@@ -338,7 +338,7 @@ public class PlayerController : MonoBehaviour
     {
         if (menuListener == null)
         {
-            Debug.Log("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
+            Debug.LogError("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
         }
         if (context.phase != InputActionPhase.Performed ||
             (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == true))

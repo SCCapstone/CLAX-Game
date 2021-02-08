@@ -6,8 +6,8 @@ public class cubeAttackPlayer : MonoBehaviour
 {
     //private GameObject target;
     public Vector3 goalCoords;
-    float xzSpeed = 4;
-    float ySpeed = 2;
+    //float xzSpeed = 4;
+    //float ySpeed = 2;
     public bool shouldMove = false;
     float timeMade;
 
@@ -24,7 +24,7 @@ public class cubeAttackPlayer : MonoBehaviour
     {
         var target = GameObject.FindGameObjectWithTag("Player");
         goalCoords = target.transform.position;
-        Debug.Log("goal coords " + goalCoords);
+        //Debug.Log("goal coords " + goalCoords);
 
     }
 
