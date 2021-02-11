@@ -32,20 +32,25 @@ public class FallingPlatform : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(!isFalling)
+
+        if (!isFalling)
+        {
+
+            //Debug.Log(collision.);
             if (collision.gameObject.CompareTag("Player"))
             {
                 isFalling = true;
-               
+
                 //fallTimer = fallDelay;
             }
+        }
     }
 
     void FixedUpdate()
     {
         if (isFalling)
         {
-            
+
 
             if (fallTimer >= respawnDelay)
             {
@@ -69,8 +74,8 @@ public class FallingPlatform : MonoBehaviour
             }
 
             fallTimer += Time.fixedDeltaTime;
-            if(fallTimer > 0)
-                colorChange(fallTimer/fallDelay);
+            if (fallTimer > 0)
+                colorChange(fallTimer / fallDelay);
         }
     }
 
@@ -78,8 +83,8 @@ public class FallingPlatform : MonoBehaviour
     {
         if (change > 1)
             change = 1;
-       
+
         platformRenderer.material.Lerp(start, end, change);
-        
+
     }
 }
