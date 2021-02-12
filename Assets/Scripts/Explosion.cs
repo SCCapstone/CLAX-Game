@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
+    public Vector3 position = Vector3.zero;
+
     public float timer = 0f;
     public float growTime = 4.0f;
+
     public float maxSize = 6.0f;
+
     public bool isMaxSize = false;
     public bool isShrinking = false;
 
@@ -60,7 +64,6 @@ public class Explosion : MonoBehaviour
         wasInitialized = true;
         this.enemyLayerNum = enemyLayerNum;
         this.damage = damage;
-        //this.velocity = this.transform.forward;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -82,6 +85,7 @@ public class Explosion : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        transform.position = position;
         if (isMaxSize)
         {
             StartCoroutine(Shrink());

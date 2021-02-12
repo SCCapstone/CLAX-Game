@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4060326886521565270}
   - component: {fileID: 2730105828468745768}
   - component: {fileID: -2617739505037022597}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlayerExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,6 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883f5a40ac4c6b9489d3b821764f6aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
   timer: 0
   growTime: 4
   maxSize: 6
