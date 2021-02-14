@@ -35,11 +35,9 @@ public class AliveObject : MonoBehaviour
             lastHitTime = Time.time;
 
             SetHealth(health - amount);
-            Debug.Log("New Health " + health);
 
+            Debug.Log("New Health is " + health);
         }
-
-
     }
 
     /*
@@ -53,8 +51,8 @@ public class AliveObject : MonoBehaviour
         if (health <= 0.0f)
         {
             health = 0.0f;
-            Kill();
 
+            Kill();
         }
     }
 
@@ -63,11 +61,10 @@ public class AliveObject : MonoBehaviour
     {
         // TODO: Death events and animations
         // TODO: OnKill event
-        Debug.Log("tag " + gameObject.transform.tag);
 
         if (gameObject.transform.CompareTag("Player"))
         {
-            Debug.Log("reloading scene");
+            Debug.Log("Reloading scene");
 
             //Invoke("respawnPlayer", 1.0f);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -78,9 +75,8 @@ public class AliveObject : MonoBehaviour
 
     public void RespawnPlayer()
     {
-        Debug.Log("ran respawn");
+        Debug.Log("Ran respawn");
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
     }
 }

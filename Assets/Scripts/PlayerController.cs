@@ -47,17 +47,16 @@ public class PlayerController : MonoBehaviour
 
     public float dieAtY;
 
-
     [Header("Projectile")]
     public float projectileSpeed;
 
     private bool prevOnGround = false;
     private bool onGround = false;
     private float groundEpsilon = 1e-1f;
-    private Vector3 groundNormal = Vector3.zero;
+    //private Vector3 groundNormal = Vector3.zero;
     private GameObject ground;
     private Vector3 groundLastPosition;
-    private Quaternion groundLastRotation;
+    //private Quaternion groundLastRotation;
 
     private bool holdJump = false;
     private int jumpCounter = 0;
@@ -71,14 +70,13 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputActions inputs;
 
-    public Transform currentTarget;
+    public Transform currentTarget; // What is this?
 
     GameObject menuListener;
 
-
     private void Awake()
     {
-        // Connect input events to callbacks
+        // Event callbacks
 
         inputs = new PlayerInputActions();
 
@@ -94,17 +92,17 @@ public class PlayerController : MonoBehaviour
 
         inputs.World.Use.performed += OnUse;
 
+        // Rigidbody physics
 
         rigidbody = GetComponent<Rigidbody>();
+
+        // Pause menu
 
         //transform.LookAt(currentTarget);
         menuListener = GameObject.Find("MenuListen");
 
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-
     }
 
     private void OnEnable()
@@ -158,8 +156,7 @@ public class PlayerController : MonoBehaviour
         Vector3 offsetY = playerCamera.transform.up * cameraOffsets.y;
         Vector3 offsetZ = playerCamera.transform.forward * cameraOffsets.z;
 
-        RaycastHit hit;
-        bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out hit, Mathf.Abs(cameraOffsets.z));
+        bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out RaycastHit hit, Mathf.Abs(cameraOffsets.z));
 
         playerCamera.transform.position = hasHit ? hit.point : cameraTarget + offsetX + offsetY + offsetZ;
 
@@ -198,7 +195,7 @@ public class PlayerController : MonoBehaviour
             if (ground)
             {
                 groundLastPosition = ground.transform.position;
-                groundLastRotation = ground.transform.rotation;
+                //groundLastRotation = ground.transform.rotation;
             }
         }
     }
@@ -278,7 +275,7 @@ public class PlayerController : MonoBehaviour
 
     public bool GetGrounded()
     {
-        groundNormal = Vector3.zero;
+        //groundNormal = Vector3.zero;
         ground = null;
 
         /*if (rigidbody.velocity.y > 0.0f)
@@ -296,7 +293,7 @@ public class PlayerController : MonoBehaviour
 
             if (Mathf.Abs(angle) <= maxAngle && Mathf.Abs(hitResult.distance - centerHeight + 0.5f) <= groundEpsilon)
             {
-                groundNormal = hitResult.normal;
+                //groundNormal = hitResult.normal;
                 ground = hitResult.collider.gameObject;
 
                 return true;
@@ -336,36 +333,34 @@ public class PlayerController : MonoBehaviour
 
     public void OnUse(InputAction.CallbackContext context)
     {
-        if (menuListener == null)
-        {
-            Debug.LogError("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
-        }
-        if (context.phase != InputActionPhase.Performed ||
-            (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == true))
+        if (context.phase != InputActionPhase.Performed)
         {
             return;
         }
 
-        //make a new bullet and initialize who the enemy is (9 is the enemy layer)
+        if (menuListener == null)
+        {
+            Debug.LogError("Pause menu not found, check if the pause menu is in the scene or attached to the script");
+        }
+        else if (menuListener.GetComponent<PauseMenu>().isGamePaused)
+        {
+            return;
+        }
+
+        // Make a new bullet and initialize who the enemy is (9 is the enemy layer)
         Projectile instance = Instantiate(bulletPrefab).GetComponent<Projectile>();
         instance.Initialize(9);
 
+        // Get horizontal facing vector
         Vector3 offset = playerCamera.transform.forward;
-        //Debug.Log("offset " + offset);
-
-
         offset.y = 0.0f;
         offset.Normalize();
-        //Debug.Log("after offset " + offset);
-
 
         Projectile projectile = instance.GetComponent<Projectile>();
 
         projectile.position = transform.position + offset;
-        //Debug.Log("proj speed " + projectileSpeed);
-
-        //Debug.Log("setting to " + offset * projectileSpeed);
-
         projectile.velocity = offset * projectileSpeed;
+
+        //Debug.Log("Projectile velocity set to " + offset * projectileSpeed);
     }
 }
