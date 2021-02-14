@@ -25,7 +25,6 @@ public class AliveObject : MonoBehaviour
 
     /*
      * Deal damage this object
-     * Returns how much real damage was dealt
      */
     public void Damage(float amount)
     {
