@@ -58,13 +58,14 @@ public class TriangleBossScript : MonoBehaviour
 
         GetTarget();
 
+        if (state == BossState.Decide)
+        {
+            // Randomly choose between moving or attacking at first
+            state = Random.value < 0.5f ? BossState.Move : BossState.Attack;
+        }
+
         switch (state)
         {
-            case BossState.Decide:
-                // Randomly choose between moving or attacking at first
-                state = Random.value < 0.5f ? BossState.Move : BossState.Attack;
-
-                break;
             case BossState.Move:
                 StartAction("Move");
 
@@ -101,6 +102,11 @@ public class TriangleBossScript : MonoBehaviour
 
     void StartAction(string actionName)
     {
+        if (inAction)
+        {
+            return;
+        }
+
         inAction = true;
         actionStartTime = Time.time;
 
@@ -162,7 +168,26 @@ public class TriangleBossScript : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(1.0f);
+        // Filler movement for observational debugging only
+
+        Vector3 startPosition = transform.position;
+
+        float delta = Time.fixedDeltaTime;
+
+        float offset;
+
+        for (float i = 0.0f; i < 1.0f; i += delta)
+        {
+            offset = Mathf.Sin(i * Mathf.PI) * 2.0f;
+
+            transform.position = new Vector3(startPosition.x, startPosition.y + offset, startPosition.z);
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        transform.position = startPosition;
+
+        yield return new WaitForSeconds(0.2f);
 
         EndAction();
     }
