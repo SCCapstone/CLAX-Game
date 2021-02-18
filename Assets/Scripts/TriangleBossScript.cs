@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TriangleBossScript : MonoBehaviour
 {
-    private const float UPDATE_INTERVAL = 0.5f;
+    private const float UPDATE_INTERVAL = 1.0f;
+    private const float ACTION_TIMEOUT = 10.0f;
 
     [HeaderAttribute("Movement")]
     public float movementDelay;
@@ -16,8 +16,6 @@ public class TriangleBossScript : MonoBehaviour
     public float minimumRange;
     public float maximumRange;
 
-    float nextAttackTime = 0.0f;
-
     GameObject target;
 
     private enum BossState
@@ -28,6 +26,10 @@ public class TriangleBossScript : MonoBehaviour
     }
 
     private BossState state;
+    private bool inAction;
+    private float actionStartTime;
+
+    private float nextAttackTime = 0.0f;
 
     private float lastUpdateTime;
 
@@ -52,18 +54,19 @@ public class TriangleBossScript : MonoBehaviour
 
         Debug.Log("Begin Triangle Boss update cycle");
 
+        CheckSafety();
+
         GetTarget();
 
         switch (state)
         {
             case BossState.Decide:
-                // Do not execute a state coroutine
                 // Randomly choose between moving or attacking at first
                 state = Random.value < 0.5f ? BossState.Move : BossState.Attack;
 
                 break;
             case BossState.Move:
-                StartCoroutine("Move");
+                StartAction("Move");
 
                 break;
             case BossState.Attack:
@@ -71,7 +74,7 @@ public class TriangleBossScript : MonoBehaviour
                 {
                     nextAttackTime = Time.time + Random.Range(attackIntervalMin, attackIntervalMax);
 
-                    StartCoroutine("Attack");
+                    StartAction("Attack");
                 }
 
                 break;
@@ -94,6 +97,32 @@ public class TriangleBossScript : MonoBehaviour
         int i = Random.Range(0, targets.Length);
 
         target = targets[i];
+    }
+
+    void StartAction(string actionName)
+    {
+        inAction = true;
+        actionStartTime = Time.time;
+
+        StartCoroutine(actionName);
+    }
+
+    void EndAction()
+    {
+        inAction = false;
+        state = BossState.Decide;
+
+        StopAllCoroutines();
+    }
+
+    // Safety checks to ensure the show goes on in the case of exceptional circumstances
+    void CheckSafety()
+    {
+        // If not performing action, or in a deciding state, or action has timed out, then end all actions
+        if (!inAction || state == BossState.Decide || Time.time - actionStartTime > ACTION_TIMEOUT)
+        {
+            EndAction();
+        }
     }
 
     IEnumerator Move()
@@ -122,8 +151,8 @@ public class TriangleBossScript : MonoBehaviour
         transform.LookAt(target.transform.position);
 
         yield return new WaitForSeconds(1.0f);
-        
-        state = BossState.Decide;
+
+        EndAction();
     }
 
     IEnumerator Attack()
@@ -133,6 +162,8 @@ public class TriangleBossScript : MonoBehaviour
             yield return null;
         }
 
-        state = BossState.Decide;
+        yield return new WaitForSeconds(1.0f);
+
+        EndAction();
     }
 }
