@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class timerOptionText : MonoBehaviour
+public class TimerOptionText : MonoBehaviour
 {
     private TextMeshProUGUI textBoxGUI;
     public GameObject timerObject;
