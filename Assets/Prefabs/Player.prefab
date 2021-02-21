@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 6257623721124609866}
   bulletPrefab: {fileID: 2155125630583193527, guid: 637087b854c7a184ba64a2186ac6188b, type: 3}
+  explosionPrefab: {fileID: 7034022416620639011, guid: 785233ddea09915468cfa5216e7c29da, type: 3}
   cameraEnabled: 1
   lookSensitivityScale: 90
   lookSensitivityX: 0.5
@@ -73,6 +74,8 @@ MonoBehaviour:
   health: 100
   dieAtY: -20
   projectileSpeed: 25
+  explosionTime: 0
+  explosionSize: 0
   currentTarget: {fileID: 0}
 --- !u!54 &6054908338268949753
 Rigidbody:

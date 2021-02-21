@@ -81,6 +81,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Explosion"",
+                    ""type"": ""Button"",
+                    ""id"": ""8a68642a-e7c5-4b1e-a5ef-0b931efdf47a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -237,6 +245,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d52c026-4b4d-4fb7-9cfe-5f9006f18bc5"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Default"",
+                    ""action"": ""Explosion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -297,6 +316,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_World_Interact = m_World.FindAction("Interact", throwIfNotFound: true);
         m_World_Use = m_World.FindAction("Use", throwIfNotFound: true);
         m_World_Pause = m_World.FindAction("Pause", throwIfNotFound: true);
+        m_World_Explosion = m_World.FindAction("Explosion", throwIfNotFound: true);
         // Interface
         m_Interface = asset.FindActionMap("Interface", throwIfNotFound: true);
         m_Interface_PauseMenu = m_Interface.FindAction("PauseMenu", throwIfNotFound: true);
@@ -357,6 +377,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_World_Interact;
     private readonly InputAction m_World_Use;
     private readonly InputAction m_World_Pause;
+    private readonly InputAction m_World_Explosion;
     public struct WorldActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -369,6 +390,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Interact => m_Wrapper.m_World_Interact;
         public InputAction @Use => m_Wrapper.m_World_Use;
         public InputAction @Pause => m_Wrapper.m_World_Pause;
+        public InputAction @Explosion => m_Wrapper.m_World_Explosion;
         public InputActionMap Get() { return m_Wrapper.m_World; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -402,6 +424,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Pause.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnPause;
+                @Explosion.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnExplosion;
+                @Explosion.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnExplosion;
+                @Explosion.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnExplosion;
             }
             m_Wrapper.m_WorldActionsCallbackInterface = instance;
             if (instance != null)
@@ -430,6 +455,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @Explosion.started += instance.OnExplosion;
+                @Explosion.performed += instance.OnExplosion;
+                @Explosion.canceled += instance.OnExplosion;
             }
         }
     }
@@ -486,6 +514,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnExplosion(InputAction.CallbackContext context);
     }
     public interface IInterfaceActions
     {
