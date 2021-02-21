@@ -24,7 +24,7 @@ public class cubeBossScript : MonoBehaviour
     float lastSpawnTime = 0;
 
     //float delayBetweenRowLaunch = 1;
-    public float delayBetweenNewGrid = 7;
+    public float delayBetweenNewGrid = 3;
 
 
     int gridDimension = 3;
@@ -42,10 +42,10 @@ public class cubeBossScript : MonoBehaviour
 
     enum bossPhases
     {
-        singleShot = 0, moving
+        singleShot = 0, moving, allShoot
     }
 
-    bossPhases currentPhase = bossPhases.moving;
+    bossPhases currentPhase = bossPhases.allShoot;
 
     // Start is called before the first frame update
     void Start()
@@ -63,7 +63,7 @@ public class cubeBossScript : MonoBehaviour
 
             target = playerObject.transform;
         }
-        lastCubeLaunchTime = delayBetweenNewGrid - 3;
+        lastCubeLaunchTime = 0;
     }
 
     string calcSidePlayerOn()
@@ -172,26 +172,66 @@ public class cubeBossScript : MonoBehaviour
             currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
             lastIdLaunched += 1;
             lastCubeLaunchTime = Time.time;
+            delayBetweenNewGrid = 5;
         }
+
+    }
+
+    void launchRowAsNeeded()
+    {
+        //launch the cubes one at a time
+        float timeBetweenSingleCubeLaunch = 1;
+        //Debug.Log("current cubes " + currentCubes);
+        if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch &&
+            lastIdLaunched < currentCubes.Length)
+        {
+            for (int i = 0; i < gridDimension; i++)
+            {
+
+                currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
+                lastIdLaunched += 1;
+                lastCubeLaunchTime = Time.time;
+            }
+        }
+        delayBetweenNewGrid = 3;
     }
 
     void makeNewBatch()
     {
+
         if (Time.time - lastSpawnTime > delayBetweenNewGrid)
         {
+            Debug.Log("making new grid");
+
             destroyCubes();
-            spawnCubes();
             batchesMade += 1;
+            if (batchesMade == 3)
+            {
+                goToNextPhase();
+                batchesMade = 0;
+            }
+            else
+            {
+                spawnCubes();
+
+            }
         }
+    }
+
+    void goToNextPhase()
+    {
+        int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
+        currentPhase = (bossPhases)((((int)currentPhase) + 1) % totalPhases);
+        timesDestinationReached = 0;
+
     }
 
     void computeDestination()
     {
         if (timesDestinationReached >= 3)
         {
-            int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
-            currentPhase = (bossPhases)((((int)currentPhase) + 1) % totalPhases);
-            timesDestinationReached = 0;
+            goToNextPhase();
+            //timesDestinationReached = 1;
             return;
         }
         movementDirection = calcSidePlayerOn();
@@ -252,6 +292,10 @@ public class cubeBossScript : MonoBehaviour
             case bossPhases.singleShot:
                 makeNewBatch();
                 launchAsNeeded();
+                break;
+            case bossPhases.allShoot:
+                makeNewBatch();
+                launchRowAsNeeded();
                 break;
             case bossPhases.moving:
                 moveOnAxis();

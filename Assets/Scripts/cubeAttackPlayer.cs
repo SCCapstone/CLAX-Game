@@ -20,10 +20,14 @@ public class cubeAttackPlayer : MonoBehaviour
         goalCoords = new Vector3(0, 0);
     }
 
-    void getGoal()
+    void getGoal(int xOffset = 0, int yOffset = 0, int zOffset = 0)
     {
         var target = GameObject.FindGameObjectWithTag("Player");
         goalCoords = target.transform.position;
+
+        goalCoords += new Vector3(Random.Range(-xOffset, xOffset),
+            Random.Range(-yOffset, yOffset),
+            Random.Range(-zOffset, zOffset));
         //Debug.Log("goal coords " + goalCoords);
 
     }
@@ -33,7 +37,7 @@ public class cubeAttackPlayer : MonoBehaviour
         //check if a goal has not been set yet
         if (goalCoords == new Vector3(0, 0))
         {
-            getGoal();
+            getGoal(2, 0, 2);
         }
         transform.position = Vector3.MoveTowards(transform.position, goalCoords, 1);
 

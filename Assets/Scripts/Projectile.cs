@@ -34,9 +34,11 @@ public class Projectile : MonoBehaviour
     {
         //Debug.Log("Triggered");
 
+
         // 9 is the layer id for enemy
         if (other.gameObject.layer == enemyLayerNum)
         {
+            Debug.Log("hit enemy");
             AliveObject enemy = other.gameObject.GetComponent<AliveObject>();
 
             enemy.Damage(damage);
