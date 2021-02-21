@@ -22,17 +22,17 @@ public class Explosion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(!isMaxSize)
+        if (!isMaxSize)
         {
             StartCoroutine(Grow());
         }
-        Destroy(gameObject, growTime*2);
+        Destroy(gameObject, growTime * 2);
     }
 
     private IEnumerator Grow()
     {
         Vector3 startScale = transform.localScale;
-        Vector3 maxScale = new Vector3(maxSize,maxSize,maxSize);
+        Vector3 maxScale = new Vector3(maxSize, maxSize, maxSize);
         do
         {
             transform.localScale = Vector4.Lerp(startScale, maxScale, timer / growTime);
@@ -48,7 +48,7 @@ public class Explosion : MonoBehaviour
         isShrinking = true;
         isMaxSize = false;
         Vector3 startScale = transform.localScale;
-        Vector3 minScale = new Vector3(0,0,0);
+        Vector3 minScale = new Vector3(0, 0, 0);
         timer = 0;
         do
         {
