@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HubSide : MonoBehaviour
 {
@@ -18,10 +19,10 @@ public class HubSide : MonoBehaviour
     {
         
     }
-    OnTriggerEnter(Collider other)
-    {
+    void OnTriggerEnter(Collider other)
+    { 
         //TODO add boss is dead logic
-        if(Collider.Tag == "Player")
+        if(other.gameObject.CompareTag("Player"))
         {
             SceneManager.LoadSceneAsync(sceneName);
         }
