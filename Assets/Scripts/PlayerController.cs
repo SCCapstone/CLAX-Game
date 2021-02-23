@@ -379,7 +379,8 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
         }
-        if (context.phase != InputActionPhase.Performed ||
+        var existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
+        if (context.phase != InputActionPhase.Performed || existingCount >= 5 ||
             (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == true))
         {
             return;
