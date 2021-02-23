@@ -8,31 +8,29 @@ public class BossSide : MonoBehaviour
     [Header("Prefabs")]
     public GameObject doorway;
     public GameObject player;
-    public GameObject Boss;
     public string sceneName;
 
     public Material change;
 
-    private Renderer renderer;
+    private Renderer doorRenderer;
     
-    private bool active;
+    private bool active = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        active = false;
-        renderer = doorway.GetComponentInChildren<Renderer>();
+        doorRenderer = doorway.transform.GetChild(0).GetComponentInChildren<Renderer>();
         player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
-        player.transform.position = doorway.transform.GetChild(0).position;
+        player.transform.position = doorway.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Boss.GetComponent<AliveObject>().health <= 0.0f)
+        if (globals.pill && !active)
         {
+            doorRenderer.material = change;
             active = true;
-            renderer.material = change;
         } 
     }
 

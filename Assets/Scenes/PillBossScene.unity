@@ -262,6 +262,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1671587412203255263, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
+      propertyPath: doorway
+      value: 
+      objectReference: {fileID: 154681051}
+    - target: {fileID: 1671587412203255263, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+    - target: {fileID: 1671587412203255263, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
+      propertyPath: change
+      value: 
+      objectReference: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
+    - target: {fileID: 1671587412203255263, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
+      propertyPath: sceneName
+      value: Hub1
+      objectReference: {fileID: 0}
     - target: {fileID: 5194948271893151205, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
       propertyPath: spawnPoint
       value: 
@@ -339,6 +355,11 @@ PrefabInstance:
 --- !u!1 &154681050 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2265233373428893747, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
+  m_PrefabInstance: {fileID: 154681049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &154681051 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7300248672465036506, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
   m_PrefabInstance: {fileID: 154681049}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &462399914 stripped
