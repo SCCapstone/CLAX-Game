@@ -149,7 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
     - target: {fileID: 1671587412203255263, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
       propertyPath: sceneName
-      value: Hub1
+      value: Hub2
       objectReference: {fileID: 0}
     - target: {fileID: 5194948271893151205, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
       propertyPath: spawnPoint
