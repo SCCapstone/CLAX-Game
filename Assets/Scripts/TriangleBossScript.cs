@@ -48,6 +48,8 @@ public class TriangleBossScript : AliveObject
     void OnDestroy()
     {
         // Cleanup objects if necessary
+
+        globals.pyramid = true;
     }
 
     void FixedUpdate()
