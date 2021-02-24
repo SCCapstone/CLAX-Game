@@ -82,6 +82,7 @@ public class RollingBossScript : MonoBehaviour
         {
             Destroy(madeWall);
         }
+        globals.pill = true;
     }
 
     void Cooldowns()

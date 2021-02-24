@@ -68,6 +68,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Explosion",
+                    "type": "Button",
+                    "id": "8a68642a-e7c5-4b1e-a5ef-0b931efdf47a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -222,6 +230,17 @@
                     "processors": "",
                     "groups": "Default",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d52c026-4b4d-4fb7-9cfe-5f9006f18bc5",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Default",
+                    "action": "Explosion",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [Header("Prefabs")]
     public Camera playerCamera;
     public GameObject bulletPrefab;
+    public GameObject explosionPrefab;
 
     [Header("Camera")]
     public bool cameraEnabled = true;
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Projectile")]
     public float projectileSpeed;
+
 
     private bool prevOnGround = false;
     private bool onGround = false;
@@ -92,7 +94,10 @@ public class PlayerController : MonoBehaviour
 
         inputs.World.Use.performed += OnUse;
 
+        inputs.World.Explosion.performed += OnRightClick;
+
         // Rigidbody physics
+
 
         rigidbody = GetComponent<Rigidbody>();
 
@@ -362,5 +367,33 @@ public class PlayerController : MonoBehaviour
         projectile.velocity = offset * projectileSpeed;
 
         //Debug.Log("Projectile velocity set to " + offset * projectileSpeed);
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (menuListener == null)
+        {
+            Debug.Log("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
+        }
+        var existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
+        if (context.phase != InputActionPhase.Performed || existingCount >= 5 ||
+            (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == true))
+        {
+            return;
+        }
+
+        //make a new explosion and initialize who the enemy is (9 is the enemy layer)
+        Explosion instance = Instantiate(explosionPrefab).GetComponent<Explosion>();
+        instance.Initialize(9);
+
+        Vector3 offset = playerCamera.transform.forward;
+        //Debug.Log("offset " + offset);
+
+        offset.y = 0.0f;
+        offset.Normalize();
+
+        Explosion explosion = instance.GetComponent<Explosion>();
+
+        explosion.position = transform.position + offset;
     }
 }

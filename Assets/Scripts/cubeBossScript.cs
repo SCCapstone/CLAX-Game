@@ -150,6 +150,12 @@ public class cubeBossScript : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        destroyCubes();
+        globals.cube = true;
+    }
+
     void launchRowByRow()
     {
 
@@ -221,7 +227,9 @@ public class cubeBossScript : MonoBehaviour
     void goToNextPhase()
     {
         int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
-        currentPhase = (bossPhases)((((int)currentPhase) + 1) % totalPhases);
+        //currentPhase = (bossPhases)((((int)currentPhase) + 1) % totalPhases);
+        currentPhase = (bossPhases)Random.Range(0, totalPhases - 1);
+
         timesDestinationReached = 0;
 
     }

@@ -73,6 +73,8 @@ public class PauseMenu : MonoBehaviour
     public void Unpause()
     {
         pauseMenu.SetActive(false);
+        optionsMenu.SetActive(false);
+
         AudioListener.pause = false;
         Time.timeScale = 1;
         Debug.Log("ran unpause");
