@@ -98,7 +98,6 @@ public class PlayerController : MonoBehaviour
 
         // Rigidbody physics
 
-
         rigidbody = GetComponent<Rigidbody>();
 
         // Pause menu
