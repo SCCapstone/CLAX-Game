@@ -9,6 +9,8 @@ public class globals : MonoBehaviour
     public static bool cube = false;
     public static bool pyramid = false;
 
+    public static int spawnPoint = 0;
+
     public static int difficulty = 2;
 
     // Start is called before the first frame update

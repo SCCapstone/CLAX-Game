@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class HubSide : MonoBehaviour
 {
     public string sceneName;
-    bool spawnEnabled;
 
     // Start is called before the first frame update
     void Start()

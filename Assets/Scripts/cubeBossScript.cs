@@ -153,7 +153,7 @@ public class cubeBossScript : MonoBehaviour
     private void OnDestroy()
     {
         destroyCubes();
-
+        globals.cube = true;
     }
 
     void launchRowByRow()
