@@ -50,8 +50,7 @@ public class cubeBossScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-
+        globals.boss = true;
     }
 
     void setup()

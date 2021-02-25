@@ -77,7 +77,7 @@ public class AliveObject : MonoBehaviour
     public void RespawnPlayer()
     {
         Debug.Log("Ran respawn");
-
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
