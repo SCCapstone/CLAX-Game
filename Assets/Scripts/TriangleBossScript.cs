@@ -72,7 +72,7 @@ public class TriangleBossScript : AliveObject
     void Start()
     {
         state = BossState.Decide;
-
+        globals.boss = true;
         lastUpdateTime = 0;
     }
 
