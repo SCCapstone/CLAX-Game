@@ -5,9 +5,12 @@ using UnityEngine;
 public class globals : MonoBehaviour
 {
     //Boss flags
+    public static bool boss = true;
+
     public static bool pill = false;
     public static bool cube = false;
     public static bool pyramid = false;
+    public static bool won = false;
 
     public static int spawnPoint = 0;
 
@@ -22,6 +25,9 @@ public class globals : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(pill && cube && pyramid && !won)
+        {
+            won = true;
+        }
     }
 }

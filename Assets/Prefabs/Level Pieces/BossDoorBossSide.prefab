@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 2380283377549713085}
   - component: {fileID: 6754836674916226945}
   - component: {fileID: 1671587412203255263}
+  - component: {fileID: 8324156951495712082}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -204,10 +205,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7ccc3f3c2d2da4b8d5987541be91f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorway: {fileID: 0}
-  player: {fileID: 0}
+  doorway: {fileID: 7300248672465036506}
+  player: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
   sceneName: 
+  otherSideSpawnPoint: 0
   change: {fileID: 0}
+--- !u!114 &8324156951495712082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7300248672465036506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208f823ac8522804cb1facfc5d6b8a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 7300248672465036506}
+  player: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+  change: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
+  spawnNum: 0
+  canSetSpawn: 0
 --- !u!1 &8822371457504919624
 GameObject:
   m_ObjectHideFlags: 0

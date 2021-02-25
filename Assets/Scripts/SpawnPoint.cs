@@ -8,26 +8,49 @@ public class SpawnPoint : MonoBehaviour
     [Header("Prefabs")]
     public GameObject spawnPoint;
     public GameObject player;
-    
-    bool respawn = false;
+    private Renderer spawnPointRenderer;
+    private Material original;
+    public Material change;
+
+    public int spawnNum;
+
+    public bool canSetSpawn;
+
+    private bool active;
     // Start is called before the first frame update
     void Start()
     {
-        player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
-        player.transform.position = spawnPoint.transform.position;
+        spawnPointRenderer = spawnPoint.GetComponentInChildren<Renderer>();
+        original = spawnPointRenderer.material;
+        if (spawnNum == globals.spawnPoint)
+        {
+            player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
+            player.transform.position = spawnPoint.transform.position;
+            active = true;
+            spawnPointRenderer.material = change;
+        }
+        else
+        {
+            active = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(spawnNum != globals.spawnPoint && active)
+        {
+            active = false;
+            spawnPointRenderer.material = original;
+        }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && canSetSpawn)
         {
-            //Debug.Log("Collision has occured");
+            globals.spawnPoint = spawnNum;
+            spawnPointRenderer.material = change;
         }
     }
 }

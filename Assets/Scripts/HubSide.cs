@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class HubSide : MonoBehaviour
 {
     public string sceneName;
+    public int otherSideSpawnPoint;
+    public bool BossDoor;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +28,11 @@ public class HubSide : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player Entered");
+            globals.spawnPoint = 0;
+            if (BossDoor)
+            {
+                globals.boss = true;
+            }
             SceneManager.LoadSceneAsync(sceneName);
         }
     }
