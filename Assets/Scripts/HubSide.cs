@@ -8,7 +8,6 @@ public class HubSide : MonoBehaviour
     public GameObject doorway;
     public string sceneName;
     public int otherSideSpawnPoint;
-    public bool BossDoor;
 
     public Material change;
 
@@ -39,10 +38,6 @@ public class HubSide : MonoBehaviour
         {
             Debug.Log("Player Entered");
             globals.spawnPoint = 0;
-            if (BossDoor)
-            {
-                globals.boss = true;
-            }
             SceneManager.LoadSceneAsync(sceneName);
         }
     }

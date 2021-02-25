@@ -50,6 +50,7 @@ public class RollingBossScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        globals.boss = true;
         //scale = gameObject.transform.localScale;
         lastExpandedTime = Time.time;
         body = GetComponent<Rigidbody>();
