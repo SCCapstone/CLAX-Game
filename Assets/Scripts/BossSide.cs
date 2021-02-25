@@ -9,6 +9,7 @@ public class BossSide : MonoBehaviour
     public GameObject doorway;
     public GameObject player;
     public string sceneName;
+    public int otherSideSpawnPoint;
 
     public Material change;
 
@@ -20,14 +21,14 @@ public class BossSide : MonoBehaviour
     void Start()
     {
         doorRenderer = doorway.transform.GetChild(0).GetComponentInChildren<Renderer>();
-        player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
-        player.transform.position = doorway.transform.position;
+        //player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
+        //player.transform.position = doorway.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (globals.pill && !active)
+        if (!globals.boss && !active)
         {
             doorRenderer.material = change;
             active = true;
@@ -41,6 +42,7 @@ public class BossSide : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && active)
         {
             Debug.Log("Player Entered");
+            globals.spawnPoint = otherSideSpawnPoint;
             SceneManager.LoadSceneAsync(sceneName);
         }
     }
