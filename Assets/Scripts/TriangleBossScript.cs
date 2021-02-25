@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TriangleBossScript : AliveObject
@@ -9,24 +11,40 @@ public class TriangleBossScript : AliveObject
     private const float DEATH_ANIMATION_TARGET_HEIGHT = -2.0f;
     private const float DEATH_ANIMATION_INTENSITY = 0.15f;
 
+    public enum BossState
+    {
+        Decide,
+        Move,
+        Attack
+    }
+
     [HeaderAttribute("Movement")]
     public float movementDelay;
 
     [HeaderAttribute("Attack")]
+    public GameObject projectilePrefab;
+    public float projectileDamage;
+    public float projectileSpeed;
+    public float projectileLifetime;
+    public float projectileDelay;
+
+    public float attackDuration;
+    public float attackWaves;
+
     public float attackIntervalMin;
     public float attackIntervalMax;
 
     public float minimumRange;
     public float maximumRange;
 
-    GameObject target;
-
-    private enum BossState
+    [HeaderAttribute("Action Weights")]
+    public Dictionary<BossState, float> actionWeights = new Dictionary<BossState, float>()
     {
-        Decide,
-        Move,
-        Attack
-    }
+        {BossState.Move, 10},
+        {BossState.Attack, 20}
+    };
+
+    GameObject target;
 
     private BossState state;
     private bool inAction;
@@ -68,13 +86,13 @@ public class TriangleBossScript : AliveObject
         Debug.Log("Begin Triangle Boss update cycle");
 
         CheckSafety();
-
         GetTarget();
 
         if (state == BossState.Decide)
         {
-            // Randomly choose between moving or attacking at first
-            state = Random.value < 0.5f ? BossState.Move : BossState.Attack;
+            // Choose next state randomly based on weights
+
+            state = GetRandomWeightedState();
         }
 
         switch (state)
@@ -101,6 +119,40 @@ public class TriangleBossScript : AliveObject
         }
 
         lastUpdateTime = Time.time;
+    }
+
+    BossState GetRandomWeightedState()
+    {
+        var choices = actionWeights.ToList();
+        float totalWeight = 0.0f;
+
+        // Sort in ascending weights
+        choices.Sort((x, y) => x.Value.CompareTo(y.Value));
+
+        // Get sum of weights
+        foreach (var pair in choices)
+        {
+            if (pair.Key == BossState.Decide)
+            {
+                Debug.LogWarning("Decide is a possible outcome of Decide state. Is this intentional?");
+            }
+
+            totalWeight += pair.Value;
+        }
+
+        // Choosed weighted random
+        float r = Random.Range(0.0f, totalWeight);
+
+        foreach (var pair in choices)
+        {
+            if (r < pair.Value)
+            {
+                return pair.Key;
+            }
+        }
+
+        // Fallback to choose random choice
+        return choices[(int)Random.Range(0.0f, choices.Count)].Key;
     }
 
     public override void Kill()
@@ -170,7 +222,7 @@ public class TriangleBossScript : AliveObject
         float distance = Random.Range(minimumRange, maximumRange);
 
         Vector3 direction = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.forward;
-        Vector3 nextPosition = center + (direction * distance);
+        Vector3 nextPosition = center + (direction * distance) + new Vector3(0.0f, transform.localScale.y / 2.0f, 0.0f);
 
         Vector3 startPosition = transform.position;
 
@@ -185,9 +237,45 @@ public class TriangleBossScript : AliveObject
         transform.position = nextPosition;
         transform.LookAt(target.transform.position);
 
-        yield return new WaitForSeconds(1.0f);
+        //yield return new WaitForSeconds(1.0f);
 
         EndAction();
+    }
+
+    IEnumerator ProjectileLoop(float delay)
+    {
+        float[] angles =
+        {
+            0.0f, 90.0f, 180.0f, 270.0f
+        };
+
+        GameObject projectileInstance;
+        Projectile projectile;
+        ContactDamagePlayer contactDamage;
+
+        Vector3 dir;
+
+        while (true)
+        {
+            float currentAngle = transform.rotation.eulerAngles.y;
+
+            foreach (float angle in angles)
+            {
+                dir = Quaternion.Euler(0.0f, angle + currentAngle, 0.0f) * Vector3.forward;
+
+                projectileInstance = Instantiate(projectilePrefab);
+                projectile = projectileInstance.GetComponent<Projectile>();
+                contactDamage = projectileInstance.GetComponent<ContactDamagePlayer>();
+
+                contactDamage.damageAmount = projectileDamage;
+
+                projectile.position = transform.position + (dir * projectileInstance.transform.localScale.x / 2.0f);
+                projectile.velocity = dir * projectileSpeed;
+                projectile.lifeTime = projectileLifetime;
+            }
+
+            yield return new WaitForSeconds(delay);
+        }
     }
 
     IEnumerator Attack()
@@ -197,26 +285,72 @@ public class TriangleBossScript : AliveObject
             yield return null;
         }
 
-        // Filler movement for observational debugging only
+        Vector3 currentPosition;
+        Vector3 targetPosition;
 
         Vector3 startPosition = transform.position;
+        Vector3 startRotation = transform.rotation.eulerAngles;
 
-        float delta = Time.fixedDeltaTime;
+        // Ease into start position
 
-        float offset;
+        currentPosition = transform.position;
+        targetPosition = startPosition + new Vector3(0.0f, 2.0f, 0.0f);
 
-        for (float i = 0.0f; i < 1.0f; i += delta)
+        for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime)
         {
-            offset = Mathf.Sin(i * Mathf.PI) * 2.0f;
-
-            transform.position = new Vector3(startPosition.x, startPosition.y + offset, startPosition.z);
+            transform.position = Vector3.Lerp(currentPosition, targetPosition, i);
 
             yield return new WaitForFixedUpdate();
         }
 
         transform.position = startPosition;
 
-        yield return new WaitForSeconds(0.2f);
+        // Attack animation and projectiles
+
+        Vector3 pos;
+        Vector3 rot;
+
+        Coroutine projectileLoop = null;
+
+        for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / attackDuration)
+        {
+            pos = startPosition + new Vector3(0.0f, Mathf.Cos(i * Mathf.PI * attackWaves) * 2.0f, 0.0f);
+            rot = startRotation + new Vector3(0.0f, i * 360.0f, 0.0f);
+
+            // Starts projectiles after the first wave
+            if (projectileLoop == null && i > 1.0f / (float)attackWaves)
+            {
+                projectileLoop = StartCoroutine("ProjectileLoop", projectileDelay);
+            }
+
+            transform.position = pos;
+            transform.rotation = Quaternion.Euler(rot);
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        if (projectileLoop != null)
+        {
+            StopCoroutine(projectileLoop);
+        }
+
+        // Ease back to start position
+
+        currentPosition = transform.position;
+        targetPosition = startPosition;
+
+        for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime)
+        {
+            transform.position = Vector3.Lerp(currentPosition, targetPosition, i);
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        transform.position = startPosition;
+
+        // Brief pause before changing state
+
+        yield return new WaitForSeconds(0.5f);
 
         EndAction();
     }
@@ -234,20 +368,20 @@ public class TriangleBossScript : AliveObject
 
         // Play shaking and sinking animation
 
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = new Vector3(startPosition.x, DEATH_ANIMATION_TARGET_HEIGHT, startPosition.z);
+        Transform startTransform = transform;
+        Transform endTransform = transform;
+
+        endTransform.position += new Vector3(0.0f, DEATH_ANIMATION_TARGET_HEIGHT, 0.0f);
 
         Vector3 v;
 
-        for (float i = 0.0f; i < 1.0f; i += Time.deltaTime / DEATH_ANIMATION_TIME)
+        for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / DEATH_ANIMATION_TIME)
         {
-            Debug.Log(i);
-
-            v = Vector3.Lerp(startPosition, endPosition, i);
-
+            v = Vector3.Lerp(startTransform.position, endTransform.position, i);
+            
             transform.position = v + (Random.insideUnitSphere * DEATH_ANIMATION_INTENSITY);
-
-            yield return new WaitForEndOfFrame();
+            
+            yield return new WaitForFixedUpdate();
         }
 
         Destroy(gameObject);
