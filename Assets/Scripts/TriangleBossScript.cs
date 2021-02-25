@@ -70,6 +70,7 @@ public class TriangleBossScript : AliveObject
         // Cleanup objects if necessary
 
         globals.pyramid = true;
+        globals.boss = false;
     }
 
     void FixedUpdate()

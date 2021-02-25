@@ -154,6 +154,7 @@ public class cubeBossScript : MonoBehaviour
     {
         destroyCubes();
         globals.cube = true;
+        globals.boss = false;
     }
 
     void launchRowByRow()
