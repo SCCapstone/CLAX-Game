@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class persistMusicThroughReset : MonoBehaviour
+public class PersistMusicThroughReset : MonoBehaviour
 {
     AudioSource backgroundMusic;
     // Start is called before the first frame update

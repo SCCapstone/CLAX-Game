@@ -45,21 +45,19 @@ public class PlayerController : MonoBehaviour
 
     [Header("Character")]
     public float health;
-
     public float dieAtY;
 
-
-    [Header("Projectile")]
+    [Header("Projectiles")]
     public float projectileSpeed;
-
+    public int maxExplosionCount;
 
     private bool prevOnGround = false;
     private bool onGround = false;
     private float groundEpsilon = 1e-1f;
-    private Vector3 groundNormal = Vector3.zero;
+    //private Vector3 groundNormal = Vector3.zero;
     private GameObject ground;
     private Vector3 groundLastPosition;
-    private Quaternion groundLastRotation;
+    //private Quaternion groundLastRotation;
 
     private bool holdJump = false;
     private int jumpCounter = 0;
@@ -73,14 +71,13 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputActions inputs;
 
-    public Transform currentTarget;
+    public Transform currentTarget; // What is this?
 
     GameObject menuListener;
 
-
     private void Awake()
     {
-        // Connect input events to callbacks
+        // Event callbacks
 
         inputs = new PlayerInputActions();
 
@@ -98,17 +95,17 @@ public class PlayerController : MonoBehaviour
 
         inputs.World.Explosion.performed += OnRightClick;
 
+        // Rigidbody physics
 
         rigidbody = GetComponent<Rigidbody>();
+
+        // Pause menu
 
         //transform.LookAt(currentTarget);
         menuListener = GameObject.Find("MenuListen");
 
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-
     }
 
     private void OnEnable()
@@ -162,8 +159,9 @@ public class PlayerController : MonoBehaviour
         Vector3 offsetY = playerCamera.transform.up * cameraOffsets.y;
         Vector3 offsetZ = playerCamera.transform.forward * cameraOffsets.z;
 
-        RaycastHit hit;
-        bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out hit, Mathf.Abs(cameraOffsets.z));
+        int layerMasks = 1 << 8 & 1 << 9 & 1 << 11;
+
+        bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out RaycastHit hit, Mathf.Abs(cameraOffsets.z), layerMasks);
 
         playerCamera.transform.position = hasHit ? hit.point : cameraTarget + offsetX + offsetY + offsetZ;
 
@@ -202,7 +200,7 @@ public class PlayerController : MonoBehaviour
             if (ground)
             {
                 groundLastPosition = ground.transform.position;
-                groundLastRotation = ground.transform.rotation;
+                //groundLastRotation = ground.transform.rotation;
             }
         }
     }
@@ -282,7 +280,7 @@ public class PlayerController : MonoBehaviour
 
     public bool GetGrounded()
     {
-        groundNormal = Vector3.zero;
+        //groundNormal = Vector3.zero;
         ground = null;
 
         /*if (rigidbody.velocity.y > 0.0f)
@@ -300,7 +298,7 @@ public class PlayerController : MonoBehaviour
 
             if (Mathf.Abs(angle) <= maxAngle && Mathf.Abs(hitResult.distance - centerHeight + 0.5f) <= groundEpsilon)
             {
-                groundNormal = hitResult.normal;
+                //groundNormal = hitResult.normal;
                 ground = hitResult.collider.gameObject;
 
                 return true;
@@ -340,64 +338,73 @@ public class PlayerController : MonoBehaviour
 
     public void OnUse(InputAction.CallbackContext context)
     {
-        if (menuListener == null)
-        {
-            Debug.LogError("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
-        }
-        if (context.phase != InputActionPhase.Performed ||
-            (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == true))
+        if (context.phase != InputActionPhase.Performed)
         {
             return;
         }
 
-        //make a new bullet and initialize who the enemy is (9 is the enemy layer)
-        Projectile instance = Instantiate(bulletPrefab).GetComponent<Projectile>();
-        instance.Initialize(9);
+        if (menuListener == null)
+        {
+            Debug.LogError("Pause menu not found, check if the pause menu is in the scene or attached to the script");
+        }
+        else if (menuListener.GetComponent<PauseMenu>().isGamePaused)
+        {
+            return;
+        }
 
-        Vector3 offset = playerCamera.transform.forward;
-        //Debug.Log("offset " + offset);
+        // Get horizontal facing vector
+        Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
+        facing.Normalize();
 
+        PlayerProjectile projectile = Instantiate(bulletPrefab).GetComponent<PlayerProjectile>();
 
-        offset.y = 0.0f;
-        offset.Normalize();
-        //Debug.Log("after offset " + offset);
+        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
+        // Enemy layer is 9
+        projectile.enemyLayerNum = 9;
+        projectile.position = transform.position;
+        projectile.velocity = facing * projectileSpeed;
 
-
-        Projectile projectile = instance.GetComponent<Projectile>();
-
-        projectile.position = transform.position + offset;
-        //Debug.Log("proj speed " + projectileSpeed);
-
-        //Debug.Log("setting to " + offset * projectileSpeed);
-
-        projectile.velocity = offset * projectileSpeed;
+        // Offset initial position slightly so any first person view doesn't look janky when
+        // projectile is instantiated inside their camera
+        // Preferably, we would want it to originate from the center and only make the projectile
+        // appear visible slightly later, but this solution is fine for now.
+        // TODO: Whatever it says above for posterity
+        if (cameraOffsets.sqrMagnitude < Vector3.kEpsilon)
+        {
+            projectile.position += facing;
+        }
     }
 
     public void OnRightClick(InputAction.CallbackContext context)
     {
         if (menuListener == null)
         {
-            Debug.Log("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
+            Debug.LogWarning("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
         }
+
         var existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
-        if (context.phase != InputActionPhase.Performed || existingCount >= 5 ||
-            (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == true))
+
+        if (existingCount >= maxExplosionCount)
         {
             return;
         }
 
-        //make a new explosion and initialize who the enemy is (9 is the enemy layer)
+        if (context.phase != InputActionPhase.Performed || (menuListener && menuListener.GetComponent<PauseMenu>().isGamePaused))
+        {
+            return;
+        }
+
+        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
+        // Enemy layer is 9
         Explosion instance = Instantiate(explosionPrefab).GetComponent<Explosion>();
         instance.Initialize(9);
 
-        Vector3 offset = playerCamera.transform.forward;
-        //Debug.Log("offset " + offset);
-
-        offset.y = 0.0f;
-        offset.Normalize();
+        // Get horizontal facing vector
+        Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
+        facing.Normalize();
 
         Explosion explosion = instance.GetComponent<Explosion>();
 
-        explosion.position = transform.position + offset;
+        explosion.position = transform.position + facing;
     }
 }

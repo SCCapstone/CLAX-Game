@@ -8,7 +8,7 @@ public class AliveObject : MonoBehaviour
 
     public float hitCooldown = 0.5f;
 
-    float lastHitTime = 0.0f;
+    protected float lastHitTime = 0.0f;
 
     void Start()
     {
@@ -25,7 +25,6 @@ public class AliveObject : MonoBehaviour
 
     /*
      * Deal damage this object
-     * Returns how much real damage was dealt
      */
     public void Damage(float amount)
     {
@@ -35,11 +34,9 @@ public class AliveObject : MonoBehaviour
             lastHitTime = Time.time;
 
             SetHealth(health - amount);
-            Debug.Log("New Health " + health);
 
+            //Debug.Log("New Health is " + health);
         }
-
-
     }
 
     /*
@@ -53,21 +50,21 @@ public class AliveObject : MonoBehaviour
         if (health <= 0.0f)
         {
             health = 0.0f;
-            Kill();
 
+            Kill();
         }
     }
 
     // Kills the object
-    public void Kill()
+    virtual public void Kill()
     {
         // TODO: Death events and animations
         // TODO: OnKill event
-        Debug.Log("tag " + gameObject.transform.tag);
 
+        // TODO: Move to player script
         if (gameObject.transform.CompareTag("Player"))
         {
-            Debug.Log("reloading scene");
+            Debug.Log("Reloading scene");
 
             //Invoke("respawnPlayer", 1.0f);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -76,11 +73,11 @@ public class AliveObject : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // TODO: Move to player script
     public void RespawnPlayer()
     {
-        Debug.Log("ran respawn");
+        Debug.Log("Ran respawn");
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
     }
 }
