@@ -159,7 +159,9 @@ public class PlayerController : MonoBehaviour
         Vector3 offsetY = playerCamera.transform.up * cameraOffsets.y;
         Vector3 offsetZ = playerCamera.transform.forward * cameraOffsets.z;
 
-        bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out RaycastHit hit, Mathf.Abs(cameraOffsets.z));
+        int layerMasks = 1 << 8 & 1 << 9 & 1 << 11;
+
+        bool hasHit = Physics.Raycast(cameraTarget, offsetZ, out RaycastHit hit, Mathf.Abs(cameraOffsets.z), layerMasks);
 
         playerCamera.transform.position = hasHit ? hit.point : cameraTarget + offsetX + offsetY + offsetZ;
 
