@@ -17,7 +17,7 @@ public class Explosion : MonoBehaviour
     public float damage = 0;
 
     public int enemyLayerNum;
-    bool wasInitialized = false;
+    //bool wasInitialized = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +26,7 @@ public class Explosion : MonoBehaviour
         {
             StartCoroutine(Grow());
         }
+
         Destroy(gameObject, growTime * 2);
     }
 
@@ -61,7 +62,7 @@ public class Explosion : MonoBehaviour
 
     public void Initialize(int enemyLayerNum, float damage = 20)
     {
-        wasInitialized = true;
+        //wasInitialized = true;
         this.enemyLayerNum = enemyLayerNum;
         this.damage = damage;
     }

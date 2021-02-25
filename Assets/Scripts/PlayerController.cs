@@ -45,12 +45,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("Character")]
     public float health;
-
     public float dieAtY;
 
-    [Header("Projectile")]
+    [Header("Projectiles")]
     public float projectileSpeed;
-
+    public int maxExplosionCount;
 
     private bool prevOnGround = false;
     private bool onGround = false;
@@ -351,48 +350,59 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // Make a new bullet and initialize who the enemy is (9 is the enemy layer)
-        Projectile instance = Instantiate(bulletPrefab).GetComponent<Projectile>();
-        instance.Initialize(9);
-
         // Get horizontal facing vector
-        Vector3 offset = playerCamera.transform.forward;
-        offset.y = 0.0f;
-        offset.Normalize();
+        Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
+        facing.Normalize();
 
-        Projectile projectile = instance.GetComponent<Projectile>();
+        PlayerProjectile projectile = Instantiate(bulletPrefab).GetComponent<PlayerProjectile>();
 
-        projectile.position = transform.position + offset;
-        projectile.velocity = offset * projectileSpeed;
+        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
+        // Enemy layer is 9
+        projectile.enemyLayerNum = 9;
+        projectile.position = transform.position;
+        projectile.velocity = facing * projectileSpeed;
 
-        //Debug.Log("Projectile velocity set to " + offset * projectileSpeed);
+        // Offset initial position slightly so any first person view doesn't look janky when
+        // projectile is instantiated inside their camera
+        // Preferably, we would want it to originate from the center and only make the projectile
+        // appear visible slightly later, but this solution is fine for now.
+        // TODO: Whatever it says above for posterity
+        if (cameraOffsets.sqrMagnitude < Vector3.kEpsilon)
+        {
+            projectile.position += facing;
+        }
     }
 
     public void OnRightClick(InputAction.CallbackContext context)
     {
         if (menuListener == null)
         {
-            Debug.Log("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
+            Debug.LogWarning("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
         }
+
         var existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
-        if (context.phase != InputActionPhase.Performed || existingCount >= 5 ||
-            (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == true))
+
+        if (existingCount >= maxExplosionCount)
         {
             return;
         }
 
-        //make a new explosion and initialize who the enemy is (9 is the enemy layer)
+        if (context.phase != InputActionPhase.Performed || (menuListener && menuListener.GetComponent<PauseMenu>().isGamePaused))
+        {
+            return;
+        }
+
+        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
+        // Enemy layer is 9
         Explosion instance = Instantiate(explosionPrefab).GetComponent<Explosion>();
         instance.Initialize(9);
 
-        Vector3 offset = playerCamera.transform.forward;
-        //Debug.Log("offset " + offset);
-
-        offset.y = 0.0f;
-        offset.Normalize();
+        // Get horizontal facing vector
+        Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
+        facing.Normalize();
 
         Explosion explosion = instance.GetComponent<Explosion>();
 
-        explosion.position = transform.position + offset;
+        explosion.position = transform.position + facing;
     }
 }

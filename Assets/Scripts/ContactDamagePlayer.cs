@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class damagePlayerOnTouch : MonoBehaviour
+public class ContactDamagePlayer : MonoBehaviour
 {
     public float damageAmount = 10;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
     private void OnTriggerStay(Collider other)
     {
         //Debug.Log("other tag" + other.tag);
@@ -22,11 +18,5 @@ public class damagePlayerOnTouch : MonoBehaviour
             //Debug.Log("player health" + enemy.health);
 
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
