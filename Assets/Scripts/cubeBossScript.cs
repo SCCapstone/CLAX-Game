@@ -12,7 +12,7 @@ public class cubeBossScript : MonoBehaviour
 
     //float maxMoveAtATime = 10;
     //float movedSoFar = 0;
-    float moveAmount = 0.25f;
+    float moveAmount = 0.15f;
 
     int timesDestinationReached = 0;
     int batchesMade = 0;

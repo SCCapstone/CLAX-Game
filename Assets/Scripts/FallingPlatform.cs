@@ -13,6 +13,7 @@ public class FallingPlatform : MonoBehaviour
     public Material end;
     private Material lerpMaterial;
     private Renderer platformRenderer;
+    private BoxCollider platformCollider;
 
     [Header("Falling")]
     public bool collisionFall = true;
@@ -29,6 +30,7 @@ public class FallingPlatform : MonoBehaviour
     {
         startPosition = platform.transform;
         platformRenderer = platform.GetComponentInChildren<Renderer>();
+        platformCollider = platform.GetComponentInChildren<BoxCollider>();
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -58,6 +60,7 @@ public class FallingPlatform : MonoBehaviour
                 isFalling = false;
                 platformRenderer.material = start;
                 platformRenderer.enabled = true;
+                platformCollider.enabled = true;
                 transform.position = startPosition.position;
             }
 
@@ -70,7 +73,10 @@ public class FallingPlatform : MonoBehaviour
 
                 transform.position = nextPosition;
                 if (transform.position.y <= disappearHeight)
+                {
                     platformRenderer.enabled = false;
+                    platformCollider.enabled = false;
+                }
             }
 
             fallTimer += Time.fixedDeltaTime;
