@@ -110,9 +110,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217f900cf4c0ad47957cf33449a855a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorway: {fileID: 1066541565138672866}
   sceneName: PillBossScene
   otherSideSpawnPoint: 0
   BossDoor: 0
+  change: {fileID: 0}
 --- !u!114 &4383664376304351456
 MonoBehaviour:
   m_ObjectHideFlags: 0
