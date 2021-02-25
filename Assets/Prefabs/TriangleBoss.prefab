@@ -67,8 +67,11 @@ MonoBehaviour:
   projectileSpeed: 10
   projectileLifetime: 5
   projectileDelay: 0.03
-  attackDuration: 4
-  attackWaves: 7
+  attack1Duration: 4
+  attack1Waves: 7
+  attack1Rotations: 2
+  attack2Duration: 5
+  attack2Rotations: 1
   attackIntervalMin: 1
   attackIntervalMax: 2
   minimumRange: 5
