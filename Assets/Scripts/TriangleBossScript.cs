@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TriangleBossScript : AliveObject
 {
@@ -102,12 +104,7 @@ public class TriangleBossScript : AliveObject
 
                 break;
             case BossState.Attack:
-                if (Time.time - nextAttackTime >= 0.0f)
-                {
-                    nextAttackTime = Time.time + Random.Range(attackIntervalMin, attackIntervalMax);
-
-                    StartAction("Attack");
-                }
+                StartAction("Attack");
 
                 break;
             default:
@@ -253,15 +250,16 @@ public class TriangleBossScript : AliveObject
         Projectile projectile;
         ContactDamagePlayer contactDamage;
 
+        Vector3 currentRotation;
         Vector3 dir;
 
         while (true)
         {
-            float currentAngle = transform.rotation.eulerAngles.y;
+            currentRotation = transform.rotation.eulerAngles;
 
             foreach (float angle in angles)
             {
-                dir = Quaternion.Euler(0.0f, angle + currentAngle, 0.0f) * Vector3.forward;
+                dir = Quaternion.Euler(currentRotation.x, currentRotation.y + angle, currentRotation.z) * Vector3.forward;
 
                 projectileInstance = Instantiate(projectilePrefab);
                 projectile = projectileInstance.GetComponent<Projectile>();
@@ -358,6 +356,16 @@ public class TriangleBossScript : AliveObject
     // TODO: Coroutine wrapper, the kill function really should be a coroutine by default
     IEnumerator KillCoroutine()
     {
+        // Remove active hitboxes
+
+        foreach (var o in FindObjectsOfType<GameObject>())
+        {
+            if (o.GetComponent<ContactDamagePlayer>() != null)
+            {
+                Destroy(o);
+            }
+        }
+
         // Rotate boss to face random angle
 
         transform.rotation = Quaternion.Euler(
@@ -368,16 +376,16 @@ public class TriangleBossScript : AliveObject
 
         // Play shaking and sinking animation
 
-        Transform startTransform = transform;
-        Transform endTransform = transform;
-
-        endTransform.position += new Vector3(0.0f, DEATH_ANIMATION_TARGET_HEIGHT, 0.0f);
+        Vector3 startPosition = transform.position;
 
         Vector3 v;
+        float h;
 
         for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / DEATH_ANIMATION_TIME)
         {
-            v = Vector3.Lerp(startTransform.position, endTransform.position, i);
+            // Linear interpolation
+            h = (1 - i) * startPosition.y + i * DEATH_ANIMATION_TARGET_HEIGHT;
+            v = new Vector3(startPosition.x, h, startPosition.z);
             
             transform.position = v + (Random.insideUnitSphere * DEATH_ANIMATION_INTENSITY);
             

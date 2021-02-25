@@ -449,14 +449,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4320024602640257524, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
-      propertyPath: lookSensitivityX
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4320024602640257524, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
-      propertyPath: lookSensitivityY
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 6257623721124609866, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
       propertyPath: m_ClearFlags
       value: 1

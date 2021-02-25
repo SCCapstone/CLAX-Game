@@ -58,17 +58,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c12f9b2465b944191bbc3353bc699d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 200
-  maxHealth: 200
-  hitCooldown: 0
-  movementDelay: 3
+  health: 1000
+  maxHealth: 1000
+  hitCooldown: 0.1
+  movementDelay: 1
   projectilePrefab: {fileID: 6601901723858526280, guid: ad6bae7426b9095478a3be99dc9ab9a8, type: 3}
-  projectileDamage: 5
+  projectileDamage: 15
   projectileSpeed: 10
   projectileLifetime: 5
-  projectileDelay: 0.05
+  projectileDelay: 0.03
   attackDuration: 4
-  attackWaves: 5
+  attackWaves: 7
   attackIntervalMin: 1
   attackIntervalMax: 2
   minimumRange: 5
