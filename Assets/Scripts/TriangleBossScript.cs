@@ -52,8 +52,8 @@ public class TriangleBossScript : AliveObject
 
     Dictionary<string, float> attackWeights = new Dictionary<string, float>()
     {
-        {"Attack1", 10.0f},
-        {"Attack2", 0.0f},
+        {"Attack1", 20.0f},
+        {"Attack2", 10.0f},
         {"Attack3", 0.0f}
     };
 
