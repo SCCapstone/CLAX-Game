@@ -3233,6 +3233,14 @@ PrefabInstance:
       propertyPath: sceneName
       value: Hub2
       objectReference: {fileID: 0}
+    - target: {fileID: 1671587412203255263, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
+      propertyPath: change
+      value: 
+      objectReference: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
+    - target: {fileID: 1671587412203255263, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
+      propertyPath: otherSideSpawnPoint
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5764187259253973431, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -40
