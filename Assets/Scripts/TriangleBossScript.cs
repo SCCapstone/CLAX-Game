@@ -22,6 +22,7 @@ public class TriangleBossScript : AliveObject
 
     [HeaderAttribute("Movement")]
     public float movementDelay;
+    public float movementDuration;
 
     [HeaderAttribute("Attack")]
     public GameObject projectilePrefab;
@@ -35,6 +36,7 @@ public class TriangleBossScript : AliveObject
     public float attack1Rotations;
 
     public float attack2Duration;
+    public float attack2Distance;
     public float attack2Rotations;
 
     public float attackIntervalMin;
@@ -71,9 +73,10 @@ public class TriangleBossScript : AliveObject
 
     void Start()
     {
-        state = BossState.Decide;
         globals.boss = true;
-        lastUpdateTime = 0;
+
+        state = BossState.Decide;
+        lastUpdateTime = Time.time - UPDATE_INTERVAL + 1.5f;
     }
 
     void OnDestroy()
@@ -237,7 +240,7 @@ public class TriangleBossScript : AliveObject
 
         Vector3 startPosition = transform.position;
 
-        for (float alpha = 0.0f; alpha < movementDelay; alpha += Time.fixedDeltaTime)
+        for (float alpha = 0.0f; alpha < movementDelay; alpha += Time.fixedDeltaTime / movementDuration)
         {
             transform.position = Vector3.Lerp(startPosition, nextPosition, alpha);
             transform.LookAt(target.transform.position);
@@ -294,12 +297,14 @@ public class TriangleBossScript : AliveObject
     IEnumerator ForwardProjectiles()
     {
         Vector3 dir;
+        float speed;
 
         while (true)
         {
             dir = target.transform.position - transform.position;
+            speed = Mathf.Max(projectileSpeed, dir.magnitude);
 
-            FireProjectile(transform.position, dir);
+            FireProjectile(transform.position, dir.normalized * speed);
 
             yield return new WaitForSeconds(projectileDelay);
         }
@@ -390,16 +395,14 @@ public class TriangleBossScript : AliveObject
 
         Vector3 targetPosition = target.transform.position;
 
-        float distance = 30.0f;
-
-        yield return InterpolateTo(targetPosition + Vector3.forward * distance, 1.0f);
+        yield return InterpolateTo(targetPosition + Vector3.forward * attack2Distance, 1.0f);
 
         Coroutine projectileLoop = StartCoroutine("ForwardProjectiles");
 
         for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / attack2Duration)
         {
             Quaternion offsetRotation = Quaternion.Euler(0.0f, i * 360.0f * attack2Rotations, 0.0f);
-            Vector3 offset = offsetRotation * Vector3.forward * distance;
+            Vector3 offset = offsetRotation * Vector3.forward * attack2Distance;
 
             transform.position = targetPosition + offset;
 
