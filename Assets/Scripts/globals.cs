@@ -15,6 +15,7 @@ public class globals : MonoBehaviour
     public static int spawnPoint = 0;
 
     public static int difficulty = 2;
+    public static bool timerEnabled = true;
 
     // Start is called before the first frame update
     void Start()
@@ -23,5 +24,5 @@ public class globals : MonoBehaviour
     }
 
     // Update is called once per frame
-    
+
 }

@@ -17,7 +17,13 @@ public class updateTimerText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        textBoxGUI.SetText("Timer: " + (globals.difficulty));
+        if (globals.timerEnabled)
+        {
+            textBoxGUI.SetText("Timer: ON");
+        }
+        else
+        {
+            textBoxGUI.SetText("Timer: OFF");
+        }
     }
 }
