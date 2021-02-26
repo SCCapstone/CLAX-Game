@@ -73,6 +73,7 @@ MonoBehaviour:
   jumpLandingLag: 0
   health: 100
   dieAtY: -20
+  holdToShoot: 1
   shootDelay: 0.25
   projectileSpeed: 25
   maxExplosionCount: 5

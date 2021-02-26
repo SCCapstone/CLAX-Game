@@ -71,9 +71,10 @@ public class TriangleBossScript : AliveObject
 
     void Start()
     {
-        state = BossState.Decide;
         globals.boss = true;
-        lastUpdateTime = 0;
+
+        state = BossState.Decide;
+        lastUpdateTime = Time.time - UPDATE_INTERVAL + 1.5f;
     }
 
     void OnDestroy()
