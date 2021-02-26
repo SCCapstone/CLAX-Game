@@ -81,6 +81,11 @@ public class Explosion : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (other.transform.name.Contains("cubeAttack") || other.transform.name.Contains("TriangleBossProjectile"))
+        {
+            Destroy(other.gameObject);
+        }
+
     }
 
     // Update is called once per frame
