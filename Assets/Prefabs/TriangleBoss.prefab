@@ -62,16 +62,18 @@ MonoBehaviour:
   maxHealth: 1000
   hitCooldown: 0.1
   movementDelay: 1
+  movementDuration: 2
   projectilePrefab: {fileID: 6601901723858526280, guid: ad6bae7426b9095478a3be99dc9ab9a8, type: 3}
   projectileDamage: 15
-  projectileSpeed: 10
-  projectileLifetime: 5
+  projectileSpeed: 15
+  projectileLifetime: 3.5
   projectileDelay: 0.03
-  attack1Duration: 4
+  attack1Duration: 6
   attack1Waves: 7
   attack1Rotations: 2
-  attack2Duration: 5
-  attack2Rotations: 1
+  attack2Duration: 8
+  attack2Distance: 15
+  attack2Rotations: 0.75
   attackIntervalMin: 1
   attackIntervalMax: 2
   minimumRange: 5
