@@ -13,6 +13,7 @@ public class Win : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("pill = " + globals.pill + " cube = " + globals.cube + " pyramid =" + globals.pyramid + " won = " + globals.won);
         doorRenderer = doorway.GetComponentInChildren<Renderer>();
     }
 
@@ -28,6 +29,7 @@ public class Win : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("pill = " + globals.pill + " cube = " + globals.cube + " pyramid =" + globals.pyramid+ " won = " + globals.won);
         if (other.gameObject.CompareTag("Player") && active)
         {
             Debug.Log("you win");
