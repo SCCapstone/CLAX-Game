@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Assertions.Comparers;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -48,6 +49,8 @@ public class PlayerController : MonoBehaviour
     public float dieAtY;
 
     [Header("Projectiles")]
+    public bool holdToShoot;
+    public float shootDelay;
     public float projectileSpeed;
     public int maxExplosionCount;
 
@@ -62,6 +65,9 @@ public class PlayerController : MonoBehaviour
     private bool holdJump = false;
     private int jumpCounter = 0;
     private float onGroundTime = 0;
+
+    private bool holdUse = false;
+    private Coroutine shootLoop;
 
     private Vector2 moveAxis = Vector3.zero;
     private Vector2 lookAxis = Vector3.zero;
@@ -338,11 +344,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnUse(InputAction.CallbackContext context)
     {
-        if (context.phase != InputActionPhase.Performed)
-        {
-            return;
-        }
-
         if (menuListener == null)
         {
             Debug.LogError("Pause menu not found, check if the pause menu is in the scene or attached to the script");
@@ -352,26 +353,29 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // Get horizontal facing vector
-        Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
-        facing.Normalize();
+        bool pressed = context.control.IsPressed();
 
-        PlayerProjectile projectile = Instantiate(bulletPrefab).GetComponent<PlayerProjectile>();
-
-        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
-        // Enemy layer is 9
-        projectile.enemyLayerNum = 9;
-        projectile.position = transform.position;
-        projectile.velocity = facing * projectileSpeed;
-
-        // Offset initial position slightly so any first person view doesn't look janky when
-        // projectile is instantiated inside their camera
-        // Preferably, we would want it to originate from the center and only make the projectile
-        // appear visible slightly later, but this solution is fine for now.
-        // TODO: Whatever it says above for posterity
-        if (cameraOffsets.sqrMagnitude < Vector3.kEpsilon)
+        if (holdToShoot)
         {
-            projectile.position += facing;
+            if (pressed)
+            {
+                if (shootLoop != null)
+                {
+                    StopCoroutine(shootLoop);
+                }
+
+                holdUse = true;
+                shootLoop = StartCoroutine("ShootLoop");
+            }
+            else if (shootLoop != null)
+            {
+                StopCoroutine(shootLoop);
+                holdUse = false;
+            }
+        }
+        else if (pressed)
+        {
+            FireProjectile();
         }
     }
 
@@ -406,5 +410,40 @@ public class PlayerController : MonoBehaviour
         Explosion explosion = instance.GetComponent<Explosion>();
 
         explosion.position = transform.position + facing;
+    }
+
+    void FireProjectile()
+    {
+        // Get horizontal facing vector
+        Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
+        facing.Normalize();
+
+        PlayerProjectile projectile = Instantiate(bulletPrefab).GetComponent<PlayerProjectile>();
+
+        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
+        // Enemy layer is 9
+        projectile.enemyLayerNum = 9;
+        projectile.position = transform.position;
+        projectile.velocity = facing * projectileSpeed;
+
+        // Offset initial position slightly so any first person view doesn't look janky when
+        // projectile is instantiated inside their camera
+        // Preferably, we would want it to originate from the center and only make the projectile
+        // appear visible slightly later, but this solution is fine for now.
+        // TODO: Whatever it says above for posterity
+        if (cameraOffsets.sqrMagnitude < Vector3.kEpsilon)
+        {
+            projectile.position += facing;
+        }
+    }
+
+    IEnumerator ShootLoop()
+    {
+        while (holdUse)
+        {
+            FireProjectile();
+
+            yield return new WaitForSeconds(shootDelay);
+        }
     }
 }

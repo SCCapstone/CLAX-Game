@@ -53,7 +53,7 @@ public class TriangleBossScript : AliveObject
     Dictionary<string, float> attackWeights = new Dictionary<string, float>()
     {
         {"Attack1", 10.0f},
-        {"Attack2", 20.0f},
+        {"Attack2", 0.0f},
         {"Attack3", 0.0f}
     };
 
@@ -348,7 +348,8 @@ public class TriangleBossScript : AliveObject
         {
             pos = startPosition + new Vector3(0.0f, Mathf.Cos(i * Mathf.PI * attack1Waves) * 2.0f, 0.0f);
 
-            pitch = Quaternion.LookRotation(target.transform.position).eulerAngles.x;
+            pitch = Quaternion.LookRotation(target.transform.position - pos).eulerAngles.x;
+            pitch -= startRotation.x;
             rot = startRotation + new Vector3(pitch, i * 360.0f * attack1Rotations, 0.0f);
 
             // Starts projectiles after the first wave
