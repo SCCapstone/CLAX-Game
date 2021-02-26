@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class updateDifficulty : MonoBehaviour
+public class updateTimerText : MonoBehaviour
 {
     private TextMeshProUGUI textBoxGUI;
     //public GameObject difficultyObject;
@@ -18,6 +18,6 @@ public class updateDifficulty : MonoBehaviour
     void Update()
     {
 
-        textBoxGUI.SetText("Difficulty: " + (globals.difficulty));
+        textBoxGUI.SetText("Timer: " + (globals.difficulty));
     }
 }

@@ -97,7 +97,7 @@ public class PauseMenu : MonoBehaviour
 
     public void changeDifficulty()
     {
-        boss = GameObject.Find("Boss2");
+        boss = GameObject.FindGameObjectWithTag("Boss");
         player = GameObject.Find("Character");
 
         globals.difficulty = ((globals.difficulty + 1) % 4);
