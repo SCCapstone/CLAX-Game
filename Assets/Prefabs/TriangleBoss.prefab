@@ -191,6 +191,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: -7635826562936255635, guid: d191a957454dfce42a57b3ffe4acabef, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1bd2e1ff22fefbd4ca4f74eb35a47c73, type: 2}
     - target: {fileID: 919132149155446097, guid: d191a957454dfce42a57b3ffe4acabef, type: 3}
       propertyPath: m_Name
       value: Pyramid
