@@ -20,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Hub2.unity
     guid: 8f936d80870ba1d42b7d10fcfdc8452b
+  - enabled: 1
+    path: Assets/Scenes/cubeBossScene.unity
+    guid: 196162e3272bfcc4198b196210f23816
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: abe12e3f1ae92d742a389fda4871e0bb, type: 2}
