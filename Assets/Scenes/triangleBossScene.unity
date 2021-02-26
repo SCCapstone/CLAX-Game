@@ -467,7 +467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1671587412203255263, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
       propertyPath: change
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
     - target: {fileID: 5764187259253973431, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -620,7 +620,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5909535925832978466, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
       propertyPath: m_Materials.Array.data[0]
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: e73fadae5885ebe49b0f6238848a4f9a, type: 2}
     - target: {fileID: 7077181277425263474, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
       propertyPath: m_Name
@@ -669,16 +669,6 @@ PrefabInstance:
     - target: {fileID: 7077181277425263475, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7077181277425263479, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
-      propertyPath: attack2Duration
-      value: 8
-      propertyPath: health
-      value: 700
-      objectReference: {fileID: 0}
-    - target: {fileID: 7077181277425263479, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
-      propertyPath: maxHealth
-      value: 700
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
