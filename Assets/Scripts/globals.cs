@@ -23,11 +23,5 @@ public class globals : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if(pill && cube && pyramid && !won)
-        {
-            won = true;
-        }
-    }
+    
 }

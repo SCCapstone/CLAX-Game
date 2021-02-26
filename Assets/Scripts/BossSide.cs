@@ -34,7 +34,13 @@ public class BossSide : MonoBehaviour
             active = true;
         } 
     }
-
+    public void winCheck()
+    {
+        if (globals.pill && globals.cube && globals.pyramid && !globals.won)
+        {
+            globals.won = true;
+        }
+    }
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Object entered");
@@ -42,6 +48,7 @@ public class BossSide : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && active)
         {
             Debug.Log("Player Entered");
+            winCheck();
             globals.spawnPoint = otherSideSpawnPoint;
             SceneManager.LoadSceneAsync(sceneName);
         }
