@@ -16,11 +16,13 @@ public class RollingBossScript : MonoBehaviour
     float rollPower = 40.0f;
     float rotateAmount = 140.0f;
 
+
     int currentPhaseNum = 0;
 
     public GameObject wallPrefab;
     GameObject madeWall;
     Rigidbody body;
+
 
     bool isGrowing = true;
 

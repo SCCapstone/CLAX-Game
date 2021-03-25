@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject explosionPrefab;
 
+
+
     [Header("Camera")]
     public bool cameraEnabled = true;
 
@@ -72,6 +74,10 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveAxis = Vector3.zero;
     private Vector2 lookAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
+
+    public AudioSource playerShootSound;
+    public AudioSource playerSecondaryShootSound;
+    public AudioSource playerJumpSound;
 
     new Rigidbody rigidbody;
 
@@ -278,6 +284,7 @@ public class PlayerController : MonoBehaviour
         Vector3 newVelocity = rigidbody.velocity;
 
         newVelocity.y = jumpSpeed;
+        playerJumpSound.Play();
 
         rigidbody.velocity = newVelocity;
 
@@ -403,6 +410,9 @@ public class PlayerController : MonoBehaviour
         Explosion instance = Instantiate(explosionPrefab).GetComponent<Explosion>();
         instance.Initialize(9);
 
+        playerSecondaryShootSound.Play();
+
+
         // Get horizontal facing vector
         Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
         facing.Normalize();
@@ -419,6 +429,8 @@ public class PlayerController : MonoBehaviour
         facing.Normalize();
 
         PlayerProjectile projectile = Instantiate(bulletPrefab).GetComponent<PlayerProjectile>();
+        playerShootSound.Play();
+
 
         // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
         // Enemy layer is 9

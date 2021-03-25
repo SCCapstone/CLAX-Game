@@ -18,13 +18,16 @@ public class expandingWallScript : MonoBehaviour
 
     GameObject boss;
 
+    public AudioSource makeWallSound;
+
+
     // Start is called before the first frame update
     void Start()
     {
         lockWallSize = false;
         //Debug.Log("lock wall is " + lockWallSize);
         boss = GameObject.FindGameObjectWithTag("Boss");
-
+        makeWallSound.Play();
 
     }
 

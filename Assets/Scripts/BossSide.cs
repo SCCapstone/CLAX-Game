@@ -14,8 +14,10 @@ public class BossSide : MonoBehaviour
     public Material change;
 
     private Renderer doorRenderer;
-    
+
     private bool active = false;
+
+    public AudioSource bossDeathSound;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +34,8 @@ public class BossSide : MonoBehaviour
         {
             doorRenderer.material = change;
             active = true;
-        } 
+            bossDeathSound.Play();
+        }
     }
     public void winCheck()
     {

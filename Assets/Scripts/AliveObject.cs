@@ -9,6 +9,7 @@ public class AliveObject : MonoBehaviour
     public float hitCooldown = 0.5f;
 
     protected float lastHitTime = 0.0f;
+    public AudioSource deathSound;
 
     void Start()
     {
@@ -69,6 +70,8 @@ public class AliveObject : MonoBehaviour
             //Invoke("respawnPlayer", 1.0f);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+        if (deathSound != null)
+            deathSound.Play();
 
         Destroy(gameObject);
     }
@@ -77,7 +80,7 @@ public class AliveObject : MonoBehaviour
     public void RespawnPlayer()
     {
         Debug.Log("Ran respawn");
-        
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
