@@ -16,6 +16,8 @@ public class SpawnPoint : MonoBehaviour
 
     public bool canSetSpawn;
 
+    public AudioSource activationSound;
+
     private bool active;
     // Start is called before the first frame update
     void Start()
@@ -38,7 +40,7 @@ public class SpawnPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(spawnNum != globals.spawnPoint && active)
+        if (spawnNum != globals.spawnPoint && active)
         {
             active = false;
             spawnPointRenderer.material = original;
@@ -50,7 +52,12 @@ public class SpawnPoint : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && canSetSpawn)
         {
             globals.spawnPoint = spawnNum;
-            spawnPointRenderer.material = change;
+            if (spawnPointRenderer.material != change)
+            {
+                spawnPointRenderer.material = change;
+                activationSound.Play();
+
+            }
         }
     }
 }

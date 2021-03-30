@@ -70,10 +70,14 @@ public class AliveObject : MonoBehaviour
             //Invoke("respawnPlayer", 1.0f);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        if (deathSound != null)
+        if (deathSound != null && deathSound.isPlaying == false)
             deathSound.Play();
+        //this.gameObject.SetActive(false);
 
-        Destroy(gameObject);
+        Destroy(gameObject, .5f);
+
+        //Invoke("destroy", 1);
+
     }
 
     // TODO: Move to player script
