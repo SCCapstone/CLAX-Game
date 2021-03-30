@@ -25,6 +25,7 @@ public class cubeBossScript : MonoBehaviour
 
     //float delayBetweenRowLaunch = 1;
     public float delayBetweenNewGrid = 3;
+    public AudioSource launchSound;
 
 
     int gridDimension = 3;
@@ -179,6 +180,8 @@ public class cubeBossScript : MonoBehaviour
             lastIdLaunched += 1;
             lastCubeLaunchTime = Time.time;
             delayBetweenNewGrid = 5;
+            launchSound.Play();
+
         }
 
     }
@@ -198,6 +201,7 @@ public class cubeBossScript : MonoBehaviour
                 lastIdLaunched += 1;
                 lastCubeLaunchTime = Time.time;
             }
+            launchSound.Play();
         }
         delayBetweenNewGrid = 3;
     }

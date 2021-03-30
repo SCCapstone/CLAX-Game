@@ -60,7 +60,8 @@ public class PauseMenu : MonoBehaviour
 
     void Pause()
     {
-        pauseMenu.SetActive(true);
+        if (pauseMenu != null)
+            pauseMenu.SetActive(true);
         AudioListener.pause = true;
         Time.timeScale = 0;
 
@@ -72,7 +73,8 @@ public class PauseMenu : MonoBehaviour
 
     public void Unpause()
     {
-        pauseMenu.SetActive(false);
+        if (pauseMenu != null)
+            pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
 
         AudioListener.pause = false;

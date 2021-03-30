@@ -46,7 +46,7 @@ public class BossSide : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Object entered");
+        //Debug.Log("Object entered");
         //TODO add boss is dead logic
         if (other.gameObject.CompareTag("Player") && active)
         {

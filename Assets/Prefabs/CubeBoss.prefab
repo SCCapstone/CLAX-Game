@@ -258,6 +258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeAttacker: {fileID: 7157220339161015766, guid: df83a444a820a01448c070050acd7f4b, type: 3}
   delayBetweenNewGrid: 7
+  launchSound: {fileID: 4791304345253006774}
 --- !u!54 &409170027427704407
 Rigidbody:
   m_ObjectHideFlags: 0

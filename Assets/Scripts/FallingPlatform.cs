@@ -26,6 +26,8 @@ public class FallingPlatform : MonoBehaviour
     private bool isFalling = false;
     private float fallTimer = 0.0f;
 
+    public AudioSource fallSound;
+
     void Start()
     {
         startPosition = platform.transform;
@@ -62,6 +64,17 @@ public class FallingPlatform : MonoBehaviour
                 platformRenderer.enabled = true;
                 platformCollider.enabled = true;
                 transform.position = startPosition.position;
+            }
+            float distanceToPlayer = Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position,
+                transform.position);
+            //Debug.Log("distance to player " + distanceToPlayer);
+
+            if (platformRenderer.enabled && fallTimer + 1 >= fallDelay && fallSound.isPlaying == false &&
+                distanceToPlayer < 20)
+            {
+
+                fallSound.Play();
+
             }
 
             if (fallTimer >= fallDelay && platformRenderer.enabled)

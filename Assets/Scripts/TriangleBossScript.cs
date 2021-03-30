@@ -61,6 +61,8 @@ public class TriangleBossScript : AliveObject
 
     GameObject target;
 
+    public AudioSource moveAroundSound, moveUpAndDownSound;
+
     private BossState state;
     private bool inAction;
     private float actionStartTime;
@@ -240,8 +242,16 @@ public class TriangleBossScript : AliveObject
 
         Vector3 startPosition = transform.position;
 
+
+
         for (float alpha = 0.0f; alpha < movementDelay; alpha += Time.fixedDeltaTime / movementDuration)
         {
+            if (moveAroundSound.isPlaying == false)
+            {
+                moveAroundSound.Play();
+                Debug.Log("played move around sound");
+
+            }
             transform.position = Vector3.Lerp(startPosition, nextPosition, alpha);
             transform.LookAt(target.transform.position);
 
@@ -282,6 +292,9 @@ public class TriangleBossScript : AliveObject
         while (true)
         {
             currentRotation = transform.rotation.eulerAngles;
+            if (moveUpAndDownSound.isPlaying == false)
+                moveUpAndDownSound.Play();
+
 
             foreach (float angle in angles)
             {
@@ -301,6 +314,9 @@ public class TriangleBossScript : AliveObject
 
         while (true)
         {
+            if (moveAroundSound.isPlaying == false)
+                moveAroundSound.Play();
+
             dir = target.transform.position - transform.position;
             speed = Mathf.Max(projectileSpeed, dir.magnitude);
 
@@ -326,6 +342,9 @@ public class TriangleBossScript : AliveObject
 
     IEnumerator Attack1()
     {
+        Debug.Log("attack 1");
+
+
         if (!target)
         {
             yield return null;
@@ -349,8 +368,17 @@ public class TriangleBossScript : AliveObject
 
         Coroutine projectileLoop = null;
 
+
+
         for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / attack1Duration)
         {
+            if (moveUpAndDownSound.isPlaying == false)
+            {
+                moveUpAndDownSound.Play();
+                Debug.Log("played move up and down sound");
+
+            }
+
             pos = startPosition + new Vector3(0.0f, Mathf.Cos(i * Mathf.PI * attack1Waves) * 2.0f, 0.0f);
 
             pitch = Quaternion.LookRotation(target.transform.position - pos).eulerAngles.x;
@@ -388,10 +416,13 @@ public class TriangleBossScript : AliveObject
 
     IEnumerator Attack2()
     {
+        Debug.Log("attack 2");
+
         if (!target)
         {
             yield return null;
         }
+
 
         Vector3 targetPosition = target.transform.position;
 
@@ -401,6 +432,9 @@ public class TriangleBossScript : AliveObject
 
         for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / attack2Duration)
         {
+            if (moveAroundSound.isPlaying == false)
+                moveAroundSound.Play();
+
             Quaternion offsetRotation = Quaternion.Euler(0.0f, i * 360.0f * attack2Rotations, 0.0f);
             Vector3 offset = offsetRotation * Vector3.forward * attack2Distance;
 
@@ -464,9 +498,9 @@ public class TriangleBossScript : AliveObject
             // Linear interpolation
             h = (1 - i) * startPosition.y + i * DEATH_ANIMATION_TARGET_HEIGHT;
             v = new Vector3(startPosition.x, h, startPosition.z);
-            
+
             transform.position = v + (Random.insideUnitSphere * DEATH_ANIMATION_INTENSITY);
-            
+
             yield return new WaitForFixedUpdate();
         }
 

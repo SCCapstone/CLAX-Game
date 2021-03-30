@@ -10,6 +10,10 @@ public class Projectile : MonoBehaviour
 
     private float creationTime;
 
+    private bool hasPlayedSound = false;
+
+    public AudioSource bulletTimeout;
+
     void Start()
     {
         transform.position = position;
@@ -19,10 +23,19 @@ public class Projectile : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!hasPlayedSound && bulletTimeout != null && Time.time + .5f - creationTime >= lifeTime)
+        {
+            bulletTimeout.Play();
+            hasPlayedSound = true;
+        }
         // Destroy object at end of life
         if (Time.time - creationTime >= lifeTime)
         {
+            //Debug.Log("was destroyed from project.cs");
+
+
             Destroy(gameObject);
+
 
             return;
         }

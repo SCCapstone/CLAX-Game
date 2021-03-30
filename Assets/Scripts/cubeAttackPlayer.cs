@@ -10,9 +10,7 @@ public class cubeAttackPlayer : MonoBehaviour
     //float ySpeed = 2;
     public bool shouldMove = false;
     float timeMade;
-    bool lastShouldMove = false;
 
-    public AudioSource launchSound;
 
     //public int idNum = -1;
 
@@ -48,13 +46,7 @@ public class cubeAttackPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!lastShouldMove && shouldMove)
-        {
-            lastShouldMove = shouldMove;
-            launchSound.Play();
-
-
-        }
+        
         if (shouldMove)
         {
             moveToGoal();
