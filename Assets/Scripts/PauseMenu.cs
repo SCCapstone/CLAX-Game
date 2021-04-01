@@ -27,8 +27,6 @@ public class PauseMenu : MonoBehaviour
 
         inputs.World.Pause.performed += OnPause;
 
-
-
     }
 
     private void OnEnable()
@@ -147,6 +145,8 @@ public class PauseMenu : MonoBehaviour
 
 
     }
+
+    public void ChangeColor()
 
     public void CloseOptions()
     {
