@@ -8,17 +8,19 @@ public class PlayerProjectile : Projectile
     // Enemy layer is 9
     public int enemyLayerNum;
 
+    public AudioSource hitBoss;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == enemyLayerNum)
         {
             //Debug.Log("hit enemy");
-
+            hitBoss.Play();
             AliveObject enemy = other.gameObject.GetComponent<AliveObject>();
 
             enemy.Damage(damage);
 
-            Destroy(gameObject);
+            Destroy(gameObject, .5f);
         }
     }
 }

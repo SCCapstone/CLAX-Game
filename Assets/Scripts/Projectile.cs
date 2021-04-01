@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
 
     private bool hasPlayedSound = false;
 
-    public AudioSource bulletTimeout;
+    //public AudioSource bulletTimeout;
 
     void Start()
     {
@@ -23,11 +23,11 @@ public class Projectile : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!hasPlayedSound && bulletTimeout != null && Time.time + .5f - creationTime >= lifeTime)
-        {
-            bulletTimeout.Play();
-            hasPlayedSound = true;
-        }
+        //if (!hasPlayedSound && bulletTimeout != null && Time.time + .5f - creationTime >= lifeTime)
+        //{
+        //    bulletTimeout.Play();
+        //    hasPlayedSound = true;
+        //}
         // Destroy object at end of life
         if (Time.time - creationTime >= lifeTime)
         {
