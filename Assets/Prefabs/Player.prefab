@@ -82,6 +82,13 @@ MonoBehaviour:
   playerSecondaryShootSound: {fileID: 6538380541849950474}
   playerJumpSound: {fileID: 1031067336962826584}
   currentTarget: {fileID: 0}
+  enableTesting: 0
+  walkingAirFriction: 0
+  flyingAirFriction: 5
+  walkingAirAcceleration: 10
+  flyingAirAcceleration: 50
+  testingHealth: 2000
+  playingHealth: 100
 --- !u!54 &6054908338268949753
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -210,6 +217,7 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   hitCooldown: 0.5
+  deathSound: {fileID: 0}
 --- !u!1 &6257623721124609864
 GameObject:
   m_ObjectHideFlags: 0

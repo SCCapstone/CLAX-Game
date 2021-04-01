@@ -14,7 +14,7 @@ public class Explosion : MonoBehaviour
     public bool isMaxSize = false;
     public bool isShrinking = false;
 
-    public float damage = 0;
+    public float damage = 20;
 
     public int enemyLayerNum;
     //bool wasInitialized = false;

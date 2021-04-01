@@ -56,6 +56,11 @@ public class AliveObject : MonoBehaviour
         }
     }
 
+    public void SetMaxHealth(float amount)
+    {
+        maxHealth = amount;
+    }
+
     // Kills the object
     virtual public void Kill()
     {

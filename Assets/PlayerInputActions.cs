@@ -89,6 +89,30 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""TestMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""02b1215b-64f5-485e-aeb1-b22f29782995"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""FlyUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""f3c95352-e4bd-4fd5-8fa3-6d1e82fb5ad8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""FlyDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""af871b30-8b4d-47da-8568-92317faf1cb3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -256,6 +280,39 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""Explosion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3abfdd3b-c550-43a5-99f6-12be7fb8aab1"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TestMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98f890df-4033-40c3-8a8d-a7f19b904d48"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlyUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b0f07c6b-7b34-4d98-8c8a-756b1dd79e27"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlyDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -317,6 +374,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_World_Use = m_World.FindAction("Use", throwIfNotFound: true);
         m_World_Pause = m_World.FindAction("Pause", throwIfNotFound: true);
         m_World_Explosion = m_World.FindAction("Explosion", throwIfNotFound: true);
+        m_World_TestMode = m_World.FindAction("TestMode", throwIfNotFound: true);
+        m_World_FlyUp = m_World.FindAction("FlyUp", throwIfNotFound: true);
+        m_World_FlyDown = m_World.FindAction("FlyDown", throwIfNotFound: true);
         // Interface
         m_Interface = asset.FindActionMap("Interface", throwIfNotFound: true);
         m_Interface_PauseMenu = m_Interface.FindAction("PauseMenu", throwIfNotFound: true);
@@ -378,6 +438,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_World_Use;
     private readonly InputAction m_World_Pause;
     private readonly InputAction m_World_Explosion;
+    private readonly InputAction m_World_TestMode;
+    private readonly InputAction m_World_FlyUp;
+    private readonly InputAction m_World_FlyDown;
     public struct WorldActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -391,6 +454,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Use => m_Wrapper.m_World_Use;
         public InputAction @Pause => m_Wrapper.m_World_Pause;
         public InputAction @Explosion => m_Wrapper.m_World_Explosion;
+        public InputAction @TestMode => m_Wrapper.m_World_TestMode;
+        public InputAction @FlyUp => m_Wrapper.m_World_FlyUp;
+        public InputAction @FlyDown => m_Wrapper.m_World_FlyDown;
         public InputActionMap Get() { return m_Wrapper.m_World; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -427,6 +493,15 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Explosion.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnExplosion;
                 @Explosion.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnExplosion;
                 @Explosion.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnExplosion;
+                @TestMode.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnTestMode;
+                @TestMode.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnTestMode;
+                @TestMode.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnTestMode;
+                @FlyUp.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyUp;
+                @FlyUp.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyUp;
+                @FlyUp.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyUp;
+                @FlyDown.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyDown;
+                @FlyDown.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyDown;
+                @FlyDown.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyDown;
             }
             m_Wrapper.m_WorldActionsCallbackInterface = instance;
             if (instance != null)
@@ -458,6 +533,15 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Explosion.started += instance.OnExplosion;
                 @Explosion.performed += instance.OnExplosion;
                 @Explosion.canceled += instance.OnExplosion;
+                @TestMode.started += instance.OnTestMode;
+                @TestMode.performed += instance.OnTestMode;
+                @TestMode.canceled += instance.OnTestMode;
+                @FlyUp.started += instance.OnFlyUp;
+                @FlyUp.performed += instance.OnFlyUp;
+                @FlyUp.canceled += instance.OnFlyUp;
+                @FlyDown.started += instance.OnFlyDown;
+                @FlyDown.performed += instance.OnFlyDown;
+                @FlyDown.canceled += instance.OnFlyDown;
             }
         }
     }
@@ -515,6 +599,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnUse(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnExplosion(InputAction.CallbackContext context);
+        void OnTestMode(InputAction.CallbackContext context);
+        void OnFlyUp(InputAction.CallbackContext context);
+        void OnFlyDown(InputAction.CallbackContext context);
     }
     public interface IInterfaceActions
     {
