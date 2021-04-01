@@ -76,6 +76,30 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "TestMode",
+                    "type": "Button",
+                    "id": "02b1215b-64f5-485e-aeb1-b22f29782995",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "FlyUp",
+                    "type": "Button",
+                    "id": "f3c95352-e4bd-4fd5-8fa3-6d1e82fb5ad8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "FlyDown",
+                    "type": "Button",
+                    "id": "af871b30-8b4d-47da-8568-92317faf1cb3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -241,6 +265,39 @@
                     "processors": "",
                     "groups": "Default",
                     "action": "Explosion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3abfdd3b-c550-43a5-99f6-12be7fb8aab1",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TestMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "98f890df-4033-40c3-8a8d-a7f19b904d48",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FlyUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b0f07c6b-7b34-4d98-8c8a-756b1dd79e27",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FlyDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

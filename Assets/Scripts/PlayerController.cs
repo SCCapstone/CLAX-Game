@@ -85,6 +85,15 @@ public class PlayerController : MonoBehaviour
 
     public Transform currentTarget; // What is this?
 
+    [Header("Testing")]
+    public bool enableTesting = false;
+    public float walkingAirFriction = 0.0f;
+    public float flyingAirFriction = 5.0f;
+    public float walkingAirAcceleration = 10.0f;
+    public float flyingAirAcceleration = 50.0f;
+    public float testingHealth = 2000.0f;
+    public float playingHealth = 100.0f;
+
     GameObject menuListener;
 
     private void Awake()
@@ -106,6 +115,18 @@ public class PlayerController : MonoBehaviour
         inputs.World.Use.performed += OnUse;
 
         inputs.World.Explosion.performed += OnRightClick;
+
+        inputs.World.TestMode.performed += OnPressP;
+
+        
+        inputs.World.FlyUp.started += OnShift;
+        inputs.World.FlyUp.performed += OnShift;
+        inputs.World.FlyUp.canceled += OnShift;
+
+        inputs.World.FlyDown.started += OnCtrl;
+        inputs.World.FlyDown.performed += OnCtrl;
+        inputs.World.FlyDown.canceled += OnCtrl;
+
 
         // Rigidbody physics
 
@@ -330,15 +351,18 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if(!enableTesting)
         {
-            holdJump = true;
+            if (context.started)
+            {
+                holdJump = true;
 
-            Jump();
-        }
-        else if (context.performed && !context.control.IsPressed())
-        {
-            holdJump = false;
+                Jump();
+            }
+            else if (context.performed && !context.control.IsPressed())
+            {
+                holdJump = false;
+            }
         }
     }
 
@@ -458,4 +482,48 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(shootDelay);
         }
     }
+
+    void OnPressP(InputAction.CallbackContext context)
+    {
+        if (!enableTesting)
+        { 
+            enableTesting = true;
+            var setPlayerHealth = gameObject.GetComponentInChildren<AliveObject>();
+            setPlayerHealth.SetMaxHealth(testingHealth);
+            setPlayerHealth.SetHealth(testingHealth);
+            gravity = new Vector3(0.0f, 0.0f, 0.0f);
+            rigidbody.useGravity = false;
+            airFriction = flyingAirFriction;
+            airAcceleration = flyingAirAcceleration;
+        } else
+        {
+            enableTesting = false;
+            var setPlayerHealth = gameObject.GetComponentInChildren<AliveObject>();
+            setPlayerHealth.SetMaxHealth(playingHealth);
+            setPlayerHealth.SetHealth(playingHealth);
+            gravity = new Vector3(0.0f, -19.6f, 0.0f);
+            rigidbody.useGravity = true;
+            airFriction = walkingAirFriction;
+            airAcceleration = walkingAirAcceleration;
+        }
+    }
+
+    void OnShift(InputAction.CallbackContext context)
+    {
+        if (enableTesting)
+        {
+            GameObject player = GameObject.Find("Player(Clone)");
+            player.transform.position = player.transform.position + Vector3.up;
+        }
+    }
+
+    void OnCtrl(InputAction.CallbackContext context)
+    {
+        if (enableTesting)
+        {
+            GameObject player = GameObject.Find("Player(Clone)");
+            player.transform.position = player.transform.position + Vector3.down;
+        }
+    }
+
 }
