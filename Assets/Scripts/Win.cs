@@ -32,7 +32,7 @@ public class Win : MonoBehaviour
         Debug.Log("pill = " + globals.pill + " cube = " + globals.cube + " pyramid =" + globals.pyramid+ " won = " + globals.won);
         if (other.gameObject.CompareTag("Player") && active)
         {
-            Debug.Log("you win");
+            SceneManager.LoadSceneAsync("WinScreen");
         }
     }
 }
