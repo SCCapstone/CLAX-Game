@@ -92,7 +92,6 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         Debug.Log("clicked open options");
 
-
     }
 
     public void changeDifficulty()
@@ -147,6 +146,9 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void ChangeColor()
+    {
+
+    }
 
     public void CloseOptions()
     {
