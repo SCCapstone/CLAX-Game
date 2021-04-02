@@ -18,7 +18,7 @@ public class HubSide : MonoBehaviour
     void Start()
     {
         doorRenderer = doorway.transform.GetChild(0).GetComponentInChildren<Renderer>();
-        if(globals.spawnPoint == doorway.GetComponent<SpawnPoint>().spawnNum)
+        if(Globals.spawnPoint == doorway.GetComponent<SpawnPoint>().spawnNum)
         {
             active = false;
             doorRenderer.material = change;
@@ -37,7 +37,7 @@ public class HubSide : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && active)
         {
             Debug.Log("Player Entered");
-            globals.spawnPoint = 0;
+            Globals.spawnPoint = 0;
             SceneManager.LoadSceneAsync(sceneName);
         }
     }

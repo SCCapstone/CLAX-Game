@@ -75,7 +75,7 @@ public class TriangleBossScript : AliveObject
 
     void Start()
     {
-        globals.boss = true;
+        Globals.boss = true;
 
         state = BossState.Decide;
         lastUpdateTime = Time.time - UPDATE_INTERVAL + 1.5f;
@@ -85,8 +85,8 @@ public class TriangleBossScript : AliveObject
     {
         // Cleanup objects if necessary
 
-        globals.pyramid = true;
-        globals.boss = false;
+        Globals.pyramid = true;
+        Globals.boss = false;
     }
 
     void FixedUpdate()

@@ -30,7 +30,7 @@ public class BossSide : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!globals.boss && !active)
+        if (!Globals.boss && !active)
         {
             doorRenderer.material = change;
             active = true;
@@ -39,9 +39,9 @@ public class BossSide : MonoBehaviour
     }
     public void winCheck()
     {
-        if (globals.pill && globals.cube && globals.pyramid && !globals.won)
+        if (Globals.pill && Globals.cube && Globals.pyramid && !Globals.won)
         {
-            globals.won = true;
+            Globals.won = true;
         }
     }
     void OnTriggerEnter(Collider other)
@@ -52,7 +52,7 @@ public class BossSide : MonoBehaviour
         {
             Debug.Log("Player Entered");
             winCheck();
-            globals.spawnPoint = otherSideSpawnPoint;
+            Globals.spawnPoint = otherSideSpawnPoint;
             SceneManager.LoadSceneAsync(sceneName);
         }
     }

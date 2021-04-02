@@ -26,14 +26,14 @@ public class SpawnPoint : MonoBehaviour
         spawnPointRenderer = spawnPoint.GetComponentInChildren<Renderer>();
         original = spawnPointRenderer.material;
 
-        if (spawnNum == globals.spawnPoint || alwaysSpawn)
+        if (spawnNum == Globals.spawnPoint || alwaysSpawn)
         {
             player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
             player.transform.position = spawnPoint.transform.position;
             active = true;
             spawnPointRenderer.material = change;
 
-            globals.spawnPoint = spawnNum;
+            Globals.spawnPoint = spawnNum;
         }
         else
         {
@@ -44,7 +44,7 @@ public class SpawnPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (spawnNum != globals.spawnPoint && active)
+        if (spawnNum != Globals.spawnPoint && active)
         {
             active = false;
             spawnPointRenderer.material = original;
@@ -55,7 +55,7 @@ public class SpawnPoint : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") && canSetSpawn)
         {
-            globals.spawnPoint = spawnNum;
+            Globals.spawnPoint = spawnNum;
 
             if (!spawnPointRenderer.material.name.Contains(change.name))
             {

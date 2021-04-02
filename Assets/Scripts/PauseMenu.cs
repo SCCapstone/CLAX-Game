@@ -42,7 +42,7 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (globals.colorBlindEnabled)
+        if (Globals.colorBlindEnabled)
         {
             ChangeColor();
         }
@@ -58,14 +58,14 @@ public class PauseMenu : MonoBehaviour
 
     private void ResetFOV()
     {
-        globals.videoSettings.fieldOfView = 60.0f;
+        Globals.videoSettings.fieldOfView = 60.0f;
 
-        fovSlider.value = globals.videoSettings.fieldOfView;
+        fovSlider.value = Globals.videoSettings.fieldOfView;
     }
 
     private void ChangeFOV()
     {
-        globals.videoSettings.fieldOfView = fovSlider.value;
+        Globals.videoSettings.fieldOfView = fovSlider.value;
     }
 
     public void QuitGame()
@@ -133,14 +133,14 @@ public class PauseMenu : MonoBehaviour
         boss = GameObject.FindGameObjectWithTag("Boss");
         player = GameObject.Find("Character");
 
-        globals.difficulty = ((globals.difficulty + 1) % 4);
-        if (globals.difficulty == 0)
+        Globals.difficulty = ((Globals.difficulty + 1) % 4);
+        if (Globals.difficulty == 0)
         {
-            globals.difficulty = 1;
+            Globals.difficulty = 1;
         }
-        Debug.Log("difficulty " + globals.difficulty);
+        Debug.Log("difficulty " + Globals.difficulty);
 
-        if (globals.difficulty == 1)
+        if (Globals.difficulty == 1)
         {
             float newBossHealth = boss.GetComponent<AliveObject>().maxHealth * 3 / 5;
             float curPercent = boss.GetComponent<AliveObject>().health / boss.GetComponent<AliveObject>().maxHealth;
@@ -148,7 +148,7 @@ public class PauseMenu : MonoBehaviour
             boss.GetComponent<AliveObject>().health = curPercent * newBossHealth;
         }
 
-        if (globals.difficulty == 2)
+        if (Globals.difficulty == 2)
         {
             var newBossHealth = 1000;
             float curPercent = boss.GetComponent<AliveObject>().health / boss.GetComponent<AliveObject>().maxHealth;
@@ -161,7 +161,7 @@ public class PauseMenu : MonoBehaviour
             player.GetComponent<AliveObject>().health = curPercent2 * newPlayerHealth;
         }
 
-        if (globals.difficulty == 3)
+        if (Globals.difficulty == 3)
         {
             float newPlayerHealth = .5f * player.GetComponent<AliveObject>().maxHealth;
 
@@ -236,23 +236,23 @@ public class PauseMenu : MonoBehaviour
 
     public void ToggleColorBlind()
     {
-        if (globals.colorBlindEnabled == false)
+        if (Globals.colorBlindEnabled == false)
         {
             ChangeColor();
-            globals.colorBlindEnabled = true;
+            Globals.colorBlindEnabled = true;
         }
         else
         {
             ChangeBackToDefaultColor();
-            globals.colorBlindEnabled = false;
+            Globals.colorBlindEnabled = false;
         }
     }
 
     public void ToggleVSync()
     {
-        globals.videoSettings.vsyncEnabled = !globals.videoSettings.vsyncEnabled;
+        Globals.videoSettings.vsyncEnabled = !Globals.videoSettings.vsyncEnabled;
 
-        QualitySettings.vSyncCount = globals.videoSettings.vsyncEnabled ? 1 : 0;
+        QualitySettings.vSyncCount = Globals.videoSettings.vsyncEnabled ? 1 : 0;
     }
 
     public void CloseOptions()
@@ -263,6 +263,6 @@ public class PauseMenu : MonoBehaviour
 
     public void ToggleTimer()
     {
-        globals.timerEnabled = !globals.timerEnabled;
+        Globals.timerEnabled = !Globals.timerEnabled;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class globals : MonoBehaviour
+public class Globals : MonoBehaviour
 {
     public struct VideoSettings
     {
@@ -25,6 +25,6 @@ public class globals : MonoBehaviour
 
     public static VideoSettings videoSettings = new VideoSettings() {
         vsyncEnabled = true,
-        fieldOfView = 60
+        fieldOfView = 60.0f
     };
 }

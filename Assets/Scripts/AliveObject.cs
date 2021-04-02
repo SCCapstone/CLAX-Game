@@ -6,6 +6,8 @@ public class AliveObject : MonoBehaviour
     public float health;
     public float maxHealth;
 
+    public bool invulnerable;
+
     public float hitCooldown = 0.5f;
 
     protected float lastHitTime = 0.0f;
@@ -30,7 +32,7 @@ public class AliveObject : MonoBehaviour
     public void Damage(float amount)
     {
         // Check if hit cooldown is not active
-        if (Time.time - lastHitTime > hitCooldown)
+        if (!invulnerable && Time.time - lastHitTime > hitCooldown)
         {
             lastHitTime = Time.time;
 

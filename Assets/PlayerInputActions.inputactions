@@ -274,7 +274,7 @@
                     "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Default",
                     "action": "TestMode",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -282,10 +282,10 @@
                 {
                     "name": "",
                     "id": "98f890df-4033-40c3-8a8d-a7f19b904d48",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Default",
                     "action": "FlyUp",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -294,9 +294,20 @@
                     "name": "",
                     "id": "b0f07c6b-7b34-4d98-8c8a-756b1dd79e27",
                     "path": "<Keyboard>/ctrl",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "Default",
+                    "action": "FlyDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f9189bf1-d27f-414d-8de8-07cd8439cfb2",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Default",
                     "action": "FlyDown",
                     "isComposite": false,
                     "isPartOfComposite": false

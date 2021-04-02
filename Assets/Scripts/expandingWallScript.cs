@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class expandingWallScript : MonoBehaviour
+public class ExpandingWallScript : MonoBehaviour
 {
 
     float lastWallExpandTime;

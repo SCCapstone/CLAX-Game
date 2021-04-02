@@ -41,7 +41,7 @@ public class Explosion : MonoBehaviour
     private IEnumerator Shrink()
     {
         Vector3 startScale = transform.localScale;
-        Vector3 endScale = new Vector3(0, 0, 0);
+        Vector3 endScale = Vector3.zero;
 
         float startTime = Time.time;
         float elapsed = 0.0f;

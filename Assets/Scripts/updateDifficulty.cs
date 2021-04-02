@@ -18,6 +18,6 @@ public class UpdateDifficulty : MonoBehaviour
     void Update()
     {
 
-        textBoxGUI.SetText("Difficulty: " + (globals.difficulty));
+        textBoxGUI.SetText("Difficulty: " + (Globals.difficulty));
     }
 }

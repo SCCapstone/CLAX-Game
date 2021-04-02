@@ -52,7 +52,7 @@ public class RollingBossScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        globals.boss = true;
+        Globals.boss = true;
         //scale = gameObject.transform.localScale;
         lastExpandedTime = Time.time;
         body = GetComponent<Rigidbody>();
@@ -85,8 +85,8 @@ public class RollingBossScript : MonoBehaviour
         {
             Destroy(madeWall);
         }
-        globals.pill = true;
-        globals.boss = false;
+        Globals.pill = true;
+        Globals.boss = false;
     }
 
     void Cooldowns()
@@ -134,7 +134,7 @@ public class RollingBossScript : MonoBehaviour
 
     void BallExpandAndMakeWall(bool lockSize)
     {
-        if (madeWall != null && madeWall.GetComponent<expandingWallScript>().isDone)
+        if (madeWall != null && madeWall.GetComponent<ExpandingWallScript>().isDone)
         {
             Destroy(madeWall);
             isGrowing = false;
@@ -158,7 +158,7 @@ public class RollingBossScript : MonoBehaviour
         madeWall = Instantiate(wallPrefab, this.transform.position,
                     this.transform.rotation);
         madeWall.transform.Rotate(new Vector3(90, 90, 0));
-        madeWall.GetComponent<expandingWallScript>().lockWallSize = lockSize;
+        madeWall.GetComponent<ExpandingWallScript>().lockWallSize = lockSize;
     }
 
     void MoveTowardPoint(float powerMuliplier = 1)
@@ -212,7 +212,7 @@ public class RollingBossScript : MonoBehaviour
         {
             if (madeWall != null)
             {
-                madeWall.GetComponent<expandingWallScript>().lockWallSize = true;
+                madeWall.GetComponent<ExpandingWallScript>().lockWallSize = true;
                 Debug.Log("locked wall size");
 
                 hasDoneOneTimePhaseCode = true;
@@ -238,7 +238,7 @@ public class RollingBossScript : MonoBehaviour
         if (madeWall != null)
         {
             madeWall.transform.Rotate(0, -rotateAmount * Time.fixedDeltaTime, 0);
-            madeWall.GetComponent<expandingWallScript>().lockWallSize = true;
+            madeWall.GetComponent<ExpandingWallScript>().lockWallSize = true;
             //madeWall.transform.position = transform.position;
         }
 
@@ -249,13 +249,13 @@ public class RollingBossScript : MonoBehaviour
         {
             if (madeWall != null)
             {
-                madeWall.GetComponent<expandingWallScript>().lockWallSize = false;
+                madeWall.GetComponent<ExpandingWallScript>().lockWallSize = false;
                 //Debug.Break();
 
                 //Debug.Log("set to false");
                 //Debug.Log("is done: " + madeWall.GetComponent<expandingWallScript>().isDone);
 
-                if (madeWall.GetComponent<expandingWallScript>().isDone)
+                if (madeWall.GetComponent<ExpandingWallScript>().isDone)
                 {
 
                     Destroy(madeWall);
@@ -309,7 +309,7 @@ public class RollingBossScript : MonoBehaviour
             if (madeWall != null)
             {
 
-                if (madeWall.GetComponent<expandingWallScript>().isDone)
+                if (madeWall.GetComponent<ExpandingWallScript>().isDone)
                 {
 
                     Destroy(madeWall);

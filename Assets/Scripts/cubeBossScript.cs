@@ -51,7 +51,7 @@ public class CubeBossScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        globals.boss = true;
+        Globals.boss = true;
     }
 
     void setup()
@@ -153,8 +153,8 @@ public class CubeBossScript : MonoBehaviour
     private void OnDestroy()
     {
         destroyCubes();
-        globals.cube = true;
-        globals.boss = false;
+        Globals.cube = true;
+        Globals.boss = false;
     }
 
     void launchRowByRow()

@@ -13,6 +13,6 @@ public class VSyncOptionText : MonoBehaviour
     // Not optimal and unecessarily expensive to perform this when variable doesn't change often
     void Update()
     {
-        textBoxGUI.SetText("VSync: " + (globals.videoSettings.vsyncEnabled ? "ON" : "OFF"));
+        textBoxGUI.SetText("VSync: " + (Globals.videoSettings.vsyncEnabled ? "ON" : "OFF"));
     }
 }

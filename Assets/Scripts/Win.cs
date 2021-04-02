@@ -14,14 +14,14 @@ public class Win : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("pill = " + globals.pill + " cube = " + globals.cube + " pyramid =" + globals.pyramid + " won = " + globals.won);
+        Debug.Log("pill = " + Globals.pill + " cube = " + Globals.cube + " pyramid =" + Globals.pyramid + " won = " + Globals.won);
         doorRenderer = doorway.GetComponentInChildren<Renderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (globals.won && !active)
+        if (Globals.won && !active)
         {
             doorRenderer.material = change;
             active = true;
@@ -30,7 +30,7 @@ public class Win : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("pill = " + globals.pill + " cube = " + globals.cube + " pyramid =" + globals.pyramid + " won = " + globals.won);
+        Debug.Log("pill = " + Globals.pill + " cube = " + Globals.cube + " pyramid =" + Globals.pyramid + " won = " + Globals.won);
         if (other.gameObject.CompareTag("Player") && active)
         {
             SceneManager.LoadSceneAsync("WinScreen");

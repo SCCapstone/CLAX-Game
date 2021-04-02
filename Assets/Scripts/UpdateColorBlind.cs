@@ -18,6 +18,6 @@ public class UpdateColorBlind : MonoBehaviour
     void Update()
     {
 
-        textBoxGUI.SetText("ColorBlind: " + (globals.colorBlindEnabled));
+        textBoxGUI.SetText("ColorBlind: " + (Globals.colorBlindEnabled));
     }
 }
