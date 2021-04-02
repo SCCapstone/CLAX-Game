@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2617739505037022597}
   m_Layer: 8
   m_Name: PlayerExplosion
-  m_TagString: explosionAttack
+  m_TagString: ExplosionAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,4 +111,3 @@ MonoBehaviour:
   growTime: 2
   maxSize: 4
   damage: 0
-  enemyLayerNum: 0

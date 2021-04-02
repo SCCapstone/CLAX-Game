@@ -8,7 +8,11 @@ public class Globals : MonoBehaviour
         public float fieldOfView;
     };
 
-    //Boss flags
+    // Enemy layer
+
+    public static int enemyLayerNum = 9;
+
+    // Boss flags
     public static bool boss = true;
 
     public static bool pill = false;

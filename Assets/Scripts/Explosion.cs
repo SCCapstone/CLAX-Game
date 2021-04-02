@@ -8,8 +8,6 @@ public class Explosion : MonoBehaviour
 
     public float damage = 20;
 
-    public int enemyLayerNum;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -58,16 +56,10 @@ public class Explosion : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Initialize(int enemyLayerNum, float damage = 20)
-    {
-        this.enemyLayerNum = enemyLayerNum;
-        this.damage = damage;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         // 9 is the layer id for enemy
-        if (other.gameObject.layer == enemyLayerNum)
+        if (other.gameObject.layer == Globals.enemyLayerNum)
         {
             AliveObject enemy = other.gameObject.GetComponent<AliveObject>();
 
@@ -76,7 +68,7 @@ public class Explosion : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (other.transform.name.Contains("CubeAttack") || other.transform.name.Contains("TriangleBossProjectile"))
+        if (other.CompareTag("EnemyAttack"))
         {
             Destroy(other.gameObject);
         }

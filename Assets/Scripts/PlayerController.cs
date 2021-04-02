@@ -440,7 +440,7 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
         }
 
-        var existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
+        int existingCount = GameObject.FindGameObjectsWithTag("ExplosionAttack").Length;
 
         if (existingCount >= maxExplosionCount)
         {
@@ -452,21 +452,15 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
-        // Enemy layer is 9
         Explosion instance = Instantiate(explosionPrefab).GetComponent<Explosion>();
-        instance.Initialize(9);
-
-        playerSecondaryShootSound.Play();
-
 
         // Get horizontal facing vector
         Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
         facing.Normalize();
 
-        Explosion explosion = instance.GetComponent<Explosion>();
+        instance.transform.position = transform.position + facing;
 
-        explosion.gameObject.transform.position = transform.position + facing;
+        playerSecondaryShootSound.Play();
     }
 
     void FireProjectile()
@@ -478,10 +472,6 @@ public class PlayerController : MonoBehaviour
         PlayerProjectile projectile = Instantiate(bulletPrefab).GetComponent<PlayerProjectile>();
         playerShootSound.Play();
 
-
-        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
-        // Enemy layer is 9
-        projectile.enemyLayerNum = 9;
         projectile.position = transform.position;
         projectile.velocity = facing * projectileSpeed;
 

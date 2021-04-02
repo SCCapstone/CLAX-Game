@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6997417486339025487}
   m_Layer: 11
   m_Name: TriangleBossProjectile
-  m_TagString: Untagged
+  m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,6 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   gravity: {x: 0, y: 0, z: 0}
   lifeTime: 2
-  bulletTimeout: {fileID: 0}
 --- !u!114 &6997417486339025487
 MonoBehaviour:
   m_ObjectHideFlags: 0
