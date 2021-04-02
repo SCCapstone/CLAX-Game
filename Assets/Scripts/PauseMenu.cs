@@ -240,7 +240,6 @@ public class PauseMenu : MonoBehaviour
     {
         globals.timerEnabled = !globals.timerEnabled;
 
-        timerObject.GetComponent<TimerScript>().timerVisible = globals.timerEnabled;
     }
 
     // Update is called once per frame

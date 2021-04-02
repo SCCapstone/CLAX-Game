@@ -18,6 +18,6 @@ public class TimerOptionText : MonoBehaviour
     void Update()
     {
 
-        textBoxGUI.SetText("Timer: " + (timerObject.GetComponent<TimerScript>().timerVisible ? "ON" : "OFF"));
+        textBoxGUI.SetText("Timer: " + (globals.timerEnabled ? "ON" : "OFF"));
     }
 }
