@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CubeBossScript : MonoBehaviour
 {
-
-
     Transform target;
     float distBetweenCubes = 2;
     float cubeDistFromBoss = 5;
@@ -17,7 +13,6 @@ public class CubeBossScript : MonoBehaviour
     int timesDestinationReached = 0;
     int batchesMade = 0;
 
-
     public GameObject cubeAttacker;
 
     //float spawnTimeCooldown = 0;
@@ -27,26 +22,25 @@ public class CubeBossScript : MonoBehaviour
     public float delayBetweenNewGrid = 3;
     public AudioSource launchSound;
 
-
     int gridDimension = 3;
     int lastIdLaunched = 0;
 
     float lastCubeLaunchTime = 0;
     GameObject[] currentCubes;
 
-
     string side;
     string movementDirection;
 
     Vector3 currentTargetPos;
 
-
-    enum bossPhases
+    enum BossPhase
     {
-        singleShot = 0, moving, allShoot
+        SINGLE_SHOT,
+        MOVING,
+        ALL_SHOOT
     }
 
-    bossPhases currentPhase = bossPhases.allShoot;
+    BossPhase currentPhase = BossPhase.ALL_SHOOT;
 
     // Start is called before the first frame update
     void Start()
@@ -54,9 +48,10 @@ public class CubeBossScript : MonoBehaviour
         Globals.boss = true;
     }
 
-    void setup()
+    void Setup()
     {
         var playerObject = GameObject.FindGameObjectWithTag("Player");
+
         if (playerObject != null)
         {
             //Debug.LogError("Recalced target");
@@ -66,7 +61,7 @@ public class CubeBossScript : MonoBehaviour
         lastCubeLaunchTime = 0;
     }
 
-    string calcSidePlayerOn()
+    string CalcSidePlayerOn()
     {
         //calculate which side to place the cubes on
         if (Mathf.Abs(transform.position.x - target.position.x) >
@@ -83,8 +78,9 @@ public class CubeBossScript : MonoBehaviour
 
         currentCubes = new GameObject[gridDimension * gridDimension];
 
-        side = calcSidePlayerOn();
+        side = CalcSidePlayerOn();
         Vector3 midPoint;
+
         if (side == "x")
         {
             if (transform.position.x > target.position.x)
@@ -98,9 +94,13 @@ public class CubeBossScript : MonoBehaviour
         else
         {
             if (transform.position.z > target.position.z)
+            {
                 cubeDistFromBoss = -1 * Mathf.Abs(cubeDistFromBoss);
+            }
             else
+            {
                 cubeDistFromBoss = Mathf.Abs(cubeDistFromBoss);
+            }
 
             midPoint = new Vector3(transform.position.x,
             transform.position.y, (transform.position.z + cubeDistFromBoss));
@@ -108,12 +108,13 @@ public class CubeBossScript : MonoBehaviour
 
 
         int curNum = 0;
+
         for (int j = (gridDimension / 2); j >= -(gridDimension / 2); j--)
         {
             for (int i = (gridDimension / 2); i >= -(gridDimension / 2); i--)
             {
                 GameObject newCube;
-                //spawn the grid of cubes on the x side
+                // Spawn the grid of cubes on the x side
                 if (side == "x")
                 {
                     newCube = Instantiate(cubeAttacker,
@@ -121,7 +122,7 @@ public class CubeBossScript : MonoBehaviour
                     midPoint.y + j * distBetweenCubes, midPoint.z + i * distBetweenCubes),
                     new Quaternion());
                 }
-                //spawn the grid of cubes on the z side
+                // Spawn the grid of cubes on the z side
                 else
                 {
 
@@ -130,46 +131,37 @@ public class CubeBossScript : MonoBehaviour
                     midPoint.y + j * distBetweenCubes, transform.position.z + cubeDistFromBoss),
                     new Quaternion());
                 }
+
                 currentCubes[curNum] = newCube;
                 curNum += 1;
             }
         }
+
         lastSpawnTime = Time.time;
         lastIdLaunched = 0;
-
-
     }
     //destroy old cubes
-    void destroyCubes()
+    void DestroyCubes()
     {
-        var lastCubes = GameObject.FindGameObjectsWithTag("cubeAttack");
+        var lastCubes = GameObject.FindGameObjectsWithTag("EnemyAttack");
+
         for (int i = 0; i < lastCubes.Length; i++)
         {
             Destroy(lastCubes[i]);
-
         }
     }
 
     private void OnDestroy()
     {
-        destroyCubes();
+        DestroyCubes();
+
         Globals.cube = true;
         Globals.boss = false;
     }
 
-    void launchRowByRow()
-    {
-
-        //for (int i = lastIdLaunched; i < lastIdLaunched + gridDimension; i++)
-        //{
-
-        //}
-        //lastIdLaunched += gridDimension;
-    }
-
     void launchAsNeeded()
     {
-        //launch the cubes one at a time
+        // Launch the cubes one at a time
         float timeBetweenSingleCubeLaunch = (delayBetweenNewGrid * .65f) / (gridDimension * gridDimension);
         //Debug.Log("current cubes " + currentCubes);
 
@@ -181,16 +173,16 @@ public class CubeBossScript : MonoBehaviour
             lastCubeLaunchTime = Time.time;
             delayBetweenNewGrid = 5;
             launchSound.Play();
-
         }
-
     }
 
     void launchRowAsNeeded()
     {
-        //launch the cubes one at a time
+        // Launch the cubes one at a time
         float timeBetweenSingleCubeLaunch = 1;
+
         //Debug.Log("current cubes " + currentCubes);
+
         if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch &&
             lastIdLaunched < currentCubes.Length)
         {
@@ -203,130 +195,113 @@ public class CubeBossScript : MonoBehaviour
             }
             launchSound.Play();
         }
+
         delayBetweenNewGrid = 3;
     }
 
-    void makeNewBatch()
+    void MakeNewBatch()
     {
-
         if (Time.time - lastSpawnTime > delayBetweenNewGrid)
         {
             Debug.Log("making new grid");
 
-            destroyCubes();
+            DestroyCubes();
             batchesMade += 1;
+
             if (batchesMade == 3)
             {
-                goToNextPhase();
+                GoToNextPhase();
                 batchesMade = 0;
             }
             else
             {
                 spawnCubes();
-
             }
         }
     }
 
-    void goToNextPhase()
+    void GoToNextPhase()
     {
-        int totalPhases = System.Enum.GetNames(typeof(bossPhases)).Length;
+        int totalPhases = System.Enum.GetNames(typeof(BossPhase)).Length;
         //currentPhase = (bossPhases)((((int)currentPhase) + 1) % totalPhases);
-        currentPhase = (bossPhases)Random.Range(0, totalPhases - 1);
+        currentPhase = (BossPhase)Random.Range(0, totalPhases - 1);
 
         timesDestinationReached = 0;
-
     }
 
-    void computeDestination()
+    void ComputeDestination()
     {
         if (timesDestinationReached >= 3)
         {
-            goToNextPhase();
+            GoToNextPhase();
             //timesDestinationReached = 1;
             return;
         }
-        movementDirection = calcSidePlayerOn();
+
+        movementDirection = CalcSidePlayerOn();
         currentTargetPos = new Vector3(target.position.x, 0, target.position.z);
         timesDestinationReached += 1;
-
     }
 
-    void moveOnAxis()
+    void MoveOnAxis()
     {
-        //set the target at the beginning
+        // Set the target at the beginning
         if (movementDirection == null || currentTargetPos == null)
         {
             timesDestinationReached -= 1;
-            computeDestination();
-
+            ComputeDestination();
         }
 
         //Debug.Log("movement direction " + movementDirection);
 
-        //move on different axis based on which one the player is farther away on
+        // Move on different axis based on which one the player is farther away on
         if (movementDirection == "x")
         {
-            if (transform.position.x > currentTargetPos.x)
-                moveAmount = -1 * Mathf.Abs(moveAmount);
-            else
-                moveAmount = Mathf.Abs(moveAmount);
+            moveAmount = Mathf.Abs(moveAmount) * (transform.position.x > currentTargetPos.x ? -1.0f : 1.0f);
 
             transform.position += new Vector3(moveAmount, 0, 0);
-            if (Mathf.Abs(transform.position.x - currentTargetPos.x) < 0.5f)
-                computeDestination();
 
+            if (Mathf.Abs(transform.position.x - currentTargetPos.x) < 0.5f)
+            {
+                ComputeDestination();
+            }
         }
         else if (movementDirection == "z")
         {
-            if (transform.position.z > currentTargetPos.z)
-                moveAmount = -1 * Mathf.Abs(moveAmount);
-            else
-                moveAmount = Mathf.Abs(moveAmount);
+            moveAmount = Mathf.Abs(moveAmount) * (transform.position.z > currentTargetPos.z ? -1.0f : 1.0f);
+
             transform.position += new Vector3(0, 0, moveAmount);
+
             if (Mathf.Abs(transform.position.z - currentTargetPos.z) < 0.5f)
-                computeDestination();
-
+            {
+                ComputeDestination();
+            }
         }
-
     }
 
     private void FixedUpdate()
     {
         if (target == null)
         {
-            setup();
+            Setup();
             return;
         }
 
         switch (currentPhase)
         {
-            case bossPhases.singleShot:
-                makeNewBatch();
+            case BossPhase.SINGLE_SHOT:
+                MakeNewBatch();
                 launchAsNeeded();
                 break;
-            case bossPhases.allShoot:
-                makeNewBatch();
+            case BossPhase.ALL_SHOOT:
+                MakeNewBatch();
                 launchRowAsNeeded();
                 break;
-            case bossPhases.moving:
-                moveOnAxis();
+            case BossPhase.MOVING:
+                MoveOnAxis();
                 break;
             default:
                 break;
         }
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //if (target == null)
-        //{
-        //    setup();
-        //    return;
-        //}
-
-
     }
 }
