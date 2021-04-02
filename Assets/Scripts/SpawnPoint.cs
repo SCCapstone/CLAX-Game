@@ -52,11 +52,11 @@ public class SpawnPoint : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && canSetSpawn)
         {
             globals.spawnPoint = spawnNum;
-            if (spawnPointRenderer.material != change)
+
+            if (!spawnPointRenderer.material.name.Contains(change.name))
             {
                 spawnPointRenderer.material = change;
                 activationSound.Play();
-
             }
         }
     }
