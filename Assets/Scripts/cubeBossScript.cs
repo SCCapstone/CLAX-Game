@@ -61,17 +61,22 @@ public class CubeBossScript : MonoBehaviour
         lastCubeLaunchTime = 0;
     }
 
+    // Calculate which side to place the cubes on
     string CalcSidePlayerOn()
     {
-        //calculate which side to place the cubes on
-        if (Mathf.Abs(transform.position.x - target.position.x) >
-            Mathf.Abs(transform.position.z - target.position.z))
+        Vector3 diff = transform.position - target.position;
+
+        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.z))
+        {
             return "x";
+        }
         else
+        {
             return "z";
+        }
     }
 
-    void spawnCubes()
+    void SpawnCubes()
     {
         //Vector3 midPoint = new Vector3((transform.position.x + target.position.x) / 2,
         //    transform.position.y, (transform.position.z + target.position.z) / 2);
@@ -79,33 +84,35 @@ public class CubeBossScript : MonoBehaviour
         currentCubes = new GameObject[gridDimension * gridDimension];
 
         side = CalcSidePlayerOn();
+
         Vector3 midPoint;
 
         if (side == "x")
         {
             if (transform.position.x > target.position.x)
-                cubeDistFromBoss = -1 * Mathf.Abs(cubeDistFromBoss);
+            {
+                cubeDistFromBoss = Mathf.Abs(cubeDistFromBoss) * -1.0f;
+            }
             else
+            {
                 cubeDistFromBoss = Mathf.Abs(cubeDistFromBoss);
+            }
 
-            midPoint = new Vector3((transform.position.x + cubeDistFromBoss),
-                transform.position.y, (transform.position.z));
+            midPoint = transform.position + new Vector3(cubeDistFromBoss, 0.0f, 0.0f);
         }
         else
         {
             if (transform.position.z > target.position.z)
             {
-                cubeDistFromBoss = -1 * Mathf.Abs(cubeDistFromBoss);
+                cubeDistFromBoss = Mathf.Abs(cubeDistFromBoss) * -1.0f;
             }
             else
             {
                 cubeDistFromBoss = Mathf.Abs(cubeDistFromBoss);
             }
 
-            midPoint = new Vector3(transform.position.x,
-            transform.position.y, (transform.position.z + cubeDistFromBoss));
+            midPoint = transform.position + new Vector3(0.0f, 0.0f, cubeDistFromBoss);
         }
-
 
         int curNum = 0;
 
@@ -125,7 +132,6 @@ public class CubeBossScript : MonoBehaviour
                 // Spawn the grid of cubes on the z side
                 else
                 {
-
                     newCube = Instantiate(cubeAttacker,
                     new Vector3(midPoint.x + i * distBetweenCubes,
                     midPoint.y + j * distBetweenCubes, transform.position.z + cubeDistFromBoss),
@@ -140,7 +146,8 @@ public class CubeBossScript : MonoBehaviour
         lastSpawnTime = Time.time;
         lastIdLaunched = 0;
     }
-    //destroy old cubes
+
+    // Destroy old cubes
     void DestroyCubes()
     {
         var lastCubes = GameObject.FindGameObjectsWithTag("EnemyAttack");
@@ -159,10 +166,11 @@ public class CubeBossScript : MonoBehaviour
         Globals.boss = false;
     }
 
-    void launchAsNeeded()
+    void LaunchAsNeeded()
     {
         // Launch the cubes one at a time
         float timeBetweenSingleCubeLaunch = (delayBetweenNewGrid * .65f) / (gridDimension * gridDimension);
+
         //Debug.Log("current cubes " + currentCubes);
 
         if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
@@ -176,7 +184,7 @@ public class CubeBossScript : MonoBehaviour
         }
     }
 
-    void launchRowAsNeeded()
+    void LaunchRowAsNeeded()
     {
         // Launch the cubes one at a time
         float timeBetweenSingleCubeLaunch = 1;
@@ -215,7 +223,7 @@ public class CubeBossScript : MonoBehaviour
             }
             else
             {
-                spawnCubes();
+                SpawnCubes();
             }
         }
     }
@@ -284,6 +292,7 @@ public class CubeBossScript : MonoBehaviour
         if (target == null)
         {
             Setup();
+
             return;
         }
 
@@ -291,14 +300,17 @@ public class CubeBossScript : MonoBehaviour
         {
             case BossPhase.SINGLE_SHOT:
                 MakeNewBatch();
-                launchAsNeeded();
+                LaunchAsNeeded();
+
                 break;
             case BossPhase.ALL_SHOOT:
                 MakeNewBatch();
-                launchRowAsNeeded();
+                LaunchRowAsNeeded();
+
                 break;
             case BossPhase.MOVING:
                 MoveOnAxis();
+
                 break;
             default:
                 break;
