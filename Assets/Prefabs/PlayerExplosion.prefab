@@ -108,11 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883f5a40ac4c6b9489d3b821764f6aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
-  timer: 0
   growTime: 2
   maxSize: 4
-  isMaxSize: 0
-  isShrinking: 0
   damage: 0
   enemyLayerNum: 0

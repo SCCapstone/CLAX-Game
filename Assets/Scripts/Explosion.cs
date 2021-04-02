@@ -1,31 +1,19 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    public Vector3 position = Vector3.zero;
-
-    public float timer = 0f;
-    public float growTime = 4.0f;
-
-    public float maxSize = 6.0f;
-
-    public bool isMaxSize = false;
-    public bool isShrinking = false;
+    public float growTime;
+    public float maxSize;
 
     public float damage = 20;
 
     public int enemyLayerNum;
-    //bool wasInitialized = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (!isMaxSize)
-        {
-            StartCoroutine(Grow());
-        }
+        StartCoroutine(Grow());
 
         Destroy(gameObject, growTime * 2);
     }
@@ -33,44 +21,51 @@ public class Explosion : MonoBehaviour
     private IEnumerator Grow()
     {
         Vector3 startScale = transform.localScale;
-        Vector3 maxScale = new Vector3(maxSize, maxSize, maxSize);
-        do
-        {
-            transform.localScale = Vector4.Lerp(startScale, maxScale, timer / growTime);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        while (timer < growTime);
+        Vector3 endScale = new Vector3(maxSize, maxSize, maxSize);
 
-        isMaxSize = true;
+        float startTime = Time.time;
+        float elapsed = 0.0f;
+
+        while (elapsed < growTime)
+        {
+            elapsed = Time.time - startTime;
+
+            transform.localScale = Vector4.Lerp(startScale, endScale, elapsed / growTime);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        StartCoroutine(Shrink());
     }
+
     private IEnumerator Shrink()
     {
-        isShrinking = true;
-        isMaxSize = false;
         Vector3 startScale = transform.localScale;
-        Vector3 minScale = new Vector3(0, 0, 0);
-        timer = 0;
-        do
+        Vector3 endScale = new Vector3(0, 0, 0);
+
+        float startTime = Time.time;
+        float elapsed = 0.0f;
+
+        while (elapsed < growTime)
         {
-            transform.localScale = Vector4.Lerp(startScale, minScale, timer / growTime);
-            timer += Time.deltaTime;
-            yield return null;
+            elapsed = Time.time - startTime;
+
+            transform.localScale = Vector4.Lerp(startScale, endScale, elapsed / growTime);
+
+            yield return new WaitForEndOfFrame();
         }
-        while (timer < growTime);
+
+        Destroy(gameObject);
     }
 
     public void Initialize(int enemyLayerNum, float damage = 20)
     {
-        //wasInitialized = true;
         this.enemyLayerNum = enemyLayerNum;
         this.damage = damage;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Triggered");
-
         // 9 is the layer id for enemy
         if (other.gameObject.layer == enemyLayerNum)
         {
@@ -84,17 +79,6 @@ public class Explosion : MonoBehaviour
         if (other.transform.name.Contains("cubeAttack") || other.transform.name.Contains("TriangleBossProjectile"))
         {
             Destroy(other.gameObject);
-        }
-
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        transform.position = position;
-        if (isMaxSize)
-        {
-            StartCoroutine(Shrink());
         }
     }
 }
