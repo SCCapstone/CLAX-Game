@@ -165,22 +165,27 @@ public class PauseMenu : MonoBehaviour
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
         foreach (GameObject ob in allObjects)
         {
-            if (ob.GetComponent<Renderer>().material == blue)
+            if(ob.GetComponent<Renderer>() != null)
             {
-                ob.GetComponent<Renderer>().material = blueSub;
+                Debug.Log("Object Found "+ ob.GetComponent<Renderer>().material.name + " " + yellow.name);
+                if (ob.GetComponent<Renderer>().material.name == blue.name +" (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = blueSub;
+                }
+                if (ob.GetComponent<Renderer>().material.name == yellow.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = yellowSub;
+                }
+                if (ob.GetComponent<Renderer>().material.name == purple.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = purpleSub;
+                }
+                if (ob.GetComponent<Renderer>().material.name == green.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = greenSub;
+                }
             }
-            if (ob.GetComponent<Renderer>().material == yellow)
-            {
-                ob.GetComponent<Renderer>().material = yellowSub;
-            }
-            if (ob.GetComponent<Renderer>().material == purple)
-            {
-                ob.GetComponent<Renderer>().material = purpleSub;
-            }
-            if (ob.GetComponent<Renderer>().material == green)
-            {
-                ob.GetComponent<Renderer>().material = greenSub;
-            }
+            
         }
     }
 
@@ -189,42 +194,46 @@ public class PauseMenu : MonoBehaviour
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
         foreach (GameObject ob in allObjects)
         {
-            if (ob.GetComponent<Renderer>().material == blueSub)
+            if (ob.GetComponent<Renderer>() != null)
             {
-                ob.GetComponent<Renderer>().material = blue;
-            }
-            if (ob.GetComponent<Renderer>().material == yellowSub)
-            {
-                ob.GetComponent<Renderer>().material = yellow;
-            }
-            if (ob.GetComponent<Renderer>().material == purpleSub)
-            {
-                ob.GetComponent<Renderer>().material = purple;
-            }
-            if (ob.GetComponent<Renderer>().material == greenSub)
-            {
-                ob.GetComponent<Renderer>().material = green;
-            }
+                if (ob.GetComponent<Renderer>().material.name == blueSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = blue;
+                }
+                if (ob.GetComponent<Renderer>().material.name == yellowSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = yellow;
+                }
+                if (ob.GetComponent<Renderer>().material.name == purpleSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = purple;
+                }
+                if (ob.GetComponent<Renderer>().material.name == greenSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = green;
+                }
+            }    
         }
     }
 
-    public void TurnOnColorBlind()
+    public void toggleColorBlind()
     {
-        ChangeColor();
-        globals.colorBlindEnabled = true;
-    }
-
-    public void TurnOffColorBlind()
-    {
-        ChangeBackToDefaultColor();
-        globals.colorBlindEnabled = false;
+        if (globals.colorBlindEnabled == false)
+        {
+            ChangeColor();
+            globals.colorBlindEnabled = true;
+        }
+        else
+        {
+            ChangeBackToDefaultColor();
+            globals.colorBlindEnabled = false;
+        }
     }
 
     public void CloseOptions()
     {
         pauseMenu.SetActive(true);
         optionsMenu.SetActive(false);
-
     }
 
     public void ToggleTimer()

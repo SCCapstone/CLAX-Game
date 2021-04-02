@@ -49,7 +49,7 @@ MonoBehaviour:
   isGamePaused: 0
   blue: {fileID: 2100000, guid: 5b061043775c485449947511dc2632b4, type: 2}
   purple: {fileID: 2100000, guid: e73fadae5885ebe49b0f6238848a4f9a, type: 2}
-  yellow: {fileID: 2100000, guid: fa964f81ba470554d9e7f7225419998c, type: 2}
+  yellow: {fileID: 2100000, guid: 3867060d33576514ab7b189ffdd4a36a, type: 2}
   green: {fileID: 2100000, guid: 05baf77de5e9aaa4b8813f23b6c4d1ed, type: 2}
   blueSub: {fileID: 2100000, guid: c066418f5896df44db27408b10da540b, type: 2}
   purpleSub: {fileID: 2100000, guid: 0d99b34f2b64a6244997e9d452a089c9, type: 2}

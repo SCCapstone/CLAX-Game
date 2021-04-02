@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 2823477033282438239}
   - component: {fileID: 1324226253475012659}
   - component: {fileID: 3415104548282334769}
-  - component: {fileID: 648610282374014198}
+  - component: {fileID: 6756244720365376263}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -169,16 +169,16 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &648610282374014198
+--- !u!114 &6756244720365376263
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067645623525943114}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7e30b2e1776a81429072427f95383e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ed113236d36642408331fba4eb672c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5389484103390064751
@@ -303,7 +303,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8987137542083814204}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: ChangeColor
+        m_MethodName: toggleColorBlind
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

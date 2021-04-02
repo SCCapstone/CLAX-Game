@@ -8,6 +8,8 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     [Header("Prefabs")]
+    public GameObject player;
+    public Material cBGreen;
     public Camera playerCamera;
     public GameObject bulletPrefab;
     public GameObject explosionPrefab;
@@ -139,6 +141,11 @@ public class PlayerController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (globals.colorBlindEnabled)
+        {
+            player.transform.GetChild(0).gameObject.GetComponent<Renderer>().material = cBGreen;
+        }
     }
 
     private void OnEnable()
