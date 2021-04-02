@@ -106,7 +106,8 @@ public class PauseMenu : MonoBehaviour
     {
         if (pauseMenu != null)
             pauseMenu.SetActive(false);
-        optionsMenu.SetActive(false);
+        if (optionsMenu != null)
+            optionsMenu.SetActive(false);
 
         AudioListener.pause = false;
         Time.timeScale = 1;

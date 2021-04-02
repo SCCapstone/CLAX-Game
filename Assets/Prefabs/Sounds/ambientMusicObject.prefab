@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2051925140198362167}
   - component: {fileID: 2051925140198362152}
-  - component: {fileID: 2051925140198362153}
+  - component: {fileID: 6159501135788741209}
   m_Layer: 0
   m_Name: ambientMusicObject
   m_TagString: Untagged
@@ -43,8 +43,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5e4f5c624558a9543afeda42cbd9c4d0, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.178
+  m_PlayOnAwake: 0
+  m_Volume: 0.087
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -128,7 +128,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2051925140198362153
+--- !u!114 &6159501135788741209
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
