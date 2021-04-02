@@ -532,8 +532,6 @@ public class PlayerController : MonoBehaviour
         {
             player.transform.position += (isAscending ? Vector3.up : Vector3.down) * flyingElevationSpeed * Time.fixedDeltaTime;
 
-            Debug.Log("elevating");
-
             yield return new WaitForFixedUpdate();
         }
 
