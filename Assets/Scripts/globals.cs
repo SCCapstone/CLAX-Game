@@ -17,6 +17,8 @@ public class globals : MonoBehaviour
     public static int difficulty = 2;
     public static bool timerEnabled = true;
 
+    public static bool colorBlindEnabled = false;
+
     // Start is called before the first frame update
     void Start()
     {

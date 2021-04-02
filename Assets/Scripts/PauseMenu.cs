@@ -20,7 +20,28 @@ public class PauseMenu : MonoBehaviour
 
     private PlayerInputActions inputs;
 
+    public Material blue;
+    public Material purple;
+    public Material yellow;
+    public Material green;
+
+    public Material blueSub;
+    public Material purpleSub;
+    public Material yellowSub;
+    public Material greenSub;
+    public Material redSub;
+
+
     // Start is called before the first frame update
+    void Start()
+    {
+        if (globals.colorBlindEnabled)
+        {
+            ChangeColor();
+        }
+    }
+
+
     void Awake()
     {
         inputs = new PlayerInputActions();
@@ -38,7 +59,6 @@ public class PauseMenu : MonoBehaviour
     {
         Application.Quit();
         Debug.Log("game was quit");
-
     }
 
 
@@ -112,7 +132,6 @@ public class PauseMenu : MonoBehaviour
             float curPercent = boss.GetComponent<AliveObject>().health / boss.GetComponent<AliveObject>().maxHealth;
             boss.GetComponent<AliveObject>().maxHealth = newBossHealth;
             boss.GetComponent<AliveObject>().health = curPercent * newBossHealth;
-
         }
 
         if (globals.difficulty == 2)
@@ -135,19 +154,70 @@ public class PauseMenu : MonoBehaviour
             float curPercent = player.GetComponent<AliveObject>().health / player.GetComponent<AliveObject>().maxHealth;
             player.GetComponent<AliveObject>().maxHealth = newPlayerHealth;
             player.GetComponent<AliveObject>().health = curPercent * newPlayerHealth;
-
         }
 
         Debug.Log("player health" + player.GetComponent<AliveObject>().health + " " + player.GetComponent<AliveObject>().maxHealth);
         Debug.Log("boss health" + boss.GetComponent<AliveObject>().health + " " + boss.GetComponent<AliveObject>().maxHealth);
-
-
-
     }
 
     public void ChangeColor()
     {
+        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        foreach (GameObject ob in allObjects)
+        {
+            if (ob.GetComponent<Renderer>().material == blue)
+            {
+                ob.GetComponent<Renderer>().material = blueSub;
+            }
+            if (ob.GetComponent<Renderer>().material == yellow)
+            {
+                ob.GetComponent<Renderer>().material = yellowSub;
+            }
+            if (ob.GetComponent<Renderer>().material == purple)
+            {
+                ob.GetComponent<Renderer>().material = purpleSub;
+            }
+            if (ob.GetComponent<Renderer>().material == green)
+            {
+                ob.GetComponent<Renderer>().material = greenSub;
+            }
+        }
+    }
 
+    public void ChangeBackToDefaultColor()
+    {
+        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        foreach (GameObject ob in allObjects)
+        {
+            if (ob.GetComponent<Renderer>().material == blueSub)
+            {
+                ob.GetComponent<Renderer>().material = blue;
+            }
+            if (ob.GetComponent<Renderer>().material == yellowSub)
+            {
+                ob.GetComponent<Renderer>().material = yellow;
+            }
+            if (ob.GetComponent<Renderer>().material == purpleSub)
+            {
+                ob.GetComponent<Renderer>().material = purple;
+            }
+            if (ob.GetComponent<Renderer>().material == greenSub)
+            {
+                ob.GetComponent<Renderer>().material = green;
+            }
+        }
+    }
+
+    public void TurnOnColorBlind()
+    {
+        ChangeColor();
+        globals.colorBlindEnabled = true;
+    }
+
+    public void TurnOffColorBlind()
+    {
+        ChangeBackToDefaultColor();
+        globals.colorBlindEnabled = false;
     }
 
     public void CloseOptions()
