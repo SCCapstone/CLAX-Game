@@ -419,7 +419,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 holdUse = true;
-                shootLoop = StartCoroutine("ShootLoop");
+                shootLoop = StartCoroutine(ShootLoop());
             }
             else if (shootLoop != null)
             {
