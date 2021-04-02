@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class spinAround : MonoBehaviour
+public class SpinAround : MonoBehaviour
 {
     float randomSpin;
     // Start is called before the first frame update
