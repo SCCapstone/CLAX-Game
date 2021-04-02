@@ -182,6 +182,8 @@ public class PlayerController : MonoBehaviour
             Cursor.visible = false;
         }
 
+        playerCamera.fieldOfView = globals.videoSettings.fieldOfView;
+
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
 

@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -13,6 +11,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject optionsMenu;
     public GameObject timerObject;
+    public Slider fovSlider;
+    public Button fovReset;
+
     public bool isGamePaused;
 
     private GameObject boss;
@@ -31,6 +32,12 @@ public class PauseMenu : MonoBehaviour
     public Material greenSub;
     public Material redSub;
 
+    void Awake()
+    {
+        inputs = new PlayerInputActions();
+
+        inputs.World.Pause.performed += OnPause;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -39,20 +46,26 @@ public class PauseMenu : MonoBehaviour
         {
             ChangeColor();
         }
-    }
 
-
-    void Awake()
-    {
-        inputs = new PlayerInputActions();
-
-        inputs.World.Pause.performed += OnPause;
-
+        fovSlider.onValueChanged.AddListener(delegate { ChangeFOV(); });
+        fovReset.onClick.AddListener(delegate { ResetFOV(); });
     }
 
     private void OnEnable()
     {
         inputs.Enable();
+    }
+
+    private void ResetFOV()
+    {
+        globals.videoSettings.fieldOfView = 60.0f;
+
+        fovSlider.value = globals.videoSettings.fieldOfView;
+    }
+
+    private void ChangeFOV()
+    {
+        globals.videoSettings.fieldOfView = fovSlider.value;
     }
 
     public void QuitGame()
@@ -163,29 +176,33 @@ public class PauseMenu : MonoBehaviour
     public void ChangeColor()
     {
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+
         foreach (GameObject ob in allObjects)
         {
-            if(ob.GetComponent<Renderer>() != null)
+            if (ob.GetComponent<Renderer>() != null)
             {
-                Debug.Log("Object Found "+ ob.GetComponent<Renderer>().material.name + " " + yellow.name);
-                if (ob.GetComponent<Renderer>().material.name == blue.name +" (Instance)")
+                Debug.Log("Object Found " + ob.GetComponent<Renderer>().material.name + " " + yellow.name);
+                if (ob.GetComponent<Renderer>().material.name == blue.name + " (Instance)")
                 {
                     ob.GetComponent<Renderer>().material = blueSub;
                 }
+
                 if (ob.GetComponent<Renderer>().material.name == yellow.name + " (Instance)")
                 {
                     ob.GetComponent<Renderer>().material = yellowSub;
                 }
+
                 if (ob.GetComponent<Renderer>().material.name == purple.name + " (Instance)")
                 {
                     ob.GetComponent<Renderer>().material = purpleSub;
                 }
+
                 if (ob.GetComponent<Renderer>().material.name == green.name + " (Instance)")
                 {
                     ob.GetComponent<Renderer>().material = greenSub;
                 }
             }
-            
+
         }
     }
 
@@ -212,11 +229,11 @@ public class PauseMenu : MonoBehaviour
                 {
                     ob.GetComponent<Renderer>().material = green;
                 }
-            }    
+            }
         }
     }
 
-    public void toggleColorBlind()
+    public void ToggleColorBlind()
     {
         if (globals.colorBlindEnabled == false)
         {
@@ -230,6 +247,13 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void ToggleVSync()
+    {
+        globals.videoSettings.vsyncEnabled = !globals.videoSettings.vsyncEnabled;
+
+        QualitySettings.vSyncCount = globals.videoSettings.vsyncEnabled ? 1 : 0;
+    }
+
     public void CloseOptions()
     {
         pauseMenu.SetActive(true);
@@ -239,12 +263,5 @@ public class PauseMenu : MonoBehaviour
     public void ToggleTimer()
     {
         globals.timerEnabled = !globals.timerEnabled;
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

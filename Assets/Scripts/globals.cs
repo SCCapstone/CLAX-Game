@@ -1,9 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class globals : MonoBehaviour
 {
+    public struct VideoSettings
+    {
+        public bool vsyncEnabled;
+        public float fieldOfView;
+    };
+
     //Boss flags
     public static bool boss = true;
 
@@ -19,12 +23,8 @@ public class globals : MonoBehaviour
 
     public static bool colorBlindEnabled = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-
+    public static VideoSettings videoSettings = new VideoSettings() {
+        vsyncEnabled = true,
+        fieldOfView = 60
+    };
 }
