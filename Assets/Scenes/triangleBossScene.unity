@@ -355,6 +355,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cea081d495e94ee4ea7f12f800c7077c, type: 3}
+--- !u!82 &879191241 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2051925140198362152, guid: cea081d495e94ee4ea7f12f800c7077c, type: 3}
+  m_PrefabInstance: {fileID: 879191240}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1503727973
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,6 +529,14 @@ PrefabInstance:
     - target: {fileID: 6022673139795912145, guid: d187b0d9a7083384783d8432c9433b3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987137542875822227, guid: d187b0d9a7083384783d8432c9433b3b, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 879191241}
+    - target: {fileID: 8987137542875822227, guid: d187b0d9a7083384783d8432c9433b3b, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_volume
       objectReference: {fileID: 0}
     - target: {fileID: 8987137542904051572, guid: d187b0d9a7083384783d8432c9433b3b, type: 3}
       propertyPath: m_AnchorMax.x
