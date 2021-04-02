@@ -3855,14 +3855,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7013891022363026434, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
-      propertyPath: health
-      value: 350
-      objectReference: {fileID: 0}
-    - target: {fileID: 7013891022363026434, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
-      propertyPath: maxHealth
-      value: 350
-      objectReference: {fileID: 0}
     - target: {fileID: 7013891022363026444, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
       propertyPath: m_Name
       value: CubeBoss

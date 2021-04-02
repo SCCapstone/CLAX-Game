@@ -140,9 +140,9 @@ GameObject:
   - component: {fileID: 7013891022363026446}
   - component: {fileID: 7013891022363026447}
   - component: {fileID: 7013891022363026434}
-  - component: {fileID: 7013891022363026435}
   - component: {fileID: 409170027427704407}
   - component: {fileID: 8488538240687181648}
+  - component: {fileID: 650994704}
   m_Layer: 9
   m_Name: CubeBoss
   m_TagString: Boss
@@ -244,21 +244,6 @@ MonoBehaviour:
   maxHealth: 350
   hitCooldown: 0.5
   deathSound: {fileID: 3861249021494232639}
---- !u!114 &7013891022363026435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7013891022363026444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd66b672eca2b004b840252a9d2723bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeAttacker: {fileID: 7157220339161015766, guid: df83a444a820a01448c070050acd7f4b, type: 3}
-  delayBetweenNewGrid: 7
-  launchSound: {fileID: 4791304345253006774}
 --- !u!54 &409170027427704407
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -288,6 +273,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 20
+--- !u!114 &650994704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7013891022363026444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd66b672eca2b004b840252a9d2723bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeAttacker: {fileID: 7157220339161015766, guid: df83a444a820a01448c070050acd7f4b, type: 3}
+  delayBetweenNewGrid: 7
+  launchSound: {fileID: 4791304345253006774}
 --- !u!1 &7556503187560113445
 GameObject:
   m_ObjectHideFlags: 0

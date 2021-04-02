@@ -430,6 +430,7 @@ PrefabInstance:
     - {fileID: 8488538240687181648, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
     - {fileID: 7013891022363026435, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
     - {fileID: 7013891022363026434, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
+    - {fileID: 650994704, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
 --- !u!4 &458375957 stripped
 Transform:
@@ -503,7 +504,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeBoss
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8488538240687181648, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
+    - {fileID: 650994704, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
+    - {fileID: 7013891022363026434, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
 --- !u!1 &498047305
 GameObject:
@@ -742,6 +746,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5909535925832978466, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e73fadae5885ebe49b0f6238848a4f9a, type: 2}
     - target: {fileID: 7077181277425263472, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
       propertyPath: m_IsTrigger
       value: 0
@@ -1028,6 +1036,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5909535925832978466, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e73fadae5885ebe49b0f6238848a4f9a, type: 2}
     - target: {fileID: 7077181277425263472, guid: 1e823a0c29ec92147914bbdee3612c78, type: 3}
       propertyPath: m_IsTrigger
       value: 0
@@ -1818,6 +1830,7 @@ PrefabInstance:
     - {fileID: 8488538240687181648, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
     - {fileID: 7013891022363026435, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
     - {fileID: 7013891022363026434, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
+    - {fileID: 650994704, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
 --- !u!4 &1792594269 stripped
 Transform:
