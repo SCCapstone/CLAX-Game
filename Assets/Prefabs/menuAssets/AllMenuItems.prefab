@@ -723,7 +723,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8987137542083814204}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: toggleColorBlind
+        m_MethodName: ToggleColorBlind
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
