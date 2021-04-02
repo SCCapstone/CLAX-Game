@@ -6,7 +6,7 @@ using TMPro;
 public class TimerScript : MonoBehaviour
 {
     private TextMeshProUGUI textBoxGUI;
-    public bool timerVisible = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,10 +16,13 @@ public class TimerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timerVisible)
+        if (globals.timerEnabled)
+        {
             textBoxGUI.SetText(Time.time.ToString("0.00"));
+        }
         else
+        {
             textBoxGUI.SetText("");
-
+        }
     }
 }

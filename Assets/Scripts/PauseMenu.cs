@@ -238,7 +238,9 @@ public class PauseMenu : MonoBehaviour
 
     public void ToggleTimer()
     {
-        timerObject.GetComponent<TimerScript>().timerVisible = !timerObject.GetComponent<TimerScript>().timerVisible;
+        globals.timerEnabled = !globals.timerEnabled;
+
+        timerObject.GetComponent<TimerScript>().timerVisible = globals.timerEnabled;
     }
 
     // Update is called once per frame
