@@ -9,6 +9,10 @@ public class spinAround : MonoBehaviour
     void Start()
     {
         randomSpin = Random.Range(-1.5f, 1.5f);
+        if (Mathf.Abs(randomSpin) < .4f)
+        {
+            randomSpin = .8f;
+        }
     }
 
     // Update is called once per frame
