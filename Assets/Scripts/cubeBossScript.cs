@@ -176,7 +176,7 @@ public class CubeBossScript : MonoBehaviour
         if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
         {
 
-            currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
+            currentCubes[lastIdLaunched].GetComponent<CubeAttackPlayer>().shouldMove = true;
             lastIdLaunched += 1;
             lastCubeLaunchTime = Time.time;
             delayBetweenNewGrid = 5;
@@ -197,7 +197,7 @@ public class CubeBossScript : MonoBehaviour
             for (int i = 0; i < gridDimension; i++)
             {
 
-                currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
+                currentCubes[lastIdLaunched].GetComponent<CubeAttackPlayer>().shouldMove = true;
                 lastIdLaunched += 1;
                 lastCubeLaunchTime = Time.time;
             }

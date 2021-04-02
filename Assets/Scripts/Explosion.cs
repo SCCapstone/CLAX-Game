@@ -76,7 +76,7 @@ public class Explosion : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (other.transform.name.Contains("cubeAttack") || other.transform.name.Contains("TriangleBossProjectile"))
+        if (other.transform.name.Contains("CubeAttack") || other.transform.name.Contains("TriangleBossProjectile"))
         {
             Destroy(other.gameObject);
         }

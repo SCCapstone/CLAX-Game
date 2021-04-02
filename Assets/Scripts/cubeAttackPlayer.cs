@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cubeAttackPlayer : MonoBehaviour
+public class CubeAttackPlayer : MonoBehaviour
 {
     //private GameObject target;
     public Vector3 goalCoords;

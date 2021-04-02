@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class updateDifficulty : MonoBehaviour
+public class UpdateDifficulty : MonoBehaviour
 {
     private TextMeshProUGUI textBoxGUI;
     //public GameObject difficultyObject;
