@@ -23,7 +23,6 @@ public class Win : MonoBehaviour
     {
         if (globals.won && !active)
         {
-
             doorRenderer.material = change;
             active = true;
         }

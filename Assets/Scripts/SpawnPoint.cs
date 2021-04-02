@@ -15,6 +15,7 @@ public class SpawnPoint : MonoBehaviour
     public int spawnNum;
 
     public bool canSetSpawn;
+    public bool alwaysSpawn;
 
     public AudioSource activationSound;
 
@@ -24,12 +25,15 @@ public class SpawnPoint : MonoBehaviour
     {
         spawnPointRenderer = spawnPoint.GetComponentInChildren<Renderer>();
         original = spawnPointRenderer.material;
-        if (spawnNum == globals.spawnPoint)
+
+        if (spawnNum == globals.spawnPoint || alwaysSpawn)
         {
             player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
             player.transform.position = spawnPoint.transform.position;
             active = true;
             spawnPointRenderer.material = change;
+
+            globals.spawnPoint = spawnNum;
         }
         else
         {
