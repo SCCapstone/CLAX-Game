@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeBossScript : MonoBehaviour
+public class cubeBossScript : MonoBehaviour
 {
-
+    //dummy comment
 
     Transform target;
     float distBetweenCubes = 2;
