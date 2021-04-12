@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class cubeBossScript : MonoBehaviour
+public class CubeBossScript : MonoBehaviour
 {
     Transform target;
     float distBetweenCubes = 2;
@@ -58,13 +58,14 @@ public class cubeBossScript : MonoBehaviour
 
             target = playerObject.transform;
         }
+
         lastCubeLaunchTime = 0;
     }
 
     // Calculate which side to place the cubes on
     string CalcSidePlayerOn()
     {
-        Vector3 diff = transform.position - target.position;
+        Vector3 diff = target.position - transform.position;
 
         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.z))
         {
@@ -79,7 +80,7 @@ public class cubeBossScript : MonoBehaviour
     void SpawnCubes()
     {
         //Vector3 midPoint = new Vector3((transform.position.x + target.position.x) / 2,
-        //    transform.position.y, (transform.position.z + target.position.z) / 2);
+        //transform.position.y, (transform.position.z + target.position.z) / 2);
 
         currentCubes = new GameObject[gridDimension * gridDimension];
 
@@ -121,6 +122,7 @@ public class cubeBossScript : MonoBehaviour
             for (int i = (gridDimension / 2); i >= -(gridDimension / 2); i--)
             {
                 GameObject newCube;
+
                 // Spawn the grid of cubes on the x side
                 if (side == "x")
                 {
@@ -175,7 +177,6 @@ public class cubeBossScript : MonoBehaviour
 
         if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
         {
-
             currentCubes[lastIdLaunched].GetComponent<CubeAttackPlayer>().shouldMove = true;
             lastIdLaunched += 1;
             lastCubeLaunchTime = Time.time;
@@ -191,8 +192,8 @@ public class cubeBossScript : MonoBehaviour
 
         //Debug.Log("current cubes " + currentCubes);
 
-        if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch &&
-            lastIdLaunched < currentCubes.Length)
+        if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch
+            && lastIdLaunched < currentCubes.Length)
         {
             for (int i = 0; i < gridDimension; i++)
             {
@@ -201,6 +202,7 @@ public class cubeBossScript : MonoBehaviour
                 lastIdLaunched += 1;
                 lastCubeLaunchTime = Time.time;
             }
+
             launchSound.Play();
         }
 
@@ -211,7 +213,7 @@ public class cubeBossScript : MonoBehaviour
     {
         if (Time.time - lastSpawnTime > delayBetweenNewGrid)
         {
-            Debug.Log("making new grid");
+            Debug.Log("Making new grid");
 
             DestroyCubes();
             batchesMade += 1;
@@ -243,6 +245,7 @@ public class cubeBossScript : MonoBehaviour
         {
             GoToNextPhase();
             //timesDestinationReached = 1;
+
             return;
         }
 
