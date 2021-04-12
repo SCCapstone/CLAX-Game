@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CubeBossScript : MonoBehaviour
+public class cubeBossScript : MonoBehaviour
 {
     Transform target;
     float distBetweenCubes = 2;
