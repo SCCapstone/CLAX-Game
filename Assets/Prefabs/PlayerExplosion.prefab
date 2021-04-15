@@ -110,7 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   timer: 0
-  growTime: 2
+  growTime: 1
   maxSize: 4
   isMaxSize: 0
   isShrinking: 0
