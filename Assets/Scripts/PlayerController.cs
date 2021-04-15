@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
+
         Vector2 mouseDelta = inputs.World.Look.ReadValue<Vector2>();
         float dPitch = mouseDelta.y * lookSensitivityY;
         float dYaw = mouseDelta.x * lookSensitivityX;
