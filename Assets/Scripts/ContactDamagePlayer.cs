@@ -1,19 +1,22 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class ContactDamagePlayer : MonoBehaviour
 {
-    public float damageAmount;
+    public float damageAmount = 10;
 
     private void OnTriggerStay(Collider other)
     {
+        //Debug.Log("other tag" + other.tag);
         if (other.gameObject.CompareTag("Player"))
         {
-            var aliveObject = other.gameObject.GetComponent<AliveObject>();
+            //Debug.Log("hit player");
 
-            if (aliveObject != null)
-            {
-                aliveObject.Damage(damageAmount);
-            }
+            var enemy = other.gameObject.GetComponent<AliveObject>();
+            enemy.Damage(damageAmount);
+            //Debug.Log("player health" + enemy.health);
+
         }
     }
 }

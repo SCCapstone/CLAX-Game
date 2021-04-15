@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 559757873452161740}
   - component: {fileID: 8246156380585932801}
   m_Layer: 11
-  m_Name: cubeAttack
+  m_Name: CubeAttack
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7157220339161015766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8f86baba6330014b9496fd171132b74, type: 3}
+  m_Script: {fileID: 11500000, guid: ae075361a68be7a489af1a8fffefd781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   goalCoords: {x: 0, y: 0, z: 0}
