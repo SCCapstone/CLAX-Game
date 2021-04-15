@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class FallingPlatform : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class FallingPlatform : MonoBehaviour
     [Header("ColorChange")]
     public Material start;
     public Material end;
-    private Material lerpMaterial;
+
     private Renderer platformRenderer;
     private BoxCollider platformCollider;
 
@@ -34,18 +32,14 @@ public class FallingPlatform : MonoBehaviour
         platformRenderer = platform.GetComponentInChildren<Renderer>();
         platformCollider = platform.GetComponentInChildren<BoxCollider>();
     }
+
     private void OnCollisionEnter(Collision collision)
     {
-
-        if (!isFalling)
+        if (collision.gameObject.CompareTag("Player"))
         {
-
-            //Debug.Log(collision.);
-            if (collision.gameObject.CompareTag("Player"))
+            if (!isFalling)
             {
                 isFalling = true;
-
-                //fallTimer = fallDelay;
             }
         }
     }
@@ -54,8 +48,6 @@ public class FallingPlatform : MonoBehaviour
     {
         if (isFalling)
         {
-
-
             if (fallTimer >= respawnDelay)
             {
                 fallTimer = 0.0f;
@@ -65,16 +57,20 @@ public class FallingPlatform : MonoBehaviour
                 platformCollider.enabled = true;
                 transform.position = startPosition.position;
             }
-            float distanceToPlayer = Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position,
-                transform.position);
-            //Debug.Log("distance to player " + distanceToPlayer);
 
-            if (platformRenderer.enabled && fallTimer + 1 >= fallDelay && fallSound.isPlaying == false &&
-                distanceToPlayer < 20)
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player != null)
             {
+                float distance = Vector3.Distance(player.transform.position, transform.position);
 
-                fallSound.Play();
-
+                if (platformRenderer.enabled && fallTimer + 1 >= fallDelay && distance < 20.0f)
+                {
+                    if (!!fallSound.isPlaying)
+                    {
+                        fallSound.Play();
+                    }
+                }
             }
 
             if (fallTimer >= fallDelay && platformRenderer.enabled)
@@ -85,6 +81,7 @@ public class FallingPlatform : MonoBehaviour
                 nextPosition.y -= speed * Time.fixedDeltaTime;
 
                 transform.position = nextPosition;
+
                 if (transform.position.y <= disappearHeight)
                 {
                     platformRenderer.enabled = false;
@@ -93,17 +90,21 @@ public class FallingPlatform : MonoBehaviour
             }
 
             fallTimer += Time.fixedDeltaTime;
+
             if (fallTimer > 0)
+            {
                 colorChange(fallTimer / fallDelay);
+            }
         }
     }
 
     private void colorChange(float change)
     {
         if (change > 1)
+        {
             change = 1;
+        }
 
         platformRenderer.material.Lerp(start, end, change);
-
     }
 }
