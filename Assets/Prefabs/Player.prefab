@@ -54,9 +54,9 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2155125630583193527, guid: 637087b854c7a184ba64a2186ac6188b, type: 3}
   explosionPrefab: {fileID: 7034022416620639011, guid: 785233ddea09915468cfa5216e7c29da, type: 3}
   cameraEnabled: 1
-  lookSensitivityScale: 90
-  lookSensitivityX: 0.5
-  lookSensitivityY: 0.5
+  lookSensitivityScale: 1
+  lookSensitivityX: 0.2
+  lookSensitivityY: 0.2
   minPitch: -89.9
   maxPitch: 89.9
   cameraTargetOffset: {x: 0, y: 1, z: 0}
