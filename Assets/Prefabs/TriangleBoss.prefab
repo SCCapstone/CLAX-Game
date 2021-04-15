@@ -315,6 +315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 700
   maxHealth: 700
+  invulnerable: 0
   hitCooldown: 0.1
   deathSound: {fileID: 0}
   movementDelay: 1
@@ -334,8 +335,8 @@ MonoBehaviour:
   attackIntervalMax: 2
   minimumRange: 5
   maximumRange: 20
-  moveAroundSound: {fileID: 7639065133819168433}
-  moveUpAndDownSound: {fileID: 1642598173655889722}
+  attack1Sound: {fileID: 1642598173655889722}
+  attack2Sound: {fileID: 7639065133819168433}
 --- !u!65 &7077181277425263472
 BoxCollider:
   m_ObjectHideFlags: 0
