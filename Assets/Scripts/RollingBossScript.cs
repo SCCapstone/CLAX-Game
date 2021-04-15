@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
 
 public class RollingBossScript : MonoBehaviour
 {
-
-    //Vector3 scale;
     float lastExpandedTime;
     float expandInverseFrequency = .03f;
     float maxYSize = 4.0f;
