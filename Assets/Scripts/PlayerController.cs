@@ -74,7 +74,6 @@ public class PlayerController : MonoBehaviour
     private Coroutine shootLoop;
 
     private Vector2 moveAxis = Vector3.zero;
-    private Vector2 lookAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
 
     public AudioSource playerShootSound;
@@ -108,8 +107,6 @@ public class PlayerController : MonoBehaviour
         inputs.World.Move.performed += OnMove;
         inputs.World.Move.canceled += OnMove;
 
-        inputs.World.Look.performed += OnLook;
-
         inputs.World.Jump.started += OnJump;
         inputs.World.Jump.performed += OnJump;
         inputs.World.Move.canceled += OnJump;
@@ -120,7 +117,7 @@ public class PlayerController : MonoBehaviour
 
         inputs.World.TestMode.performed += OnPressP;
 
-        
+
         inputs.World.FlyUp.started += OnShift;
         inputs.World.FlyUp.performed += OnShift;
         inputs.World.FlyUp.canceled += OnShift;
@@ -159,14 +156,6 @@ public class PlayerController : MonoBehaviour
         inputs.Disable();
     }
 
-    private void CheckY()
-    {
-        if (transform.position.y < dieAtY)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-    }
-
     private void Update()
     {
         if (!cameraEnabled || !Application.isFocused)
@@ -176,21 +165,27 @@ public class PlayerController : MonoBehaviour
 
             return;
         }
-        else if (menuListener != null && menuListener.GetComponent<PauseMenu>().isGamePaused == false)
+
+        if (IsPaused())
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            return;
         }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         playerCamera.fieldOfView = globals.videoSettings.fieldOfView;
 
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        Vector2 mouseDelta = inputs.World.Look.ReadValue<Vector2>();
+        float dPitch = mouseDelta.y * lookSensitivityY;
+        float dYaw = mouseDelta.x * lookSensitivityX;
 
-        float dPitch = lookAxis.y * lookSensitivityY;
-        float dYaw = lookAxis.x * lookSensitivityX;
+        /*Mouse mouse = Mouse.current;
+        Vector2 mouseDelta = mouse.delta.ReadValue();
+        float dPitch = -mouseDelta.y * lookSensitivityY;
+        float dYaw = mouseDelta.x * lookSensitivityX;*/
 
-        cameraEulerAngles += new Vector3(dPitch, dYaw, 0) * lookSensitivityScale * Time.deltaTime;
+        cameraEulerAngles += new Vector3(dPitch, dYaw, 0) * lookSensitivityScale;
         cameraEulerAngles.x = Mathf.Clamp(cameraEulerAngles.x, minPitch, maxPitch);
 
         // Set rotation before performing the following steps
@@ -244,6 +239,26 @@ public class PlayerController : MonoBehaviour
                 groundLastPosition = ground.transform.position;
                 //groundLastRotation = ground.transform.rotation;
             }
+        }
+    }
+
+    private bool IsPaused()
+    {
+        if (menuListener != null)
+        {
+            return menuListener.GetComponent<PauseMenu>().isGamePaused;
+        }
+
+        Debug.LogWarning("Pause menu not found!");
+
+        return false;
+    }
+
+    private void CheckY()
+    {
+        if (transform.position.y < dieAtY)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
@@ -375,20 +390,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnLook(InputAction.CallbackContext context)
-    {
-        Vector2 inputAxis = context.ReadValue<Vector2>();
-
-        lookAxis = inputAxis;
-    }
-
     public void OnUse(InputAction.CallbackContext context)
     {
-        if (menuListener == null)
-        {
-            Debug.LogError("Pause menu not found, check if the pause menu is in the scene or attached to the script");
-        }
-        else if (menuListener.GetComponent<PauseMenu>().isGamePaused)
+        if (IsPaused())
         {
             return;
         }
@@ -421,19 +425,19 @@ public class PlayerController : MonoBehaviour
 
     public void OnRightClick(InputAction.CallbackContext context)
     {
-        if (menuListener == null)
-        {
-            Debug.LogWarning("NOTE: There is currently no pause menu setup in this scene (or at least attached here)");
-        }
-
-        var existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
-
-        if (existingCount >= maxExplosionCount)
+        if (context.phase != InputActionPhase.Performed)
         {
             return;
         }
 
-        if (context.phase != InputActionPhase.Performed || (menuListener && menuListener.GetComponent<PauseMenu>().isGamePaused))
+        if (IsPaused())
+        {
+            return;
+        }
+
+        int existingCount = GameObject.FindGameObjectsWithTag("ExplosionAttack").Length;
+
+        if (existingCount >= maxExplosionCount)
         {
             return;
         }
@@ -495,7 +499,7 @@ public class PlayerController : MonoBehaviour
     void OnPressP(InputAction.CallbackContext context)
     {
         if (!enableTesting)
-        { 
+        {
             enableTesting = true;
             var setPlayerHealth = gameObject.GetComponentInChildren<AliveObject>();
             setPlayerHealth.SetMaxHealth(testingHealth);
