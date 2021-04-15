@@ -11,6 +11,6 @@ public class SpinAround : MonoBehaviour
 
     private void FixedUpdate()
     {
-        this.transform.Rotate(0, randomSpin, randomSpin, Space.Self);
+        transform.Rotate(0, randomSpin, randomSpin, Space.Self);
     }
 }
