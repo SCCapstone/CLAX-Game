@@ -141,6 +141,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        AliveObject aliveObject = GetComponentInChildren<AliveObject>();
+
+        if (aliveObject != null)
+        {
+            aliveObject.OnDeath.AddListener(delegate { SceneManager.LoadScene(SceneManager.GetActiveScene().name); });
+        }
+    }
+
     private void OnEnable()
     {
         inputs.Enable();

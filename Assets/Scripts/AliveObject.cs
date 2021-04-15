@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class AliveObject : MonoBehaviour
@@ -13,6 +14,8 @@ public class AliveObject : MonoBehaviour
     protected float lastHitTime = 0.0f;
     public AudioSource deathSound;
 
+    public UnityEvent OnDeath = new UnityEvent();
+
     void Start()
     {
         health = maxHealth;
@@ -23,6 +26,10 @@ public class AliveObject : MonoBehaviour
         if (health <= 0.0f)
         {
             Kill();
+        }
+        else if (health > maxHealth)
+        {
+            health = maxHealth;
         }
     }
 
@@ -37,8 +44,6 @@ public class AliveObject : MonoBehaviour
             lastHitTime = Time.time;
 
             SetHealth(health - amount);
-
-            //Debug.Log("New Health is " + health);
         }
     }
 
@@ -56,6 +61,10 @@ public class AliveObject : MonoBehaviour
 
             Kill();
         }
+        else if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
 
     public void SetMaxHealth(float amount)
@@ -67,25 +76,17 @@ public class AliveObject : MonoBehaviour
     virtual public void Kill()
     {
         // TODO: Death events and animations
-        // TODO: OnKill event
 
-        // TODO: Move to player script
-        if (gameObject.transform.CompareTag("Player"))
-        {
-            Debug.Log("Reloading scene");
+        // TODO: Move death sounds to respective child classes
 
-            //Invoke("respawnPlayer", 1.0f);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-        if (deathSound != null && deathSound.isPlaying == false)
+        if (deathSound != null && !deathSound.isPlaying)
         {
             deathSound.Play();
         }
 
-        //this.gameObject.SetActive(false);
-
         Destroy(gameObject, 0.5f);
+
+        OnDeath.Invoke();
     }
 
     // TODO: Move to player script
