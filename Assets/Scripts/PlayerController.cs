@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject explosionPrefab;
 
-
-
     [Header("Camera")]
     public bool cameraEnabled = true;
 
@@ -155,7 +153,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!cameraEnabled || !Application.isFocused)
+        playerCamera.fieldOfView = Globals.videoSettings.fieldOfView;
+        QualitySettings.vSyncCount = Globals.videoSettings.vsyncEnabled ? 1 : 0;
+
+        if (!cameraEnabled || !Application.isFocused || Globals.IsPaused())
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -163,16 +164,9 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (IsPaused())
-        {
-            return;
-        }
-        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
-        playerCamera.fieldOfView = Globals.videoSettings.fieldOfView;
-
         Vector2 mouseDelta = inputs.World.Look.ReadValue<Vector2>();
         float dPitch = mouseDelta.y * lookSensitivityY;
         float dYaw = mouseDelta.x * lookSensitivityX;
@@ -240,18 +234,6 @@ public class PlayerController : MonoBehaviour
                 //groundLastRotation = ground.transform.rotation;
             }
         }
-    }
-
-    private bool IsPaused()
-    {
-        if (menuListener != null)
-        {
-            return menuListener.GetComponent<PauseMenu>().isGamePaused;
-        }
-
-        Debug.LogWarning("Pause menu not found!");
-
-        return false;
     }
 
     private void CheckY()
@@ -406,7 +388,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnUse(InputAction.CallbackContext context)
     {
-        if (IsPaused())
+        if (Globals.IsPaused())
         {
             return;
         }
@@ -444,7 +426,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (IsPaused())
+        if (Globals.IsPaused())
         {
             return;
         }

@@ -1,26 +1,28 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    // learned from https://www.youtube.com/watch?v=pbeB9NsaoPs
-    //[SerializeField] private GameObject pauseMenu;
-    //[SerializeField] private bool isGamePaused;
-
+    [Header("Menus")]
     public GameObject pauseMenu;
-    public GameObject optionsMenu;
-    public GameObject timerObject;
+    public GameObject settingsMenu;
+
+    public Slider musicSlider;
+
     public Slider fovSlider;
-    public Button fovReset;
+    public Button fovResetButton;
 
-    public bool isGamePaused;
+    [Header("Text Objects")]
+    public TextMeshProUGUI timerText;
 
-    private GameObject boss;
-    private GameObject player;
+    public Button vsyncButton;
+    public Button colorblindButton;
+    public Button difficultyButton;
+    public Button timerButton;
 
-    private PlayerInputActions inputs;
-
+    [Header("Colorblind materials settings")]
     public Material blue;
     public Material purple;
     public Material yellow;
@@ -32,6 +34,11 @@ public class PauseMenu : MonoBehaviour
     public Material greenSub;
     public Material redSub;
 
+    private PlayerInputActions inputs;
+
+    private GameObject boss;
+    private GameObject player;
+
     void Awake()
     {
         inputs = new PlayerInputActions();
@@ -39,21 +46,51 @@ public class PauseMenu : MonoBehaviour
         inputs.World.Pause.performed += OnPause;
     }
 
-    // Start is called before the first frame update
+    private void OnEnable()
+    {
+        inputs.Enable();
+    }
+
     void Start()
     {
         if (Globals.colorBlindEnabled)
         {
-            ChangeColor();
+            ToSubColors();
         }
 
+        if (!Globals.IsPaused())
+        {
+            HideAllMenus();
+        }
+        else
+        {
+            EnterPauseMenu();
+        }
+
+        UpdateText();
+
+        musicSlider.onValueChanged.AddListener(delegate { ChangeMusicVolume(); });
+
         fovSlider.onValueChanged.AddListener(delegate { ChangeFOV(); });
-        fovReset.onClick.AddListener(delegate { ResetFOV(); });
+        fovResetButton.onClick.AddListener(delegate { ResetFOV(); });
+
+        vsyncButton.onClick.AddListener(delegate { ToggleVSync(); });
+        colorblindButton.onClick.AddListener(delegate { ToggleColorBlind(); });
+        difficultyButton.onClick.AddListener(delegate { ChangeDifficulty(); });
+        timerButton.onClick.AddListener(delegate { ToggleTimer(); });
     }
 
-    private void OnEnable()
+    void Update()
     {
-        inputs.Enable();
+        if (timerText != null)
+        {
+            timerText.SetText(Time.time.ToString("0.00"));
+        }
+    }
+
+    private void ChangeMusicVolume()
+    {
+        Globals.audioSettings.musicVolume = musicSlider.value;
     }
 
     private void ResetFOV()
@@ -68,87 +105,172 @@ public class PauseMenu : MonoBehaviour
         Globals.videoSettings.fieldOfView = fovSlider.value;
     }
 
-    public void QuitGame()
+    public void OnQuit()
     {
         Application.Quit();
-        Debug.Log("game was quit");
-    }
 
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
 
     public void OnPause(InputAction.CallbackContext context)
     {
-        isGamePaused = !isGamePaused;
-        if (isGamePaused == true)
+        if (Globals.IsPaused())
         {
-            Pause();
+            HideAllMenus();
+
+            Globals.Unpause();
         }
         else
         {
-            Unpause();
+            EnterPauseMenu();
+
+            Globals.Pause();
         }
-
     }
 
-    void Pause()
+    public void OnResume()
     {
-        if (pauseMenu != null)
-            pauseMenu.SetActive(true);
-        AudioListener.pause = true;
-        Time.timeScale = 0;
+        HideAllMenus();
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Debug.Log("ran pause");
-        isGamePaused = true;
+        Globals.Unpause();
     }
 
-    public void Unpause()
+    public void HideAllMenus()
     {
-        if (pauseMenu != null)
-            pauseMenu.SetActive(false);
-        if (optionsMenu != null)
-            optionsMenu.SetActive(false);
-
-        AudioListener.pause = false;
-        Time.timeScale = 1;
-        Debug.Log("ran unpause");
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        isGamePaused = false;
-        //Cursor.visible = false;
-        //isGamePaused = false;
-    }
-
-    public void OpenOptions()
-    {
-        optionsMenu.SetActive(true);
         pauseMenu.SetActive(false);
-        Debug.Log("clicked open options");
-
+        settingsMenu.SetActive(false);
     }
 
-    public void changeDifficulty()
+    public void EnterPauseMenu()
     {
+        HideAllMenus();
+
+        pauseMenu.SetActive(true);
+    }
+
+    public void ExitPauseMenu()
+    {
+        HideAllMenus();
+    }
+
+    public void EnterOptionsMenu()
+    {
+        HideAllMenus();
+
+        settingsMenu.SetActive(true);
+    }
+
+    public void ExitOptionsMenu()
+    {
+        HideAllMenus();
+
+        pauseMenu.SetActive(true);
+    }
+
+    public void ToSubColors()
+    {
+        foreach (GameObject ob in FindObjectsOfType<GameObject>())
+        {
+            if (ob.GetComponent<Renderer>() != null)
+            {
+                if (ob.GetComponent<Renderer>().material.name == blue.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = blueSub;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == yellow.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = yellowSub;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == purple.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = purpleSub;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == green.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = greenSub;
+                }
+            }
+
+        }
+    }
+
+    public void ToOriginalColors()
+    {
+        foreach (GameObject ob in FindObjectsOfType<GameObject>())
+        {
+            if (ob.GetComponent<Renderer>() != null)
+            {
+                if (ob.GetComponent<Renderer>().material.name == blueSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = blue;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == yellowSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = yellow;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == purpleSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = purple;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == greenSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = green;
+                }
+            }
+        }
+    }
+
+    public void UpdateText()
+    {
+        SetButtonText(vsyncButton, string.Format("VSync: {0}", Globals.videoSettings.vsyncEnabled ? "ON" : "OFF"));
+        SetButtonText(colorblindButton, string.Format("Colorblind: {0}", Globals.colorBlindEnabled ? "ON" : "OFF"));
+        SetButtonText(difficultyButton, string.Format("Difficulty: {0}", Globals.difficulty.ToString()));
+        SetButtonText(timerButton, string.Format("Timer: {0}", Globals.timerEnabled ? "ON" : "OFF"));
+    }
+
+    private void SetButtonText(Button button, string text)
+    {
+        TextMeshProUGUI gui = button.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (gui != null)
+        {
+            gui.SetText(text);
+        }
+    }
+
+    private void ChangeDifficulty()
+    {
+        Globals.IncreaseDifficulty();
+
+        UpdateText();
+
+        // TODO: Move difficulty configurations to boss/player code
+
         boss = GameObject.FindGameObjectWithTag("Boss");
         player = GameObject.Find("Character");
 
-        Globals.difficulty = ((Globals.difficulty + 1) % 4);
-        if (Globals.difficulty == 0)
-        {
-            Globals.difficulty = 1;
-        }
-        Debug.Log("difficulty " + Globals.difficulty);
+        /*
+         * EASY
+         *  - Boss max health is 60%
+         *  - Player max healt is 100%
+         * NORMAL
+         *  - Boss max health is 100%
+         *  - Player max health is 100% 
+         * HARD
+         *  - Boss max health is 100%
+         *  - Player max health is 50%
+         */
 
-        if (Globals.difficulty == 1)
+        if (Globals.difficulty == Globals.GameDifficulty.EASY)
         {
             float newBossHealth = boss.GetComponent<AliveObject>().maxHealth * 3 / 5;
             float curPercent = boss.GetComponent<AliveObject>().health / boss.GetComponent<AliveObject>().maxHealth;
             boss.GetComponent<AliveObject>().maxHealth = newBossHealth;
             boss.GetComponent<AliveObject>().health = curPercent * newBossHealth;
         }
-
-        if (Globals.difficulty == 2)
+        else if (Globals.difficulty == Globals.GameDifficulty.NORMAL)
         {
             var newBossHealth = 1000;
             float curPercent = boss.GetComponent<AliveObject>().health / boss.GetComponent<AliveObject>().maxHealth;
@@ -160,8 +282,7 @@ public class PauseMenu : MonoBehaviour
             player.GetComponent<AliveObject>().maxHealth = newPlayerHealth;
             player.GetComponent<AliveObject>().health = curPercent2 * newPlayerHealth;
         }
-
-        if (Globals.difficulty == 3)
+        else if (Globals.difficulty == Globals.GameDifficulty.HARD)
         {
             float newPlayerHealth = .5f * player.GetComponent<AliveObject>().maxHealth;
 
@@ -169,100 +290,37 @@ public class PauseMenu : MonoBehaviour
             player.GetComponent<AliveObject>().maxHealth = newPlayerHealth;
             player.GetComponent<AliveObject>().health = curPercent * newPlayerHealth;
         }
-
-        Debug.Log("player health" + player.GetComponent<AliveObject>().health + " " + player.GetComponent<AliveObject>().maxHealth);
-        Debug.Log("boss health" + boss.GetComponent<AliveObject>().health + " " + boss.GetComponent<AliveObject>().maxHealth);
     }
 
-    public void ChangeColor()
+    private void ToggleColorBlind()
     {
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        Globals.colorBlindEnabled = !Globals.colorBlindEnabled;
 
-        foreach (GameObject ob in allObjects)
+        UpdateText();
+
+        if (Globals.colorBlindEnabled)
         {
-            if (ob.GetComponent<Renderer>() != null)
-            {
-                Debug.Log("Object Found " + ob.GetComponent<Renderer>().material.name + " " + yellow.name);
-                if (ob.GetComponent<Renderer>().material.name == blue.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = blueSub;
-                }
-
-                if (ob.GetComponent<Renderer>().material.name == yellow.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = yellowSub;
-                }
-
-                if (ob.GetComponent<Renderer>().material.name == purple.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = purpleSub;
-                }
-
-                if (ob.GetComponent<Renderer>().material.name == green.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = greenSub;
-                }
-            }
-
-        }
-    }
-
-    public void ChangeBackToDefaultColor()
-    {
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
-        foreach (GameObject ob in allObjects)
-        {
-            if (ob.GetComponent<Renderer>() != null)
-            {
-                if (ob.GetComponent<Renderer>().material.name == blueSub.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = blue;
-                }
-                if (ob.GetComponent<Renderer>().material.name == yellowSub.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = yellow;
-                }
-                if (ob.GetComponent<Renderer>().material.name == purpleSub.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = purple;
-                }
-                if (ob.GetComponent<Renderer>().material.name == greenSub.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = green;
-                }
-            }
-        }
-    }
-
-    public void ToggleColorBlind()
-    {
-        if (Globals.colorBlindEnabled == false)
-        {
-            ChangeColor();
-            Globals.colorBlindEnabled = true;
+            ToOriginalColors();
         }
         else
         {
-            ChangeBackToDefaultColor();
-            Globals.colorBlindEnabled = false;
+            ToSubColors(); ;
         }
     }
 
-    public void ToggleVSync()
+    private void ToggleVSync()
     {
         Globals.videoSettings.vsyncEnabled = !Globals.videoSettings.vsyncEnabled;
 
-        QualitySettings.vSyncCount = Globals.videoSettings.vsyncEnabled ? 1 : 0;
+        UpdateText();
     }
 
-    public void CloseOptions()
-    {
-        pauseMenu.SetActive(true);
-        optionsMenu.SetActive(false);
-    }
-
-    public void ToggleTimer()
+    private void ToggleTimer()
     {
         Globals.timerEnabled = !Globals.timerEnabled;
+
+        UpdateText();
+
+        timerText.gameObject.SetActive(Globals.timerEnabled);
     }
 }
