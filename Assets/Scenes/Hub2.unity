@@ -613,7 +613,7 @@ Transform:
   - {fileID: 484812338}
   - {fileID: 734455122}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &269418751 stripped
 Transform:
@@ -840,10 +840,9 @@ Transform:
   - {fileID: 1099008862}
   - {fileID: 664724275}
   - {fileID: 403192925}
-  - {fileID: 1939165186}
   - {fileID: 994840313}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &403192925 stripped
 Transform:
@@ -933,23 +932,23 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1888605540}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1291953114213808240, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_Name
-      value: BossDoorHubSide (1)
+      value: PillBossPortal
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -63.13086
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 34.613815
+      value: 80.5
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 72.40756
+      value: 412
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalRotation.x
@@ -969,7 +968,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1009,11 +1008,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1bd2e1ff22fefbd4ca4f74eb35a47c73, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
---- !u!4 &478392975 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
-  m_PrefabInstance: {fileID: 478392974}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &481790461
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1703,7 +1697,7 @@ GameObject:
   - component: {fileID: 879914115}
   - component: {fileID: 879914119}
   m_Layer: 0
-  m_Name: WinLight
+  m_Name: WinPortal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1783,7 +1777,7 @@ Transform:
   m_LocalScale: {x: 10, y: 400, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &879914119
 MonoBehaviour:
@@ -2993,7 +2987,7 @@ Transform:
   m_Children:
   - {fileID: 1303181843}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1344516184
 PrefabInstance:
@@ -3365,7 +3359,7 @@ Transform:
   - {fileID: 14876728}
   - {fileID: 1493032238}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1594848856
 PrefabInstance:
@@ -4074,7 +4068,6 @@ Transform:
   m_Children:
   - {fileID: 1982209360}
   - {fileID: 1303134411}
-  - {fileID: 478392975}
   - {fileID: 1797813467}
   - {fileID: 204329364}
   - {fileID: 1173389113}
@@ -4099,7 +4092,7 @@ Transform:
   - {fileID: 156353088}
   - {fileID: 694463471}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1903650105
 GameObject:
@@ -4194,7 +4187,7 @@ Transform:
   m_LocalScale: {x: 200, y: 60, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!4 &1929646282 stripped
 Transform:
@@ -4284,23 +4277,23 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 372445512}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1291953114213808240, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_Name
-      value: BossDoorHubSide
+      value: TriangleBossPortal
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 116.86914
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 34.613815
+      value: 80.5
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 72.40756
+      value: 412
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4320,7 +4313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4360,11 +4353,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1bd2e1ff22fefbd4ca4f74eb35a47c73, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
---- !u!4 &1939165186 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
-  m_PrefabInstance: {fileID: 1939165185}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1975640341
 PrefabInstance:
   m_ObjectHideFlags: 0

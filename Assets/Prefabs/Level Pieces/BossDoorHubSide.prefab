@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 927199846834541246}
   - component: {fileID: 5371346869762008709}
   - component: {fileID: 3908188452493307833}
-  - component: {fileID: 9188190719262124982}
   - component: {fileID: 4383664376304351456}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: PortalCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,22 +97,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9188190719262124982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1066541565138672866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a217f900cf4c0ad47957cf33449a855a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  doorway: {fileID: 1066541565138672866}
-  sceneName: PillBossScene
-  otherSideSpawnPoint: 0
-  change: {fileID: 0}
 --- !u!114 &4383664376304351456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +114,8 @@ MonoBehaviour:
   change: {fileID: 0}
   spawnNum: 0
   canSetSpawn: 0
+  alwaysSpawn: 0
+  activationSound: {fileID: 0}
 --- !u!1 &1291953114213808240
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2629026170949491087}
+  - component: {fileID: 7760532460988004268}
   m_Layer: 0
   m_Name: BossDoorHubSide
   m_TagString: Untagged
@@ -165,6 +151,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &7760532460988004268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291953114213808240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a217f900cf4c0ad47957cf33449a855a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorway: {fileID: 1066541565138672866}
+  sceneName: PillBossScene
+  otherSideSpawnPoint: 0
+  change: {fileID: 0}
 --- !u!1 &8425413956228280331
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +181,7 @@ GameObject:
   - component: {fileID: 2932944144478480732}
   - component: {fileID: 1846850126761689369}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: PortalRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -334,11 +336,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364116, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_Name
-      value: Column
+      value: LeftColumn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
@@ -368,19 +370,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.5
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_RootOrder
@@ -388,7 +390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -398,9 +400,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 19.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364116, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_Name
-      value: Column (2)
+      value: TopColumn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
@@ -466,11 +480,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364116, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_Name
-      value: Column (1)
+      value: RightColumn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}

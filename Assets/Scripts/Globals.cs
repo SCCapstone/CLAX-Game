@@ -13,8 +13,6 @@ public class Globals : MonoBehaviour
 
     public static void Pause()
     {
-        Debug.Log("Paused");
-
         AudioListener.pause = true;
         Time.timeScale = 0.0f;
 
@@ -23,8 +21,6 @@ public class Globals : MonoBehaviour
 
     public static void Unpause()
     {
-        Debug.Log("Unpaused");
-
         AudioListener.pause = false;
         Time.timeScale = 1.0f;
 
@@ -38,11 +34,16 @@ public class Globals : MonoBehaviour
     // Boss flags
 
     public static bool boss = true;
-
     public static bool pill = false;
     public static bool cube = false;
     public static bool pyramid = false;
-    public static bool won = false;
+    
+    public static bool HasWon()
+    {
+        return pill && cube && pyramid;
+    }
+
+    // Player spawn
 
     public static int spawnPoint = 0;
 
