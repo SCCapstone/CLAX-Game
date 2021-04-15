@@ -6,7 +6,7 @@ public class Explosion : MonoBehaviour
     public float growTime;
     public float maxSize;
 
-    public float damage = 20;
+    public float damage;
 
     // Start is called before the first frame update
     void Start()
