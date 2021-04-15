@@ -335,11 +335,12 @@ public class PlayerController : MonoBehaviour
         Vector3 newVelocity = rigidbody.velocity;
 
         newVelocity.y = jumpSpeed;
-        playerJumpSound.Play();
 
         rigidbody.velocity = newVelocity;
 
         onGround = false;
+
+        playerJumpSound.Play();
     }
 
     public bool GetGrounded()
@@ -466,7 +467,6 @@ public class PlayerController : MonoBehaviour
         facing.Normalize();
 
         PlayerProjectile projectile = Instantiate(bulletPrefab).GetComponent<PlayerProjectile>();
-        playerShootSound.Play();
 
         projectile.position = transform.position;
         projectile.velocity = facing * projectileSpeed;
@@ -480,6 +480,8 @@ public class PlayerController : MonoBehaviour
         {
             projectile.position += facing;
         }
+
+        playerShootSound.Play();
     }
 
     IEnumerator ShootLoop()
