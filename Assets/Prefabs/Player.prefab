@@ -78,6 +78,7 @@ MonoBehaviour:
   dieAtY: -20
   holdToShoot: 1
   shootDelay: 0.25
+  projectileDamage: 10
   projectileSpeed: 25
   maxExplosionCount: 5
   playerShootSound: {fileID: 7273732588493605779}
@@ -85,7 +86,9 @@ MonoBehaviour:
   playerJumpSound: {fileID: 1031067336962826584}
   flyingAirFriction: 5
   flyingAirSpeed: 100
-  flyingElevationSpeed: 10
+  flyingElevationSpeed: 20
+  fastFlyingAirSpeed: 400
+  fastFlyingElevationSpeed: 40
 --- !u!54 &6054908338268949753
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -216,6 +219,9 @@ MonoBehaviour:
   invulnerable: 0
   hitCooldown: 0.5
   deathSound: {fileID: 0}
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6257623721124609864
 GameObject:
   m_ObjectHideFlags: 0

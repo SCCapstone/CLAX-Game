@@ -1,64 +1,66 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class SpawnPoint : MonoBehaviour
 {
+    [Header("Spawn Properties")]
+    public string spawnName;
+
     [Header("Prefabs")]
-    public GameObject spawnPoint;
-    public GameObject player;
-    private Renderer spawnPointRenderer;
-    private Material original;
-    public Material change;
+    public GameObject playerPrefab;
 
-    public int spawnNum;
-
-    public bool canSetSpawn;
-    public bool alwaysSpawn;
+    public Material inactiveMaterial;
+    public Material activeMaterial;
 
     public AudioSource activationSound;
 
-    private bool active;
-    // Start is called before the first frame update
+    public UnityEvent OnPlayerEnter = new UnityEvent();
+
+    private bool active = false;
+    private Renderer spawnPointRenderer;
+
     void Start()
     {
-        spawnPointRenderer = spawnPoint.GetComponentInChildren<Renderer>();
-        original = spawnPointRenderer.material;
-
-        if (spawnNum == Globals.spawnPoint || alwaysSpawn)
-        {
-            player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
-            player.transform.position = spawnPoint.transform.position;
-            active = true;
-            spawnPointRenderer.material = change;
-
-            Globals.spawnPoint = spawnNum;
-        }
-        else
-        {
-            active = false;
-        }
+        spawnPointRenderer = gameObject.GetComponentInChildren<Renderer>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (spawnNum != Globals.spawnPoint && active)
+        spawnPointRenderer.material = active ? activeMaterial : inactiveMaterial;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
         {
-            active = false;
-            spawnPointRenderer.material = original;
+            OnPlayerEnter.Invoke();
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void SetActive(bool active)
     {
-        if (other.gameObject.CompareTag("Player") && canSetSpawn)
+        if (!this.active)
         {
-            Globals.spawnPoint = spawnNum;
+            this.active = active;
 
-            if (!spawnPointRenderer.material.name.Contains(change.name))
-            {
-                spawnPointRenderer.material = change;
-                activationSound.Play();
-            }
+            activationSound.Play();
         }
+    }
+
+    public void SetActiveSilent(bool active)
+    {
+        this.active = active;
+    }
+
+    public bool IsActive()
+    {
+        return active;
+    }
+
+    public void SpawnPlayer()
+    {
+        SetActiveSilent(true);
+
+        playerPrefab = Instantiate(playerPrefab, transform.position, Quaternion.identity);
     }
 }

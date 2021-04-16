@@ -53,9 +53,9 @@ public class RollingBossScript : MonoBehaviour
         body = GetComponent<Rigidbody>();
         normalSize = transform.localScale.y;
 
-        InvokeRepeating("Cooldowns", .5f, cooldownUpdateTime);
+        InvokeRepeating("Cooldowns", 0.5f, cooldownUpdateTime);
 
-        Invoke("findPlayer", .5f);
+        Invoke("FindPlayer", 0.5f);
 
         startY = transform.position.y;
 
@@ -68,7 +68,7 @@ public class RollingBossScript : MonoBehaviour
         //    goalTransform = GameObject.Find("Player(Clone)").transform;
     }
 
-    void findPlayer()
+    void FindPlayer()
     {
         if (goalTransform == null)
             goalTransform = GameObject.FindGameObjectWithTag("Player").transform;

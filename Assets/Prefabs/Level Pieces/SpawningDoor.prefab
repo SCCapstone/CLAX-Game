@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 754905107396248948}
   - component: {fileID: 8129440624061171967}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Render
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 7953030065201991194}
   - component: {fileID: 7332220717913751439}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: DoorSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -238,8 +238,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208f823ac8522804cb1facfc5d6b8a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 6246325432409390401}
-  player: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+  spawnName: 
+  playerPrefab: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+  inactiveMaterial: {fileID: 2100000, guid: 3867060d33576514ab7b189ffdd4a36a, type: 2}
+  activeMaterial: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
+  activationSound: {fileID: 0}
+  OnPlayerEnter:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &2523869970736318448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -293,7 +299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364116, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_Name
-      value: Column (1)
+      value: RightColumn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
@@ -355,7 +361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364116, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_Name
-      value: Column
+      value: LeftColumn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
@@ -385,19 +391,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.5
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_RootOrder
@@ -405,7 +411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -415,9 +421,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 19.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360640268464364112, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3360640268464364116, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}
       propertyPath: m_Name
-      value: Column (2)
+      value: TopColumn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb8fb6f1902b41a428a2bdf84dcdfec0, type: 3}

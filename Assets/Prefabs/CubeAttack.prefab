@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 7157220339161015765}
   - component: {fileID: 8620267887806261774}
   - component: {fileID: 559757873452161740}
-  - component: {fileID: 8246156380585932801}
+  - component: {fileID: 962271981455933554}
   m_Layer: 11
   m_Name: CubeAttack
   m_TagString: EnemyAttack
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 5
---- !u!114 &8246156380585932801
+--- !u!114 &962271981455933554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7157220339161015766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae075361a68be7a489af1a8fffefd781, type: 3}
+  m_Script: {fileID: 11500000, guid: a4bc0e9da05f1fb47b37a86a4228f6ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   goalCoords: {x: 0, y: 0, z: 0}

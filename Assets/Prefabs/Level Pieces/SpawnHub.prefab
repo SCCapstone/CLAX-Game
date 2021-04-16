@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4448662670938085502}
   - component: {fileID: 5455965241091586367}
   m_Layer: 0
-  m_Name: spawnHub
+  m_Name: SpawnHub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -171,7 +171,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5297298048388348916, guid: 1a7715b229124f742990a67a11a35a20, type: 3}
       propertyPath: m_Name
-      value: SpawnPoint
+      value: SpawnHubSpawnPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851551881053372073, guid: 1a7715b229124f742990a67a11a35a20, type: 3}
+      propertyPath: spawnName
+      value: SpawnHub
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a7715b229124f742990a67a11a35a20, type: 3}

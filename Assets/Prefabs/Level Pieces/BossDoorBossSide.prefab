@@ -28,6 +28,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5894385092082727232}
+  - {fileID: 5256849088585915168}
   m_Father: {fileID: 5764187259253973431}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,7 +46,7 @@ GameObject:
   - component: {fileID: 4841727708759036260}
   - component: {fileID: 480308367494052673}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Render
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +155,7 @@ GameObject:
   - component: {fileID: 5894385092082727232}
   - component: {fileID: 2893331894955318149}
   m_Layer: 0
-  m_Name: deathSound
+  m_Name: DeathSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,10 +283,10 @@ GameObject:
   - component: {fileID: 7448038728076012166}
   - component: {fileID: 2380283377549713085}
   - component: {fileID: 6754836674916226945}
-  - component: {fileID: 1671587412203255263}
   - component: {fileID: 8324156951495712082}
+  - component: {fileID: 1376246677543189132}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,24 +369,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1671587412203255263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7300248672465036506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7ccc3f3c2d2da4b8d5987541be91f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  doorway: {fileID: 7300248672465036506}
-  player: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
-  sceneName: 
-  otherSideSpawnPoint: 0
-  change: {fileID: 0}
-  bossDeathSound: {fileID: 2893331894955318149}
 --- !u!114 &8324156951495712082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,11 +381,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208f823ac8522804cb1facfc5d6b8a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 7300248672465036506}
-  player: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
-  change: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
-  spawnNum: 0
-  canSetSpawn: 0
+  spawnName: 
+  active: 0
+  playerPrefab: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+  inactiveMaterial: {fileID: 2100000, guid: 3867060d33576514ab7b189ffdd4a36a, type: 2}
+  activeMaterial: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
+  activationSound: {fileID: 4857691651971598012}
+  OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1376246677543189132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7300248672465036506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33b8f1cc077072a4fa7b8c6572bbadae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPlayerEnter:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8822371457504919624
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,6 +414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5764187259253973431}
+  - component: {fileID: 6161389458991277399}
   m_Layer: 0
   m_Name: BossDoorBossSide
   m_TagString: Untagged
@@ -438,6 +441,152 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6161389458991277399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822371457504919624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4226b5af0cc3cab419071a269d3d3b52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorTrigger: {fileID: 1376246677543189132}
+  nextSceneName: 
+  nextDesiredSpawnName: 
+  blockDuringBoss: 0
+  doorRenderer: {fileID: 4150384462574591215}
+  inactiveMaterial: {fileID: 2100000, guid: 1bd2e1ff22fefbd4ca4f74eb35a47c73, type: 2}
+  activeMaterial: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
+--- !u!1 &8943524397453841292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5256849088585915168}
+  - component: {fileID: 4857691651971598012}
+  m_Layer: 0
+  m_Name: SpawnSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5256849088585915168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8943524397453841292}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 529052219736150059}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &4857691651971598012
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8943524397453841292}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5d857bf85128b1f47bf2800c0ecf3fc4, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1217731951511199339
 PrefabInstance:
   m_ObjectHideFlags: 0

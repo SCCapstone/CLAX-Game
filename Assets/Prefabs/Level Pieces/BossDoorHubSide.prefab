@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5371346869762008709}
   - component: {fileID: 3908188452493307833}
   - component: {fileID: 4383664376304351456}
+  - component: {fileID: 5988284553503884944}
   m_Layer: 0
   m_Name: PortalCollider
   m_TagString: Untagged
@@ -109,13 +110,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208f823ac8522804cb1facfc5d6b8a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 1066541565138672866}
-  player: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
-  change: {fileID: 0}
-  spawnNum: 0
-  canSetSpawn: 0
-  alwaysSpawn: 0
+  spawnName: 
+  playerPrefab: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
+  inactiveMaterial: {fileID: 2100000, guid: 3867060d33576514ab7b189ffdd4a36a, type: 2}
+  activeMaterial: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
   activationSound: {fileID: 0}
+  OnPlayerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5988284553503884944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066541565138672866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33b8f1cc077072a4fa7b8c6572bbadae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPlayerEnter:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1291953114213808240
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +142,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2629026170949491087}
-  - component: {fileID: 7760532460988004268}
+  - component: {fileID: 4022302395371374556}
   m_Layer: 0
   m_Name: BossDoorHubSide
   m_TagString: Untagged
@@ -151,7 +168,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &7760532460988004268
+--- !u!114 &4022302395371374556
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,13 +177,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1291953114213808240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a217f900cf4c0ad47957cf33449a855a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4226b5af0cc3cab419071a269d3d3b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorway: {fileID: 1066541565138672866}
-  sceneName: PillBossScene
-  otherSideSpawnPoint: 0
-  change: {fileID: 0}
+  doorTrigger: {fileID: 5988284553503884944}
+  nextSceneName: 
+  nextDesiredSpawnName: 
+  blockDuringBoss: 0
+  doorRenderer: {fileID: 5916476707409437911}
+  inactiveMaterial: {fileID: 2100000, guid: 1bd2e1ff22fefbd4ca4f74eb35a47c73, type: 2}
+  activeMaterial: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
 --- !u!1 &8425413956228280331
 GameObject:
   m_ObjectHideFlags: 0

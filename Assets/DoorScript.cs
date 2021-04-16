@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HubSide : MonoBehaviour
+public class DoorScript : MonoBehaviour
 {
     public DoorTrigger doorTrigger;
 
@@ -10,40 +10,50 @@ public class HubSide : MonoBehaviour
 
     public bool blockDuringBoss = false;
 
+    public Renderer doorRenderer;
     public Material inactiveMaterial;
     public Material activeMaterial;
 
-    private Renderer doorRenderer;
-
+    private bool forceDisable = false;
     private bool isSpawn = false;
-    
+
     void Start()
     {
-        doorRenderer = GetComponentInChildren<Renderer>();
-
-        if(Globals.desiredSpawnName != null && Globals.desiredSpawnName == GetComponentInChildren<SpawnPoint>().spawnName)
-        {
-            isSpawn = false;
-        }
-
         doorTrigger.OnPlayerEnter.AddListener(delegate
         {
             if (IsActive())
             {
                 Globals.desiredSpawnName = nextDesiredSpawnName;
 
-                SceneManager.LoadSceneAsync(nextSceneName);
+                SceneManager.LoadScene(nextSceneName);
             }
         });
     }
-    
+
     void Update()
     {
         doorRenderer.material = IsActive() ? activeMaterial : inactiveMaterial;
+
+        SpawnPoint sp = GetComponentInChildren<SpawnPoint>();
+
+        if (sp != null && sp.IsActive())
+        {
+            isSpawn = true;
+        }
     }
 
-    private bool IsActive()
+    public void SetForceDisable(bool disable)
     {
+        forceDisable = disable;
+    }
+
+    public bool IsActive()
+    {
+        if (forceDisable)
+        {
+            return false;
+        }
+
         if (blockDuringBoss)
         {
             return !Globals.boss;

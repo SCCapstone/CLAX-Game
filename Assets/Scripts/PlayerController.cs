@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     [Header("Projectiles")]
     public bool holdToShoot;
     public float shootDelay;
+    public float projectileDamage;
     public float projectileSpeed;
     public int maxExplosionCount;
 
@@ -63,10 +64,13 @@ public class PlayerController : MonoBehaviour
     public float flyingAirFriction;
     public float flyingAirSpeed;
     public float flyingElevationSpeed;
+    public float fastFlyingAirSpeed;
+    public float fastFlyingElevationSpeed;
 
     private bool isTestMode = false;
     private bool isAscending = false;
     private bool isDescending = false;
+    private bool isFlyingFast = false;
     private bool isElevationCoroutineRunning = false;
 
     private bool prevOnGround = false;
@@ -120,6 +124,10 @@ public class PlayerController : MonoBehaviour
         inputs.World.FlyDown.started += OnDescend;
         inputs.World.FlyDown.performed += OnDescend;
         inputs.World.FlyDown.canceled += OnDescend;
+
+        inputs.World.FlyFast.started += OnFlyFast;
+        inputs.World.FlyFast.performed += OnFlyFast;
+        inputs.World.FlyFast.canceled += OnFlyFast;
 
         // Rigidbody physics
 
@@ -305,7 +313,7 @@ public class PlayerController : MonoBehaviour
 
         if (isTestMode)
         {
-            accMagnitude = flyingAirSpeed * Time.fixedDeltaTime;
+            accMagnitude = (isFlyingFast ? fastFlyingAirSpeed : flyingAirSpeed) * Time.fixedDeltaTime;
         }
         else
         {
@@ -471,6 +479,8 @@ public class PlayerController : MonoBehaviour
         projectile.position = transform.position;
         projectile.velocity = facing * projectileSpeed;
 
+        projectile.damage = isTestMode ? float.MaxValue : projectileDamage;
+
         // Offset initial position slightly so any first person view doesn't look janky when
         // projectile is instantiated inside their camera
         // Preferably, we would want it to originate from the center and only make the projectile
@@ -516,9 +526,13 @@ public class PlayerController : MonoBehaviour
     {
         isElevationCoroutineRunning = true;
 
+        float speed;
+
         while (isTestMode && (isAscending || isDescending))
         {
-            player.transform.position += (isAscending ? Vector3.up : Vector3.down) * flyingElevationSpeed * Time.fixedDeltaTime;
+            speed = isFlyingFast ? fastFlyingElevationSpeed : flyingElevationSpeed;
+
+            player.transform.position += (isAscending ? Vector3.up : Vector3.down) * speed * Time.fixedDeltaTime;
 
             yield return new WaitForFixedUpdate();
         }
@@ -544,5 +558,10 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(Elevate());
         }
+    }
+
+    void OnFlyFast(InputAction.CallbackContext context)
+    {
+        isFlyingFast = context.control.IsPressed();
     }
 }

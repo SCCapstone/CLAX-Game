@@ -113,6 +113,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""FlyFast"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c2f512b-0ab9-45f2-bba5-9c68db954554"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -316,12 +324,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f9189bf1-d27f-414d-8de8-07cd8439cfb2"",
+                    ""id"": ""4c23304a-c34b-4877-a39d-cc42c448dd7a"",
                     ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": ""Default"",
-                    ""action"": ""FlyDown"",
+                    ""action"": ""FlyFast"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -388,6 +396,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_World_TestMode = m_World.FindAction("TestMode", throwIfNotFound: true);
         m_World_FlyUp = m_World.FindAction("FlyUp", throwIfNotFound: true);
         m_World_FlyDown = m_World.FindAction("FlyDown", throwIfNotFound: true);
+        m_World_FlyFast = m_World.FindAction("FlyFast", throwIfNotFound: true);
         // Interface
         m_Interface = asset.FindActionMap("Interface", throwIfNotFound: true);
         m_Interface_PauseMenu = m_Interface.FindAction("PauseMenu", throwIfNotFound: true);
@@ -452,6 +461,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_World_TestMode;
     private readonly InputAction m_World_FlyUp;
     private readonly InputAction m_World_FlyDown;
+    private readonly InputAction m_World_FlyFast;
     public struct WorldActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -468,6 +478,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @TestMode => m_Wrapper.m_World_TestMode;
         public InputAction @FlyUp => m_Wrapper.m_World_FlyUp;
         public InputAction @FlyDown => m_Wrapper.m_World_FlyDown;
+        public InputAction @FlyFast => m_Wrapper.m_World_FlyFast;
         public InputActionMap Get() { return m_Wrapper.m_World; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -513,6 +524,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @FlyDown.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyDown;
                 @FlyDown.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyDown;
                 @FlyDown.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyDown;
+                @FlyFast.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyFast;
+                @FlyFast.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyFast;
+                @FlyFast.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnFlyFast;
             }
             m_Wrapper.m_WorldActionsCallbackInterface = instance;
             if (instance != null)
@@ -553,6 +567,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @FlyDown.started += instance.OnFlyDown;
                 @FlyDown.performed += instance.OnFlyDown;
                 @FlyDown.canceled += instance.OnFlyDown;
+                @FlyFast.started += instance.OnFlyFast;
+                @FlyFast.performed += instance.OnFlyFast;
+                @FlyFast.canceled += instance.OnFlyFast;
             }
         }
     }
@@ -613,6 +630,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnTestMode(InputAction.CallbackContext context);
         void OnFlyUp(InputAction.CallbackContext context);
         void OnFlyDown(InputAction.CallbackContext context);
+        void OnFlyFast(InputAction.CallbackContext context);
     }
     public interface IInterfaceActions
     {

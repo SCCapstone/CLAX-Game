@@ -7,13 +7,11 @@ public class BossSide : MonoBehaviour
     public GameObject doorway;
     public GameObject player;
     public string sceneName;
-    public int otherSideSpawnPoint;
+    public string nextDesiredSpawnName;
 
     public Material change;
 
     private Renderer doorRenderer;
-
-    private bool active = false;
 
     public AudioSource bossDeathSound;
 
@@ -24,20 +22,20 @@ public class BossSide : MonoBehaviour
 
     void Update()
     {
-        if (!Globals.boss && !active)
+        if (!Globals.boss)
         {
             doorRenderer.material = change;
-            active = true;
+
             bossDeathSound.Play();
         }
     }
     
     void OnTriggerEnter(Collider other)
     {
-        //TODO add boss is dead logic
-        if (other.gameObject.CompareTag("Player") && active)
+        if (!Globals.boss && other.gameObject.CompareTag("Player"))
         {
-            Globals.spawnPoint = otherSideSpawnPoint;
+            Globals.desiredSpawnName = nextDesiredSpawnName;
+
             SceneManager.LoadSceneAsync(sceneName);
         }
     }

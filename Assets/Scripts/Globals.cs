@@ -31,6 +31,10 @@ public class Globals : MonoBehaviour
 
     public static int enemyLayerNum = 9;
 
+    // Spawn flags
+
+    public static string desiredSpawnName;
+
     // Boss flags
 
     public static bool boss = true;
@@ -42,10 +46,6 @@ public class Globals : MonoBehaviour
     {
         return pill && cube && pyramid;
     }
-
-    // Player spawn
-
-    public static int spawnPoint = 0;
 
     // Settings
 
