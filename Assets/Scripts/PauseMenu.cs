@@ -300,11 +300,11 @@ public class PauseMenu : MonoBehaviour
 
         if (Globals.colorBlindEnabled)
         {
-            ToOriginalColors();
+            ToSubColors();
         }
         else
         {
-            ToSubColors(); ;
+            ToOriginalColors();
         }
     }
 
