@@ -375,7 +375,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if(!enableTesting)
+        if (!enableTesting)
         {
             if (context.started)
             {
@@ -435,7 +435,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        int existingCount = GameObject.FindGameObjectsWithTag("ExplosionAttack").Length;
+        int existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
 
         if (existingCount >= maxExplosionCount)
         {
@@ -508,7 +508,8 @@ public class PlayerController : MonoBehaviour
             rigidbody.useGravity = false;
             airFriction = flyingAirFriction;
             airAcceleration = flyingAirAcceleration;
-        } else
+        }
+        else
         {
             enableTesting = false;
             var setPlayerHealth = gameObject.GetComponentInChildren<AliveObject>();
