@@ -1,5 +1,3 @@
-# CLAX GAME
-
 # Video
 
 To be added!
