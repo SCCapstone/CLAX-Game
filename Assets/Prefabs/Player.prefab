@@ -79,7 +79,7 @@ MonoBehaviour:
   holdToShoot: 1
   shootDelay: 0.25
   projectileSpeed: 25
-  maxExplosionCount: 5
+  maxExplosionCount: 3
   playerShootSound: {fileID: 7273732588493605779}
   playerSecondaryShootSound: {fileID: 6538380541849950474}
   playerJumpSound: {fileID: 1031067336962826584}
