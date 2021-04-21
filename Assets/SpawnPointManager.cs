@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class SpawnPointManager : MonoBehaviour
 {
@@ -35,11 +36,13 @@ public class SpawnPointManager : MonoBehaviour
             }
         }
 
-        if (defaultSpawn == null && spawnPoints.Count > 0)
+        if (defaultSpawn == null)
         {
+            Assert.IsTrue(spawnPoints.Count > 0, "No spawn locations found!");
+
             defaultSpawn = spawnPoints[Random.Range(0, spawnPoints.Count)];
         }
-
+        
         if (currentSpawn == null)
         {
             currentSpawn = defaultSpawn;
