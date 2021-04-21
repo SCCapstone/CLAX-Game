@@ -5,6 +5,8 @@ public class SpawnPoint : MonoBehaviour
 {
     [Header("Spawn Properties")]
     public string spawnName;
+    public Vector3 spawnOffset;
+    public Vector3 spawnRotation;
 
     [Header("Prefabs")]
     public GameObject playerPrefab;
@@ -61,6 +63,10 @@ public class SpawnPoint : MonoBehaviour
     {
         SetActiveSilent(true);
 
-        playerPrefab = Instantiate(playerPrefab, transform.position, Quaternion.identity);
+        playerPrefab = Instantiate(playerPrefab, transform.position + spawnOffset, Quaternion.identity);
+
+        PlayerController pc = playerPrefab.GetComponent<PlayerController>();
+
+        pc.SetCameraAngles(spawnRotation);
     }
 }

@@ -564,4 +564,9 @@ public class PlayerController : MonoBehaviour
     {
         isFlyingFast = context.control.IsPressed();
     }
+
+    public void SetCameraAngles(Vector3 euler)
+    {
+        cameraEulerAngles = euler;
+    }
 }
