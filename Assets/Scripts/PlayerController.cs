@@ -168,6 +168,9 @@ public class PlayerController : MonoBehaviour
 
         if (IsPaused())
         {
+            //holdToShoot = false;
+            if (shootLoop != null)
+                StopCoroutine(shootLoop);
             return;
         }
 
