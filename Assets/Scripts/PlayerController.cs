@@ -527,7 +527,7 @@ public class PlayerController : MonoBehaviour
 
     void OnShift(InputAction.CallbackContext context)
     {
-        if (enableTesting)
+        if (enableTesting && !IsPaused())
         {
             GameObject player = GameObject.Find("Player(Clone)");
             player.transform.position = player.transform.position + Vector3.up;
@@ -536,7 +536,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCtrl(InputAction.CallbackContext context)
     {
-        if (enableTesting)
+        if (enableTesting && !IsPaused())
         {
             GameObject player = GameObject.Find("Player(Clone)");
             player.transform.position = player.transform.position + Vector3.down;

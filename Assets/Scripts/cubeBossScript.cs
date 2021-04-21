@@ -146,7 +146,6 @@ public class cubeBossScript : MonoBehaviour
         for (int i = 0; i < lastCubes.Length; i++)
         {
             Destroy(lastCubes[i]);
-
         }
     }
 
@@ -175,7 +174,8 @@ public class cubeBossScript : MonoBehaviour
 
         if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
         {
-
+            if (currentCubes[lastIdLaunched] == null)
+                return;
             currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
             lastIdLaunched += 1;
             lastCubeLaunchTime = Time.time;
@@ -196,10 +196,12 @@ public class cubeBossScript : MonoBehaviour
         {
             for (int i = 0; i < gridDimension; i++)
             {
-
-                currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
-                lastIdLaunched += 1;
-                lastCubeLaunchTime = Time.time;
+                if (currentCubes != null)
+                {
+                    currentCubes[lastIdLaunched].GetComponent<cubeAttackPlayer>().shouldMove = true;
+                    lastIdLaunched += 1;
+                    lastCubeLaunchTime = Time.time;
+                }
             }
             launchSound.Play();
         }
