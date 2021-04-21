@@ -32,6 +32,8 @@ public class AliveObject : MonoBehaviour
         // Check if hit cooldown is not active
         if (Time.time - lastHitTime > hitCooldown)
         {
+            Debug.Log("got hit");
+
             lastHitTime = Time.time;
 
             SetHealth(health - amount);

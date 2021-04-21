@@ -86,9 +86,9 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   enableTesting: 0
   walkingAirFriction: 0
-  flyingAirFriction: 5
+  flyingAirFriction: 0.7
   walkingAirAcceleration: 10
-  flyingAirAcceleration: 50
+  flyingAirAcceleration: 1200
   testingHealth: 2000
   playingHealth: 100
 --- !u!54 &6054908338268949753

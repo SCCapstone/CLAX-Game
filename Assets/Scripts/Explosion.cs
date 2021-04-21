@@ -65,11 +65,14 @@ public class Explosion : MonoBehaviour
         //wasInitialized = true;
         this.enemyLayerNum = enemyLayerNum;
         this.damage = damage;
+
+        Debug.Log("initialized with enemy num  of " + this.enemyLayerNum);
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Triggered");
+        Debug.Log("Triggered");
 
         // 9 is the layer id for enemy
         if (other.gameObject.layer == enemyLayerNum)

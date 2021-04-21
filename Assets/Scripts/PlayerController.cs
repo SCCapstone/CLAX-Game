@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
     public float walkingAirFriction = 0.0f;
     public float flyingAirFriction = 5.0f;
     public float walkingAirAcceleration = 10.0f;
-    public float flyingAirAcceleration = 50.0f;
+    public float flyingAirAcceleration = 100.0f;
     public float testingHealth = 2000.0f;
     public float playingHealth = 100.0f;
 
