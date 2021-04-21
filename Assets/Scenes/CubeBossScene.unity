@@ -3337,6 +3337,10 @@ PrefabInstance:
       propertyPath: nextDesiredSpawnName
       value: CubeBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 8324156951495712082, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
+      propertyPath: spawnRotation.y
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 8822371457504919624, guid: 8209d41dba7d8bc47af807ea7e46d3b2, type: 3}
       propertyPath: m_Name
       value: BossDoorBossSide
