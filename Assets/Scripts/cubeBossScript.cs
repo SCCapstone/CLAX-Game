@@ -154,6 +154,10 @@ public class cubeBossScript : MonoBehaviour
         destroyCubes();
         globals.cube = true;
         globals.boss = false;
+
+        globals.bossBeatenDict["cube"] = true;
+        Debug.Log("cube beaten!");
+
     }
 
     void launchRowByRow()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class globals : MonoBehaviour
 {
@@ -16,6 +17,13 @@ public class globals : MonoBehaviour
     public static bool pyramid = false;
     public static bool won = false;
 
+    //public static Dictionary<string, >
+    public static Dictionary<string, bool> bossBeatenDict = new Dictionary<string, bool>() {
+        { "pill",false },
+        { "cube",false },
+        { "triangle",false }
+    };
+
     public static int spawnPoint = 0;
 
     public static int difficulty = 2;
@@ -23,7 +31,8 @@ public class globals : MonoBehaviour
 
     public static bool colorBlindEnabled = false;
 
-    public static VideoSettings videoSettings = new VideoSettings() {
+    public static VideoSettings videoSettings = new VideoSettings()
+    {
         vsyncEnabled = true,
         fieldOfView = 60
     };

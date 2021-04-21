@@ -87,6 +87,10 @@ public class TriangleBossScript : AliveObject
 
         globals.pyramid = true;
         globals.boss = false;
+
+        globals.bossBeatenDict["triangle"] = true;
+        Debug.Log("trangle beaten!");
+
     }
 
     void FixedUpdate()

@@ -21,7 +21,7 @@ public class Win : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (globals.won && !active)
+        if ((globals.won && !active) || (globals.bossBeatenDict["triangle"] && globals.bossBeatenDict["cube"]))
         {
             doorRenderer.material = change;
             active = true;
