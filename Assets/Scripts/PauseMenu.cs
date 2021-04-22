@@ -74,15 +74,15 @@ public class PauseMenu : MonoBehaviour
 
         UpdateText();
 
-        musicSlider.onValueChanged.AddListener(delegate { ChangeMusicVolume(); });
+        musicSlider.onValueChanged.AddListener(ChangeMusicVolume);
 
-        fovSlider.onValueChanged.AddListener(delegate { ChangeFOV(); });
-        fovResetButton.onClick.AddListener(delegate { ResetFOV(); });
+        fovSlider.onValueChanged.AddListener(ChangeFOV);
+        fovResetButton.onClick.AddListener(ResetFOV);
 
-        vsyncButton.onClick.AddListener(delegate { ToggleVSync(); });
-        colorblindButton.onClick.AddListener(delegate { ToggleColorBlind(); });
-        difficultyButton.onClick.AddListener(delegate { ChangeDifficulty(); });
-        timerButton.onClick.AddListener(delegate { ToggleTimer(); });
+        vsyncButton.onClick.AddListener(ToggleVSync);
+        colorblindButton.onClick.AddListener(ToggleColorBlind);
+        difficultyButton.onClick.AddListener(ChangeDifficulty);
+        timerButton.onClick.AddListener(ToggleTimer);
     }
 
     void Update()
@@ -93,9 +93,9 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    private void ChangeMusicVolume()
+    private void ChangeMusicVolume(float value)
     {
-        Globals.audioSettings.musicVolume = musicSlider.value;
+        Globals.audioSettings.musicVolume = value;
     }
 
     private void ResetFOV()
@@ -105,9 +105,9 @@ public class PauseMenu : MonoBehaviour
         fovSlider.value = Globals.videoSettings.fieldOfView;
     }
 
-    private void ChangeFOV()
+    private void ChangeFOV(float value)
     {
-        Globals.videoSettings.fieldOfView = fovSlider.value;
+        Globals.videoSettings.fieldOfView = value;
     }
 
     public void OnQuit()
