@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour
     [Header("Camera")]
     public bool cameraEnabled = true;
 
-    public float lookSensitivityScale = 90.0f;
+    //
+    public float lookSensitivityScale = Globals.mouseSettings.mouseSensitivity;
     public float lookSensitivityX = 0.6f;
     public float lookSensitivityY = 0.6f;
 
@@ -167,6 +168,8 @@ public class PlayerController : MonoBehaviour
     {
         playerCamera.fieldOfView = Globals.videoSettings.fieldOfView;
         QualitySettings.vSyncCount = Globals.videoSettings.vsyncEnabled ? 1 : 0;
+        //
+        lookSensitivityScale = Globals.mouseSettings.mouseSensitivity;
 
         if (!cameraEnabled || !Application.isFocused || Globals.IsPaused())
         {
