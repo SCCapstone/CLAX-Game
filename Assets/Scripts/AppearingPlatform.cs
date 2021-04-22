@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AppearingPlatform : MonoBehaviour
 {
@@ -9,29 +7,15 @@ public class AppearingPlatform : MonoBehaviour
     private Renderer platformRenderer;
     private BoxCollider platformCollider;
 
-    // Start is called before the first frame update
     void Start()
     {
         platformRenderer = platform.GetComponentInChildren<Renderer>();
         platformCollider = platform.GetComponentInChildren<BoxCollider>();
-        if (!globals.won)
+
+        if (!Globals.HasWon())
         {
             platformRenderer.enabled = false;
             platformCollider.enabled = false;
         }
-
     }
-
-    // Update is called once per frame
-    /*
-    void Update()
-    {
-        if(globals.won && !platformRenderer.enabled)
-        {
-            platformRenderer.enabled = true;
-            platformCollider.enabled = true;
-        }
-        
-    }
-    */
 }
