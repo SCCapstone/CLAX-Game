@@ -1012,7 +1012,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 617520817669108804, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: aa401cec395f46643a4e7cb0e825a2dc, type: 3}
 --- !u!1 &1587573896 stripped
 GameObject:
