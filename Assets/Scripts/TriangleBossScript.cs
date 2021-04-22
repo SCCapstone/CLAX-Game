@@ -7,7 +7,7 @@ public class TriangleBossScript : AliveObject
 {
     private const float UPDATE_INTERVAL = 1.0f;
     private const float ACTION_TIMEOUT = 10.0f;
-    private const float DEATH_ANIMATION_TIME = 8.0f;
+    private const float DEATH_ANIMATION_TIME = 5.0f;
     private const float DEATH_ANIMATION_TARGET_HEIGHT = -2.0f;
     private const float DEATH_ANIMATION_INTENSITY = 0.15f;
 
