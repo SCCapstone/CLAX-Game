@@ -210,6 +210,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Globals.IsPaused())
+        {
+            StopCoroutine(shootLoop);
+        }
+
         if (!isTestMode)
         {
             rigidbody.AddForce(gravity, ForceMode.Acceleration);
@@ -449,7 +454,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        int existingCount = GameObject.FindGameObjectsWithTag("ExplosionAttack").Length;
+        int existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
 
         if (existingCount >= maxExplosionCount)
         {

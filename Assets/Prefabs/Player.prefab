@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5dd4c6634e873654f9993e07426f9c58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   health: 100
   maxHealth: 0
   invulnerable: 0
@@ -87,7 +87,7 @@ MonoBehaviour:
   shootDelay: 0.25
   projectileDamage: 10
   projectileSpeed: 25
-  maxExplosionCount: 5
+  maxExplosionCount: 3
   playerShootSound: {fileID: 7273732588493605779}
   playerSecondaryShootSound: {fileID: 6538380541849950474}
   playerJumpSound: {fileID: 1031067336962826584}
@@ -219,8 +219,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4febe2bc8c3578147a895df14385c474, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   health: 100
   maxHealth: 100
   invulnerable: 0
@@ -1011,7 +1011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8929006646202376245, guid: df605f54c5570184783fdb30d38764c4, type: 3}
       propertyPath: target
-      value: 
+      value:
       objectReference: {fileID: 5867384267254062812}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df605f54c5570184783fdb30d38764c4, type: 3}

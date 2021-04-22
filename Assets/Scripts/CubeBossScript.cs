@@ -223,6 +223,11 @@ public class CubeBossScript : AliveObject
 
         if (currentCubes != null && Time.time - lastCubeLaunchTime > timeBetweenSingleCubeLaunch && lastIdLaunched < currentCubes.Length)
         {
+            if (currentCubes[lastIdLaunched] == null)
+            {
+                return;
+            }
+
             currentCubes[lastIdLaunched].GetComponent<CubeAttackPlayer>().shouldMove = true;
             lastIdLaunched += 1;
             lastCubeLaunchTime = Time.time;
@@ -243,10 +248,12 @@ public class CubeBossScript : AliveObject
         {
             for (int i = 0; i < gridDimension; i++)
             {
-
-                currentCubes[lastIdLaunched].GetComponent<CubeAttackPlayer>().shouldMove = true;
-                lastIdLaunched += 1;
-                lastCubeLaunchTime = Time.time;
+                if (currentCubes != null)
+                {
+                    currentCubes[lastIdLaunched].GetComponent<CubeAttackPlayer>().shouldMove = true;
+                    lastIdLaunched += 1;
+                    lastCubeLaunchTime = Time.time;
+                }
             }
 
             launchSound.Play();
