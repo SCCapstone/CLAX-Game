@@ -110,12 +110,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnName: 
-  spawnPointPrefab: {fileID: 5297298048388348916}
+  spawnOffset: {x: 0, y: 0, z: 0}
+  spawnRotation: {x: 0, y: 0, z: 0}
   playerPrefab: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
   inactiveMaterial: {fileID: 2100000, guid: 3867060d33576514ab7b189ffdd4a36a, type: 2}
   activeMaterial: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
+  playSound: 1
   activationSound: {fileID: 3310291955730436690}
-  OnActivate:
+  OnPlayerEnter:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &7376241441524968195

@@ -14,6 +14,8 @@ public class SpawnPoint : MonoBehaviour
     public Material inactiveMaterial;
     public Material activeMaterial;
 
+    [Header("Audio")]
+    public bool playSound;
     public AudioSource activationSound;
 
     public UnityEvent OnPlayerEnter = new UnityEvent();
@@ -41,7 +43,10 @@ public class SpawnPoint : MonoBehaviour
 
     public void PlayActivationSound()
     {
-        activationSound.Play();
+        if (playSound)
+        {
+            activationSound.Play();
+        }
     }
 
     public void SetActive(bool active)
