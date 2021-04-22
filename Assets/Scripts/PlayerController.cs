@@ -454,7 +454,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        int existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
+        int existingCount = GameObject.FindGameObjectsWithTag("ExplosionAttack").Length;
 
         if (existingCount >= maxExplosionCount)
         {
