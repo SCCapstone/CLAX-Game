@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CubeBossScript : MonoBehaviour
+public class CubeBossScript : AliveObject
 {
     Transform target;
     float distBetweenCubes = 2;
@@ -42,10 +42,64 @@ public class CubeBossScript : MonoBehaviour
 
     BossPhase currentPhase = BossPhase.ALL_SHOOT;
 
-    // Start is called before the first frame update
+    void Awake()
+    {
+        onDeath += OnDeath;
+    }
+
     void Start()
     {
         Globals.boss = true;
+    }
+
+    private void OnDestroy()
+    {
+        DestroyCubes();
+
+        Globals.boss = false;
+        Globals.cube = true;
+    }
+
+    private void FixedUpdate()
+    {
+        if (dead)
+        {
+            return;
+        }
+
+        if (target == null)
+        {
+            Setup();
+
+            return;
+        }
+
+        switch (currentPhase)
+        {
+            case BossPhase.SINGLE_SHOT:
+                MakeNewBatch();
+                LaunchAsNeeded();
+
+                break;
+            case BossPhase.ALL_SHOOT:
+                MakeNewBatch();
+                LaunchRowAsNeeded();
+
+                break;
+            case BossPhase.MOVING:
+                MoveOnAxis();
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    void OnDeath()
+    {
+        DestroyCubes();
+
+        Destroy(gameObject, 1.0f);
     }
 
     void Setup()
@@ -158,14 +212,6 @@ public class CubeBossScript : MonoBehaviour
         {
             Destroy(lastCubes[i]);
         }
-    }
-
-    private void OnDestroy()
-    {
-        DestroyCubes();
-
-        Globals.cube = true;
-        Globals.boss = false;
     }
 
     void LaunchAsNeeded()
@@ -287,36 +333,6 @@ public class CubeBossScript : MonoBehaviour
             {
                 ComputeDestination();
             }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (target == null)
-        {
-            Setup();
-
-            return;
-        }
-
-        switch (currentPhase)
-        {
-            case BossPhase.SINGLE_SHOT:
-                MakeNewBatch();
-                LaunchAsNeeded();
-
-                break;
-            case BossPhase.ALL_SHOOT:
-                MakeNewBatch();
-                LaunchRowAsNeeded();
-
-                break;
-            case BossPhase.MOVING:
-                MoveOnAxis();
-
-                break;
-            default:
-                break;
         }
     }
 }

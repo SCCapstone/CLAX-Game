@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RollingBossScript : MonoBehaviour
+public class RollingBossScript : AliveObject
 {
     float lastExpandedTime;
     float expandInverseFrequency = .03f;
@@ -64,8 +64,7 @@ public class RollingBossScript : MonoBehaviour
 
     void Awake()
     {
-        //if (goalTransform == null)
-        //    goalTransform = GameObject.Find("Player(Clone)").transform;
+        onDeath += OnDeath;
     }
 
     void FindPlayer()
@@ -82,6 +81,30 @@ public class RollingBossScript : MonoBehaviour
         }
         Globals.pill = true;
         Globals.boss = false;
+    }
+
+    void FixedUpdate()
+    {
+        if (dead)
+        {
+            return;
+        }
+
+        if (goalTransform == null)
+            return;
+        ChoosePhase();
+
+        transform.position = new Vector3(transform.position.x, startY, transform.position.z);
+    }
+
+    void OnDeath()
+    {
+        if (madeWall)
+        {
+            Destroy(madeWall);
+        }
+
+        Destroy(gameObject, 1.0f);
     }
 
     void Cooldowns()
@@ -347,21 +370,5 @@ public class RollingBossScript : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    void FixedUpdate()
-    {
-        if (goalTransform == null)
-            return;
-        ChoosePhase();
-
-        transform.position = new Vector3(transform.position.x, startY, transform.position.z);
-
-        //if (Input.GetKeyDown(KeyCode.R))
-        //moveAndMakeWallAttack();
-        //SpinAttack();
-        //wallExpand();
-
-
     }
 }

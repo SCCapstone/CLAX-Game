@@ -3875,5 +3875,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeBoss
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7013891022363026434, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4dd06161c11368a459f8c5cf559eb4b1, type: 3}

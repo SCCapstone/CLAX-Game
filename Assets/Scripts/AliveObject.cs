@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Reflection;
+using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 public class AliveObject : MonoBehaviour
 {
@@ -14,7 +15,10 @@ public class AliveObject : MonoBehaviour
     protected float lastHitTime = 0.0f;
     public AudioSource deathSound;
 
-    public UnityEvent OnDeath = new UnityEvent();
+    public delegate void DeathHandler();
+    public event DeathHandler onDeath;
+
+    protected bool dead = false;
 
     void Start()
     {
@@ -75,25 +79,28 @@ public class AliveObject : MonoBehaviour
     // Kills the object
     virtual public void Kill()
     {
-        // TODO: Death events and animations
+        if (dead)
+        {
+            return;
+        }
 
-        // TODO: Move death sounds to respective child classes
+        dead = true;
+
+        // TODO: Death events and animations
 
         if (deathSound != null && !deathSound.isPlaying)
         {
             deathSound.Play();
         }
 
-        Destroy(gameObject, 0.5f);
-
-        OnDeath.Invoke();
-    }
-
-    // TODO: Move to player script
-    public void RespawnPlayer()
-    {
-        Debug.Log("Ran respawn");
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (onDeath == null)
+        {
+            // Default behaviour
+            Destroy(gameObject, 1.0f);
+        }
+        else
+        {
+            onDeath();
+        }
     }
 }

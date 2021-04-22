@@ -25,6 +25,11 @@ public class TriangleBossScript : AliveObject
         Attack3
     }
 
+    [Header("ExitDoor")]
+    public GameObject exitDoor;
+    public float exitDoorStartHeight;
+    public float exitDoorEndHeight;
+
     [Header("Movement")]
     public float movementDelay;
     public float movementDuration;
@@ -73,15 +78,19 @@ public class TriangleBossScript : AliveObject
     private bool inAction;
     private float actionStartTime;
 
-    private float nextAttackTime = 0.0f;
-
     private float lastUpdateTime;
 
-    private bool dead = false;
+    void Awake()
+    {
+        onDeath += OnDeath;
+    }
 
     void Start()
     {
         Globals.boss = true;
+
+        SetExitDoorHeight(exitDoorStartHeight);
+        exitDoor.SetActive(false);
 
         state = BossState.Decide;
         lastUpdateTime = Time.time - UPDATE_INTERVAL + 1.5f;
@@ -89,6 +98,11 @@ public class TriangleBossScript : AliveObject
 
     void OnDestroy()
     {
+        // Set exit door active if it isn't already
+
+        SetExitDoorHeight(exitDoorEndHeight);
+        exitDoor.SetActive(true);
+
         // Cleanup objects if necessary
 
         Globals.pyramid = true;
@@ -112,6 +126,11 @@ public class TriangleBossScript : AliveObject
 
         CheckSafety();
         GetTarget();
+
+        if (target == null)
+        {
+            return;
+        }
 
         if (state == BossState.Decide)
         {
@@ -195,20 +214,23 @@ public class TriangleBossScript : AliveObject
         return choices[(int)Random.Range(0.0f, choices.Count)].Key;
     }
 
-    public override void Kill()
+    void OnDeath()
     {
-        if (dead)
-        {
-            return;
-        }
-
-        dead = true;
-
         StopAllCoroutines();
+
+        SetExitDoorHeight(exitDoorStartHeight);
+        exitDoor.SetActive(true);
 
         Debug.Log("Death throes");
 
         StartCoroutine(KillCoroutine());
+    }
+
+    void SetExitDoorHeight(float y)
+    {
+        Vector3 position = exitDoor.transform.position;
+
+        exitDoor.transform.position = new Vector3(position.x, y, position.z);
     }
 
     void GetTarget()
@@ -216,9 +238,12 @@ public class TriangleBossScript : AliveObject
         // In case there are >1 objects tagged with player, we want to select them randomly
         GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
 
-        int i = Random.Range(0, targets.Length);
+        if (targets.Length > 0)
+        {
+            int i = Random.Range(0, targets.Length);
 
-        target = targets[i];
+            target = targets[i];
+        }
     }
 
     void StartAction(IEnumerator routine)
@@ -511,6 +536,8 @@ public class TriangleBossScript : AliveObject
         Vector3 v;
         float h;
 
+        float exitDoorHeight;
+
         for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / DEATH_ANIMATION_TIME)
         {
             // Linear interpolation
@@ -518,6 +545,10 @@ public class TriangleBossScript : AliveObject
             v = new Vector3(startPosition.x, h, startPosition.z);
 
             transform.position = v + (Random.insideUnitSphere * DEATH_ANIMATION_INTENSITY);
+
+            exitDoorHeight = (1 - i) * exitDoorStartHeight + i * exitDoorEndHeight;
+
+            SetExitDoorHeight(exitDoorHeight);
 
             yield return new WaitForFixedUpdate();
         }

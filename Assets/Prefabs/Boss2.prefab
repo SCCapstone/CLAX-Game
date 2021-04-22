@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 617520817669108825}
   - component: {fileID: 617520817669108824}
   - component: {fileID: 617520817669108831}
-  - component: {fileID: 617520817669108827}
-  - component: {fileID: 617520817669108804}
   - component: {fileID: 617520817669108805}
   - component: {fileID: 617520817669108806}
+  - component: {fileID: 617520817669108827}
   m_Layer: 9
   m_Name: Boss2
   m_TagString: Boss
@@ -102,36 +101,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &617520817669108827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617520817669108830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04483f01bbc42dd468de08b9876dcd3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallPrefab: {fileID: 507809147483118245, guid: fa670bdf0f42e404293540d7f9e2747b, type: 3}
-  goalTransform: {fileID: 0}
---- !u!114 &617520817669108804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617520817669108830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4febe2bc8c3578147a895df14385c474, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 1000
-  maxHealth: 1000
-  hitCooldown: 0.5
-  deathSound: {fileID: 1078679924947795564}
 --- !u!54 &617520817669108805
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -161,6 +130,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 15
+--- !u!114 &617520817669108827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617520817669108830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04483f01bbc42dd468de08b9876dcd3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1000
+  maxHealth: 1000
+  invulnerable: 0
+  hitCooldown: 0.5
+  deathSound: {fileID: 1078679924947795564}
+  wallPrefab: {fileID: 507809147483118245, guid: fa670bdf0f42e404293540d7f9e2747b, type: 3}
+  goalTransform: {fileID: 0}
 --- !u!1 &1931105630218473241
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,7 +409,7 @@ PrefabInstance:
     - target: {fileID: 8929006646202376245, guid: df605f54c5570184783fdb30d38764c4, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 617520817669108804}
+      objectReference: {fileID: 617520817669108827}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df605f54c5570184783fdb30d38764c4, type: 3}
 --- !u!224 &2417810986659445657 stripped

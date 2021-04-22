@@ -10,11 +10,14 @@ public class PlayerProjectile : Projectile
     {
         if (other.gameObject.layer == Globals.enemyLayerNum)
         {
-            //Debug.Log("hit enemy");
             hitBoss.Play();
+
             AliveObject enemy = other.gameObject.GetComponent<AliveObject>();
 
-            enemy.Damage(damage);
+            if (enemy != null)
+            {
+                enemy.Damage(damage);
+            }
 
             Destroy(gameObject, .5f);
         }

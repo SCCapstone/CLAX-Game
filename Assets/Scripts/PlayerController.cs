@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
     public float jumpLandingLag;
 
     [Header("Character")]
-    public float health;
     public float dieAtY;
 
     [Header("Projectiles")]
@@ -95,8 +94,6 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputActions inputs;
 
-    GameObject menuListener;
-
     private void Awake()
     {
         // Event callbacks
@@ -135,9 +132,6 @@ public class PlayerController : MonoBehaviour
 
         // Pause menu
 
-        //transform.LookAt(currentTarget);
-        menuListener = GameObject.Find("MenuListen");
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -155,7 +149,7 @@ public class PlayerController : MonoBehaviour
 
         if (aliveObject != null)
         {
-            aliveObject.OnDeath.AddListener(delegate { SceneManager.LoadScene(SceneManager.GetActiveScene().name); });
+            aliveObject.onDeath += RespawnPlayer;
         }
     }
 
@@ -252,6 +246,11 @@ public class PlayerController : MonoBehaviour
                 //groundLastRotation = ground.transform.rotation;
             }
         }
+    }
+
+    void RespawnPlayer()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void CheckY()
