@@ -17,7 +17,7 @@ To play the game, the player uses the WASD keys to control the player. To look a
 
 # About 
 
-The code for the game is here: https://github.com/SCCapstone/CLAX-Game
+[You can find the release and source code for the game here.](https://github.com/SCCapstone/CLAX-Game)
 
 Those that made it:
 
