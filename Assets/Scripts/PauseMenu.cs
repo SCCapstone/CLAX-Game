@@ -51,6 +51,11 @@ public class PauseMenu : MonoBehaviour
         inputs.Enable();
     }
 
+    private void OnDisable()
+    {
+        inputs.Disable();
+    }
+
     void Start()
     {
         if (Globals.colorBlindEnabled)
