@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Assertions.Comparers;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour
@@ -13,8 +11,6 @@ public class PlayerController : MonoBehaviour
     public Camera playerCamera;
     public GameObject bulletPrefab;
     public GameObject explosionPrefab;
-
-
 
     [Header("Camera")]
     public bool cameraEnabled = true;
@@ -49,14 +45,32 @@ public class PlayerController : MonoBehaviour
     public float jumpLandingLag;
 
     [Header("Character")]
-    public float health;
     public float dieAtY;
 
     [Header("Projectiles")]
     public bool holdToShoot;
     public float shootDelay;
+    public float projectileDamage;
     public float projectileSpeed;
     public int maxExplosionCount;
+
+    [Header("Audio")]
+    public AudioSource playerShootSound;
+    public AudioSource playerSecondaryShootSound;
+    public AudioSource playerJumpSound;
+
+    [Header("Test Mode")]
+    public float flyingAirFriction;
+    public float flyingAirSpeed;
+    public float flyingElevationSpeed;
+    public float fastFlyingAirSpeed;
+    public float fastFlyingElevationSpeed;
+
+    private bool isTestMode = false;
+    private bool isAscending = false;
+    private bool isDescending = false;
+    private bool isFlyingFast = false;
+    private bool isElevationCoroutineRunning = false;
 
     private bool prevOnGround = false;
     private bool onGround = false;
@@ -76,26 +90,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
 
-    public AudioSource playerShootSound;
-    public AudioSource playerSecondaryShootSound;
-    public AudioSource playerJumpSound;
-
     new Rigidbody rigidbody;
 
     private PlayerInputActions inputs;
-
-    public Transform currentTarget; // What is this?
-
-    [Header("Testing")]
-    public bool enableTesting = false;
-    public float walkingAirFriction = 0.0f;
-    public float flyingAirFriction = 5.0f;
-    public float walkingAirAcceleration = 10.0f;
-    public float flyingAirAcceleration = 100.0f;
-    public float testingHealth = 2000.0f;
-    public float playingHealth = 100.0f;
-
-    GameObject menuListener;
 
     private void Awake()
     {
@@ -115,17 +112,19 @@ public class PlayerController : MonoBehaviour
 
         inputs.World.Explosion.performed += OnRightClick;
 
-        inputs.World.TestMode.performed += OnPressP;
+        inputs.World.TestMode.performed += OnToggleTestMode;
 
+        inputs.World.FlyUp.started += OnAscend;
+        inputs.World.FlyUp.performed += OnAscend;
+        inputs.World.FlyUp.canceled += OnAscend;
 
-        inputs.World.FlyUp.started += OnShift;
-        inputs.World.FlyUp.performed += OnShift;
-        inputs.World.FlyUp.canceled += OnShift;
+        inputs.World.FlyDown.started += OnDescend;
+        inputs.World.FlyDown.performed += OnDescend;
+        inputs.World.FlyDown.canceled += OnDescend;
 
-        inputs.World.FlyDown.started += OnCtrl;
-        inputs.World.FlyDown.performed += OnCtrl;
-        inputs.World.FlyDown.canceled += OnCtrl;
-
+        inputs.World.FlyFast.started += OnFlyFast;
+        inputs.World.FlyFast.performed += OnFlyFast;
+        inputs.World.FlyFast.canceled += OnFlyFast;
 
         // Rigidbody physics
 
@@ -133,22 +132,30 @@ public class PlayerController : MonoBehaviour
 
         // Pause menu
 
-        //transform.LookAt(currentTarget);
-        menuListener = GameObject.Find("MenuListen");
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        if (globals.colorBlindEnabled)
+        // Hacky color change
+
+        if (Globals.colorBlindEnabled)
         {
             player.transform.GetChild(0).gameObject.GetComponent<Renderer>().material = cBGreen;
+        }
+    }
+
+    private void Start()
+    {
+        AliveObject aliveObject = GetComponentInChildren<AliveObject>();
+
+        if (aliveObject != null)
+        {
+            aliveObject.onDeath += RespawnPlayer;
         }
     }
 
     private void OnEnable()
     {
         inputs.Enable();
-
     }
 
     private void OnDisable()
@@ -158,7 +165,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!cameraEnabled || !Application.isFocused)
+        playerCamera.fieldOfView = Globals.videoSettings.fieldOfView;
+        QualitySettings.vSyncCount = Globals.videoSettings.vsyncEnabled ? 1 : 0;
+
+        if (!cameraEnabled || !Application.isFocused || Globals.IsPaused())
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -166,18 +176,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (IsPaused())
-        {
-            //holdToShoot = false;
-            if (shootLoop != null)
-                StopCoroutine(shootLoop);
-            return;
-        }
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        playerCamera.fieldOfView = globals.videoSettings.fieldOfView;
 
         Vector2 mouseDelta = inputs.World.Look.ReadValue<Vector2>();
         float dPitch = mouseDelta.y * lookSensitivityY;
@@ -210,7 +210,15 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbody.AddForce(gravity, ForceMode.Acceleration);
+        if (Globals.IsPaused())
+        {
+            StopCoroutine(shootLoop);
+        }
+
+        if (!isTestMode)
+        {
+            rigidbody.AddForce(gravity, ForceMode.Acceleration);
+        }
 
         // Jump check
 
@@ -245,16 +253,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool IsPaused()
+    void RespawnPlayer()
     {
-        if (menuListener != null)
-        {
-            return menuListener.GetComponent<PauseMenu>().isGamePaused;
-        }
-
-        Debug.LogWarning("Pause menu not found!");
-
-        return false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void CheckY()
@@ -290,6 +291,12 @@ public class PlayerController : MonoBehaviour
         // Friction
 
         float friction = onGround ? groundFriction : airFriction;
+
+        if (isTestMode)
+        {
+            friction = flyingAirFriction;
+        }
+
         prevVelocity = Vector3.Lerp(prevVelocity, Vector3.zero, friction * Time.fixedDeltaTime);
 
         // Movement with ground
@@ -307,11 +314,19 @@ public class PlayerController : MonoBehaviour
 
         float projectedSpeed = Vector3.Dot(prevVelocity, moveDir);
         float accMagnitude = onGround ? groundAcceleration : airAcceleration;
-        accMagnitude *= Time.fixedDeltaTime;
 
-        if (projectedSpeed + accMagnitude > maxSpeed)
+        if (isTestMode)
         {
-            accMagnitude = maxSpeed - projectedSpeed;
+            accMagnitude = (isFlyingFast ? fastFlyingAirSpeed : flyingAirSpeed) * Time.fixedDeltaTime;
+        }
+        else
+        {
+            accMagnitude *= Time.fixedDeltaTime;
+
+            if (projectedSpeed + accMagnitude > maxSpeed)
+            {
+                accMagnitude = maxSpeed - projectedSpeed;
+            }
         }
 
         rigidbody.velocity = prevVelocity + (moveDir * accMagnitude);
@@ -332,11 +347,12 @@ public class PlayerController : MonoBehaviour
         Vector3 newVelocity = rigidbody.velocity;
 
         newVelocity.y = jumpSpeed;
-        playerJumpSound.Play();
 
         rigidbody.velocity = newVelocity;
 
         onGround = false;
+
+        playerJumpSound.Play();
     }
 
     public bool GetGrounded()
@@ -378,7 +394,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!enableTesting)
+        if (!isTestMode)
         {
             if (context.started)
             {
@@ -395,7 +411,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnUse(InputAction.CallbackContext context)
     {
-        if (IsPaused())
+        if (Globals.IsPaused())
         {
             return;
         }
@@ -412,7 +428,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 holdUse = true;
-                shootLoop = StartCoroutine("ShootLoop");
+                shootLoop = StartCoroutine(ShootLoop());
             }
             else if (shootLoop != null)
             {
@@ -433,33 +449,27 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (IsPaused())
+        if (Globals.IsPaused())
         {
             return;
         }
 
-        int existingCount = GameObject.FindGameObjectsWithTag("explosionAttack").Length;
+        int existingCount = GameObject.FindGameObjectsWithTag("ExplosionAttack").Length;
 
         if (existingCount >= maxExplosionCount)
         {
             return;
         }
 
-        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
-        // Enemy layer is 9
         Explosion instance = Instantiate(explosionPrefab).GetComponent<Explosion>();
-        instance.Initialize(9);
-
-        playerSecondaryShootSound.Play();
-
 
         // Get horizontal facing vector
         Vector3 facing = Vector3.ProjectOnPlane(playerCamera.transform.forward, Vector3.up);
         facing.Normalize();
 
-        Explosion explosion = instance.GetComponent<Explosion>();
+        instance.transform.position = transform.position + facing;
 
-        explosion.position = transform.position + facing;
+        playerSecondaryShootSound.Play();
     }
 
     void FireProjectile()
@@ -469,14 +479,11 @@ public class PlayerController : MonoBehaviour
         facing.Normalize();
 
         PlayerProjectile projectile = Instantiate(bulletPrefab).GetComponent<PlayerProjectile>();
-        playerShootSound.Play();
 
-
-        // TODO: Get enemy layer by name or constant? Magic numbers are legitimately scary.
-        // Enemy layer is 9
-        projectile.enemyLayerNum = 9;
         projectile.position = transform.position;
         projectile.velocity = facing * projectileSpeed;
+
+        projectile.damage = isTestMode ? float.MaxValue : projectileDamage;
 
         // Offset initial position slightly so any first person view doesn't look janky when
         // projectile is instantiated inside their camera
@@ -487,6 +494,8 @@ public class PlayerController : MonoBehaviour
         {
             projectile.position += facing;
         }
+
+        playerShootSound.Play();
     }
 
     IEnumerator ShootLoop()
@@ -499,48 +508,69 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnPressP(InputAction.CallbackContext context)
+    void OnToggleTestMode(InputAction.CallbackContext context)
     {
-        if (!enableTesting)
+        isTestMode = !isTestMode;
+
+        if (isTestMode)
         {
-            enableTesting = true;
-            var setPlayerHealth = gameObject.GetComponentInChildren<AliveObject>();
-            setPlayerHealth.SetMaxHealth(testingHealth);
-            setPlayerHealth.SetHealth(testingHealth);
-            gravity = new Vector3(0.0f, 0.0f, 0.0f);
+            gameObject.GetComponentInChildren<AliveObject>().invulnerable = true;
+
             rigidbody.useGravity = false;
-            airFriction = flyingAirFriction;
-            airAcceleration = flyingAirAcceleration;
         }
         else
         {
-            enableTesting = false;
-            var setPlayerHealth = gameObject.GetComponentInChildren<AliveObject>();
-            setPlayerHealth.SetMaxHealth(playingHealth);
-            setPlayerHealth.SetHealth(playingHealth);
-            gravity = new Vector3(0.0f, -19.6f, 0.0f);
+            gameObject.GetComponentInChildren<AliveObject>().invulnerable = false;
+
             rigidbody.useGravity = true;
-            airFriction = walkingAirFriction;
-            airAcceleration = walkingAirAcceleration;
         }
     }
 
-    void OnShift(InputAction.CallbackContext context)
+    IEnumerator Elevate()
     {
-        if (enableTesting && !IsPaused())
+        isElevationCoroutineRunning = true;
+
+        float speed;
+
+        while (isTestMode && (isAscending || isDescending))
         {
-            GameObject player = GameObject.Find("Player(Clone)");
-            player.transform.position = player.transform.position + Vector3.up;
+            speed = isFlyingFast ? fastFlyingElevationSpeed : flyingElevationSpeed;
+
+            player.transform.position += (isAscending ? Vector3.up : Vector3.down) * speed * Time.fixedDeltaTime;
+
+            yield return new WaitForFixedUpdate();
         }
+
+        isElevationCoroutineRunning = false;
     }
 
-    void OnCtrl(InputAction.CallbackContext context)
+    void OnAscend(InputAction.CallbackContext context)
     {
-        if (enableTesting && !IsPaused())
+        isAscending = context.control.IsPressed();
+
+        if (isTestMode && !isElevationCoroutineRunning)
         {
-            GameObject player = GameObject.Find("Player(Clone)");
-            player.transform.position = player.transform.position + Vector3.down;
+            StartCoroutine(Elevate());
         }
     }
 
+    void OnDescend(InputAction.CallbackContext context)
+    {
+        isDescending = context.control.IsPressed();
+
+        if (isTestMode && !isElevationCoroutineRunning)
+        {
+            StartCoroutine(Elevate());
+        }
+    }
+
+    void OnFlyFast(InputAction.CallbackContext context)
+    {
+        isFlyingFast = context.control.IsPressed();
+    }
+
+    public void SetCameraAngles(Vector3 euler)
+    {
+        cameraEulerAngles = euler;
+    }
 }

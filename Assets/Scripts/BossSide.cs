@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BossSide : MonoBehaviour
@@ -9,52 +7,36 @@ public class BossSide : MonoBehaviour
     public GameObject doorway;
     public GameObject player;
     public string sceneName;
-    public int otherSideSpawnPoint;
+    public string nextDesiredSpawnName;
 
     public Material change;
 
     private Renderer doorRenderer;
 
-    private bool active = false;
-
     public AudioSource bossDeathSound;
 
-    // Start is called before the first frame update
     void Start()
     {
         doorRenderer = doorway.transform.GetChild(0).GetComponentInChildren<Renderer>();
-        //player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
-        //player.transform.position = doorway.transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (!globals.boss && !active)
+        if (!Globals.boss)
         {
             doorRenderer.material = change;
-            active = true;
+
             bossDeathSound.Play();
         }
     }
-    public void winCheck()
-    {
-        if (globals.pill && globals.cube && globals.pyramid && !globals.won)
-        {
-            globals.won = true;
-        }
-    }
+    
     void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Object entered");
-        //TODO add boss is dead logic
-        if (other.gameObject.CompareTag("Player") && active)
+        if (!Globals.boss && other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player Entered");
-            winCheck();
-            globals.spawnPoint = otherSideSpawnPoint;
+            Globals.desiredSpawnName = nextDesiredSpawnName;
+
             SceneManager.LoadSceneAsync(sceneName);
         }
     }
-
 }

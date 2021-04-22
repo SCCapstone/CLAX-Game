@@ -1,67 +1,72 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class SpawnPoint : MonoBehaviour
 {
+    [Header("Spawn Properties")]
+    public string spawnName;
+    public Vector3 spawnOffset;
+    public Vector3 spawnRotation;
+
     [Header("Prefabs")]
-    public GameObject spawnPoint;
-    public GameObject player;
-    private Renderer spawnPointRenderer;
-    private Material original;
-    public Material change;
+    public GameObject playerPrefab;
 
-    public int spawnNum;
+    public Material inactiveMaterial;
+    public Material activeMaterial;
 
-    public bool canSetSpawn;
-    public bool alwaysSpawn;
-
+    [Header("Audio")]
+    public bool playSound;
     public AudioSource activationSound;
 
-    private bool active;
-    // Start is called before the first frame update
+    public UnityEvent OnPlayerEnter = new UnityEvent();
+
+    private bool active = false;
+    private Renderer spawnPointRenderer;
+
     void Start()
     {
-        spawnPointRenderer = spawnPoint.GetComponentInChildren<Renderer>();
-        original = spawnPointRenderer.material;
-
-        if (spawnNum == globals.spawnPoint || alwaysSpawn)
-        {
-            player = (GameObject)Instantiate(player, Vector3.zero, Quaternion.identity);
-            player.transform.position = spawnPoint.transform.position;
-            active = true;
-            spawnPointRenderer.material = change;
-
-            globals.spawnPoint = spawnNum;
-        }
-        else
-        {
-            active = false;
-        }
+        spawnPointRenderer = gameObject.GetComponentInChildren<Renderer>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (spawnNum != globals.spawnPoint && active)
+        spawnPointRenderer.material = active ? activeMaterial : inactiveMaterial;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
         {
-            active = false;
-            spawnPointRenderer.material = original;
+            OnPlayerEnter.Invoke();
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void PlayActivationSound()
     {
-        if (other.gameObject.CompareTag("Player") && canSetSpawn)
+        if (playSound)
         {
-            globals.spawnPoint = spawnNum;
-
-            if (!spawnPointRenderer.material.name.Contains(change.name))
-            {
-                spawnPointRenderer.material = change;
-                activationSound.Play();
-            }
+            activationSound.Play();
         }
+    }
+
+    public void SetActive(bool active)
+    {
+        this.active = active;
+    }
+
+    public bool IsActive()
+    {
+        return active;
+    }
+
+    public void SpawnPlayer()
+    {
+        SetActive(true);
+
+        playerPrefab = Instantiate(playerPrefab, transform.position + transform.TransformDirection(spawnOffset), Quaternion.identity);
+
+        PlayerController pc = playerPrefab.GetComponent<PlayerController>();
+
+        pc.SetCameraAngles(transform.rotation.eulerAngles + spawnRotation);
     }
 }

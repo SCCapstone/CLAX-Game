@@ -151,7 +151,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2107083952539492681}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.119728, y: 0.113119125, z: -16.354025}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 48072703982554309}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 3602423783430754257}
   - component: {fileID: 311793194272462542}
   - component: {fileID: 3267813902642088514}
-  - component: {fileID: 3355104080220118377}
+  - component: {fileID: 5346827180176909898}
   m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
@@ -480,7 +480,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3355104080220118377
+--- !u!114 &5346827180176909898
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -494,6 +494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   maxHealth: 1
+  invulnerable: 0
   hitCooldown: 0.5
   deathSound: {fileID: 4116553750663068882}
 --- !u!1 &5532015167194346818
@@ -521,7 +522,7 @@ Transform:
   m_GameObject: {fileID: 5532015167194346818}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 1, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 843390893410163838}
   m_Father: {fileID: 48072703982554309}

@@ -1,15 +1,24 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using System;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class AliveObject : MonoBehaviour
 {
     public float health;
     public float maxHealth;
 
+    public bool invulnerable;
+
     public float hitCooldown = 0.5f;
 
     protected float lastHitTime = 0.0f;
     public AudioSource deathSound;
+
+    public delegate void DeathHandler();
+    public event DeathHandler onDeath;
+
+    protected bool dead = false;
 
     void Start()
     {
@@ -22,6 +31,10 @@ public class AliveObject : MonoBehaviour
         {
             Kill();
         }
+        else if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
 
     /*
@@ -30,15 +43,11 @@ public class AliveObject : MonoBehaviour
     public void Damage(float amount)
     {
         // Check if hit cooldown is not active
-        if (Time.time - lastHitTime > hitCooldown)
+        if (!invulnerable && Time.time - lastHitTime > hitCooldown)
         {
-            //Debug.Log("got hit");
-
             lastHitTime = Time.time;
 
             SetHealth(health - amount);
-
-            //Debug.Log("New Health is " + health);
         }
     }
 
@@ -56,6 +65,10 @@ public class AliveObject : MonoBehaviour
 
             Kill();
         }
+        else if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
 
     public void SetMaxHealth(float amount)
@@ -66,32 +79,28 @@ public class AliveObject : MonoBehaviour
     // Kills the object
     virtual public void Kill()
     {
-        // TODO: Death events and animations
-        // TODO: OnKill event
-
-        // TODO: Move to player script
-        if (gameObject.transform.CompareTag("Player"))
+        if (dead)
         {
-            Debug.Log("Reloading scene");
-
-            //Invoke("respawnPlayer", 1.0f);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            return;
         }
-        if (deathSound != null && deathSound.isPlaying == false)
+
+        dead = true;
+
+        // TODO: Death events and animations
+
+        if (deathSound != null && !deathSound.isPlaying)
+        {
             deathSound.Play();
-        //this.gameObject.SetActive(false);
+        }
 
-        Destroy(gameObject, .5f);
-
-        //Invoke("destroy", 1);
-
-    }
-
-    // TODO: Move to player script
-    public void RespawnPlayer()
-    {
-        Debug.Log("Ran respawn");
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (onDeath == null)
+        {
+            // Default behaviour
+            Destroy(gameObject, 1.0f);
+        }
+        else
+        {
+            onDeath();
+        }
     }
 }

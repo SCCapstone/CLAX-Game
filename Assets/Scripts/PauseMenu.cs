@@ -1,26 +1,28 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    // learned from https://www.youtube.com/watch?v=pbeB9NsaoPs
-    //[SerializeField] private GameObject pauseMenu;
-    //[SerializeField] private bool isGamePaused;
-
+    [Header("Menus")]
     public GameObject pauseMenu;
-    public GameObject optionsMenu;
-    public GameObject timerObject;
+    public GameObject settingsMenu;
+
+    public Slider musicSlider;
+
     public Slider fovSlider;
-    public Button fovReset;
+    public Button fovResetButton;
 
-    public bool isGamePaused;
+    [Header("Text Objects")]
+    public TextMeshProUGUI timerText;
 
-    private GameObject boss;
-    private GameObject player;
+    public Button vsyncButton;
+    public Button colorblindButton;
+    public Button difficultyButton;
+    public Button timerButton;
 
-    private PlayerInputActions inputs;
-
+    [Header("Colorblind materials settings")]
     public Material blue;
     public Material purple;
     public Material yellow;
@@ -32,6 +34,11 @@ public class PauseMenu : MonoBehaviour
     public Material greenSub;
     public Material redSub;
 
+    private PlayerInputActions inputs;
+
+    private GameObject boss;
+    private GameObject player;
+
     void Awake()
     {
         inputs = new PlayerInputActions();
@@ -39,116 +46,236 @@ public class PauseMenu : MonoBehaviour
         inputs.World.Pause.performed += OnPause;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (globals.colorBlindEnabled)
-        {
-            ChangeColor();
-        }
-
-        fovSlider.onValueChanged.AddListener(delegate { ChangeFOV(); });
-        fovReset.onClick.AddListener(delegate { ResetFOV(); });
-    }
-
     private void OnEnable()
     {
         inputs.Enable();
     }
 
-    private void ResetFOV()
+    private void OnDisable()
     {
-        globals.videoSettings.fieldOfView = 60.0f;
-
-        fovSlider.value = globals.videoSettings.fieldOfView;
+        inputs.Disable();
     }
 
-    private void ChangeFOV()
+    void Start()
     {
-        globals.videoSettings.fieldOfView = fovSlider.value;
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-        Debug.Log("game was quit");
-    }
-
-
-    public void OnPause(InputAction.CallbackContext context)
-    {
-        isGamePaused = !isGamePaused;
-        if (isGamePaused == true)
+        if (Globals.colorBlindEnabled)
         {
-            Pause();
+            ToSubColors();
+        }
+
+        if (!Globals.IsPaused())
+        {
+            HideAllMenus();
         }
         else
         {
-            Unpause();
+            EnterPauseMenu();
         }
 
+        UpdateText();
+
+        musicSlider.onValueChanged.AddListener(ChangeMusicVolume);
+
+        fovSlider.onValueChanged.AddListener(ChangeFOV);
+        fovResetButton.onClick.AddListener(ResetFOV);
+
+        vsyncButton.onClick.AddListener(ToggleVSync);
+        colorblindButton.onClick.AddListener(ToggleColorBlind);
+        difficultyButton.onClick.AddListener(ChangeDifficulty);
+        timerButton.onClick.AddListener(ToggleTimer);
     }
 
-    void Pause()
+    void Update()
     {
-        if (pauseMenu != null)
-            pauseMenu.SetActive(true);
-        AudioListener.pause = true;
-        Time.timeScale = 0;
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Debug.Log("ran pause");
-        isGamePaused = true;
+        if (timerText != null)
+        {
+            timerText.SetText(Time.time.ToString("0.00"));
+        }
     }
 
-    public void Unpause()
+    private void ChangeMusicVolume(float value)
     {
-        if (pauseMenu != null)
-            pauseMenu.SetActive(false);
-        if (optionsMenu != null)
-            optionsMenu.SetActive(false);
-
-        AudioListener.pause = false;
-        Time.timeScale = 1;
-        Debug.Log("ran unpause");
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        isGamePaused = false;
-        //Cursor.visible = false;
-        //isGamePaused = false;
+        Globals.audioSettings.musicVolume = value;
     }
 
-    public void OpenOptions()
+    private void ResetFOV()
     {
-        optionsMenu.SetActive(true);
+        Globals.videoSettings.fieldOfView = 60.0f;
+
+        fovSlider.value = Globals.videoSettings.fieldOfView;
+    }
+
+    private void ChangeFOV(float value)
+    {
+        Globals.videoSettings.fieldOfView = value;
+    }
+
+    public void OnQuit()
+    {
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (Globals.IsPaused())
+        {
+            HideAllMenus();
+
+            Globals.Unpause();
+        }
+        else
+        {
+            EnterPauseMenu();
+
+            Globals.Pause();
+        }
+    }
+
+    public void OnResume()
+    {
+        HideAllMenus();
+
+        Globals.Unpause();
+    }
+
+    public void HideAllMenus()
+    {
         pauseMenu.SetActive(false);
-        Debug.Log("clicked open options");
-
+        settingsMenu.SetActive(false);
     }
 
-    public void changeDifficulty()
+    public void EnterPauseMenu()
     {
+        HideAllMenus();
+
+        pauseMenu.SetActive(true);
+    }
+
+    public void ExitPauseMenu()
+    {
+        HideAllMenus();
+    }
+
+    public void EnterOptionsMenu()
+    {
+        HideAllMenus();
+
+        settingsMenu.SetActive(true);
+    }
+
+    public void ExitOptionsMenu()
+    {
+        HideAllMenus();
+
+        pauseMenu.SetActive(true);
+    }
+
+    public void ToSubColors()
+    {
+        foreach (GameObject ob in FindObjectsOfType<GameObject>())
+        {
+            if (ob.GetComponent<Renderer>() != null)
+            {
+                if (ob.GetComponent<Renderer>().material.name == blue.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = blueSub;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == yellow.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = yellowSub;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == purple.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = purpleSub;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == green.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = greenSub;
+                }
+            }
+
+        }
+    }
+
+    public void ToOriginalColors()
+    {
+        foreach (GameObject ob in FindObjectsOfType<GameObject>())
+        {
+            if (ob.GetComponent<Renderer>() != null)
+            {
+                if (ob.GetComponent<Renderer>().material.name == blueSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = blue;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == yellowSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = yellow;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == purpleSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = purple;
+                }
+                else if (ob.GetComponent<Renderer>().material.name == greenSub.name + " (Instance)")
+                {
+                    ob.GetComponent<Renderer>().material = green;
+                }
+            }
+        }
+    }
+
+    public void UpdateText()
+    {
+        SetButtonText(vsyncButton, string.Format("VSync: {0}", Globals.videoSettings.vsyncEnabled ? "ON" : "OFF"));
+        SetButtonText(colorblindButton, string.Format("Colorblind: {0}", Globals.colorBlindEnabled ? "ON" : "OFF"));
+        SetButtonText(difficultyButton, string.Format("Difficulty: {0}", Globals.difficulty.ToString()));
+        SetButtonText(timerButton, string.Format("Timer: {0}", Globals.timerEnabled ? "ON" : "OFF"));
+    }
+
+    private void SetButtonText(Button button, string text)
+    {
+        TextMeshProUGUI gui = button.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (gui != null)
+        {
+            gui.SetText(text);
+        }
+    }
+
+    private void ChangeDifficulty()
+    {
+        Globals.IncreaseDifficulty();
+
+        UpdateText();
+
+        // TODO: Move difficulty configurations to boss/player code
+
         boss = GameObject.FindGameObjectWithTag("Boss");
         player = GameObject.Find("Character");
 
-        globals.difficulty = ((globals.difficulty + 1) % 4);
-        if (globals.difficulty == 0)
-        {
-            globals.difficulty = 1;
-        }
-        Debug.Log("difficulty " + globals.difficulty);
+        /*
+         * EASY
+         *  - Boss max health is 60%
+         *  - Player max healt is 100%
+         * NORMAL
+         *  - Boss max health is 100%
+         *  - Player max health is 100% 
+         * HARD
+         *  - Boss max health is 100%
+         *  - Player max health is 50%
+         */
 
-        if (globals.difficulty == 1)
+        if (Globals.difficulty == Globals.GameDifficulty.EASY)
         {
             float newBossHealth = boss.GetComponent<AliveObject>().maxHealth * 3 / 5;
             float curPercent = boss.GetComponent<AliveObject>().health / boss.GetComponent<AliveObject>().maxHealth;
             boss.GetComponent<AliveObject>().maxHealth = newBossHealth;
             boss.GetComponent<AliveObject>().health = curPercent * newBossHealth;
         }
-
-        if (globals.difficulty == 2)
+        else if (Globals.difficulty == Globals.GameDifficulty.NORMAL)
         {
             var newBossHealth = 1000;
             float curPercent = boss.GetComponent<AliveObject>().health / boss.GetComponent<AliveObject>().maxHealth;
@@ -160,8 +287,7 @@ public class PauseMenu : MonoBehaviour
             player.GetComponent<AliveObject>().maxHealth = newPlayerHealth;
             player.GetComponent<AliveObject>().health = curPercent2 * newPlayerHealth;
         }
-
-        if (globals.difficulty == 3)
+        else if (Globals.difficulty == Globals.GameDifficulty.HARD)
         {
             float newPlayerHealth = .5f * player.GetComponent<AliveObject>().maxHealth;
 
@@ -169,100 +295,37 @@ public class PauseMenu : MonoBehaviour
             player.GetComponent<AliveObject>().maxHealth = newPlayerHealth;
             player.GetComponent<AliveObject>().health = curPercent * newPlayerHealth;
         }
-
-        Debug.Log("player health" + player.GetComponent<AliveObject>().health + " " + player.GetComponent<AliveObject>().maxHealth);
-        Debug.Log("boss health" + boss.GetComponent<AliveObject>().health + " " + boss.GetComponent<AliveObject>().maxHealth);
     }
 
-    public void ChangeColor()
+    private void ToggleColorBlind()
     {
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        Globals.colorBlindEnabled = !Globals.colorBlindEnabled;
 
-        foreach (GameObject ob in allObjects)
+        UpdateText();
+
+        if (Globals.colorBlindEnabled)
         {
-            if (ob.GetComponent<Renderer>() != null)
-            {
-                Debug.Log("Object Found " + ob.GetComponent<Renderer>().material.name + " " + yellow.name);
-                if (ob.GetComponent<Renderer>().material.name == blue.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = blueSub;
-                }
-
-                if (ob.GetComponent<Renderer>().material.name == yellow.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = yellowSub;
-                }
-
-                if (ob.GetComponent<Renderer>().material.name == purple.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = purpleSub;
-                }
-
-                if (ob.GetComponent<Renderer>().material.name == green.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = greenSub;
-                }
-            }
-
-        }
-    }
-
-    public void ChangeBackToDefaultColor()
-    {
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
-        foreach (GameObject ob in allObjects)
-        {
-            if (ob.GetComponent<Renderer>() != null)
-            {
-                if (ob.GetComponent<Renderer>().material.name == blueSub.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = blue;
-                }
-                if (ob.GetComponent<Renderer>().material.name == yellowSub.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = yellow;
-                }
-                if (ob.GetComponent<Renderer>().material.name == purpleSub.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = purple;
-                }
-                if (ob.GetComponent<Renderer>().material.name == greenSub.name + " (Instance)")
-                {
-                    ob.GetComponent<Renderer>().material = green;
-                }
-            }
-        }
-    }
-
-    public void ToggleColorBlind()
-    {
-        if (globals.colorBlindEnabled == false)
-        {
-            ChangeColor();
-            globals.colorBlindEnabled = true;
+            ToSubColors();
         }
         else
         {
-            ChangeBackToDefaultColor();
-            globals.colorBlindEnabled = false;
+            ToOriginalColors();
         }
     }
 
-    public void ToggleVSync()
+    private void ToggleVSync()
     {
-        globals.videoSettings.vsyncEnabled = !globals.videoSettings.vsyncEnabled;
+        Globals.videoSettings.vsyncEnabled = !Globals.videoSettings.vsyncEnabled;
 
-        QualitySettings.vSyncCount = globals.videoSettings.vsyncEnabled ? 1 : 0;
+        UpdateText();
     }
 
-    public void CloseOptions()
+    private void ToggleTimer()
     {
-        pauseMenu.SetActive(true);
-        optionsMenu.SetActive(false);
-    }
+        Globals.timerEnabled = !Globals.timerEnabled;
 
-    public void ToggleTimer()
-    {
-        globals.timerEnabled = !globals.timerEnabled;
+        UpdateText();
+
+        timerText.gameObject.SetActive(Globals.timerEnabled);
     }
 }

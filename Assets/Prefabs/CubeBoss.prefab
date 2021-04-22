@@ -139,7 +139,6 @@ GameObject:
   - component: {fileID: 7013891022363026433}
   - component: {fileID: 7013891022363026446}
   - component: {fileID: 7013891022363026447}
-  - component: {fileID: 7013891022363026434}
   - component: {fileID: 409170027427704407}
   - component: {fileID: 8488538240687181648}
   - component: {fileID: 650994704}
@@ -228,22 +227,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3, y: 1.16, z: 1.27}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7013891022363026434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7013891022363026444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4febe2bc8c3578147a895df14385c474, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 350
-  maxHealth: 350
-  hitCooldown: 0.5
-  deathSound: {fileID: 3861249021494232639}
 --- !u!54 &409170027427704407
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -285,6 +268,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd66b672eca2b004b840252a9d2723bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 350
+  maxHealth: 350
+  invulnerable: 0
+  hitCooldown: 0.5
+  deathSound: {fileID: 3861249021494232639}
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
   cubeAttacker: {fileID: 7157220339161015766, guid: df83a444a820a01448c070050acd7f4b, type: 3}
   delayBetweenNewGrid: 7
   launchSound: {fileID: 4791304345253006774}
@@ -545,7 +536,7 @@ PrefabInstance:
     - target: {fileID: 8929006646202376245, guid: df605f54c5570184783fdb30d38764c4, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 7013891022363026434}
+      objectReference: {fileID: 650994704}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df605f54c5570184783fdb30d38764c4, type: 3}
 --- !u!224 &3309720205223880496 stripped

@@ -1,44 +1,59 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class HubSide : MonoBehaviour
 {
-    public GameObject doorway;
-    public string sceneName;
-    public int otherSideSpawnPoint;
+    public DoorTrigger doorTrigger;
 
-    public Material change;
+    public string nextSceneName;
+    public string nextDesiredSpawnName;
+
+    public bool blockDuringBoss = false;
+
+    public Material inactiveMaterial;
+    public Material activeMaterial;
 
     private Renderer doorRenderer;
 
-    private bool active = true;
-    // Start is called before the first frame update
+    private bool isSpawn = false;
+    
     void Start()
     {
-        doorRenderer = doorway.transform.GetChild(0).GetComponentInChildren<Renderer>();
-        if(globals.spawnPoint == doorway.GetComponent<SpawnPoint>().spawnNum)
-        {
-            active = false;
-            doorRenderer.material = change;
-        }
-    }
+        doorRenderer = GetComponentInChildren<Renderer>();
 
-    // Update is called once per frame
+        if(Globals.desiredSpawnName != null && Globals.desiredSpawnName == GetComponentInChildren<SpawnPoint>().spawnName)
+        {
+            isSpawn = false;
+        }
+
+        doorTrigger.OnPlayerEnter.AddListener(delegate
+        {
+            if (IsActive())
+            {
+                Globals.desiredSpawnName = nextDesiredSpawnName;
+
+                SceneManager.LoadSceneAsync(nextSceneName);
+            }
+        });
+    }
+    
     void Update()
     {
-
+        doorRenderer.material = IsActive() ? activeMaterial : inactiveMaterial;
     }
-    void OnTriggerEnter(Collider other)
+
+    private bool IsActive()
     {
-        Debug.Log("Object entered");
-        //TODO add boss is dead logic
-        if (other.gameObject.CompareTag("Player") && active)
+        if (blockDuringBoss)
         {
-            Debug.Log("Player Entered");
-            globals.spawnPoint = 0;
-            SceneManager.LoadSceneAsync(sceneName);
+            return !Globals.boss;
         }
+
+        if (isSpawn)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

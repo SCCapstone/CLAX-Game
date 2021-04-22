@@ -6,8 +6,8 @@ TagManager:
   tags:
   - Floor
   - Boss
-  - cubeAttack
-  - explosionAttack
+  - ExplosionAttack
+  - EnemyAttack
   layers:
   - Default
   - TransparentFX

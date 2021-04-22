@@ -254,6 +254,133 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1551185132930571215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6521262676168375128}
+  - component: {fileID: 8572048673535953448}
+  m_Layer: 0
+  m_Name: deathSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6521262676168375128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551185132930571215}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0.06665039, z: 13.333351}
+  m_LocalScale: {x: 1.3333335, y: 0.9561666, z: 1.3333335}
+  m_Children: []
+  m_Father: {fileID: 889013905530671330}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &8572048673535953448
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551185132930571215}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 80cde067e79630c47801d861a58d950c, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7077181277425263474
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,8 +442,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 700
   maxHealth: 700
+  invulnerable: 0
   hitCooldown: 0.1
-  deathSound: {fileID: 0}
+  deathSound: {fileID: 8572048673535953448}
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  exitDoor: {fileID: 0}
+  exitDoorStartHeight: 0
+  exitDoorEndHeight: 0
   movementDelay: 1
   movementDuration: 2
   projectilePrefab: {fileID: 6601901723858526280, guid: ad6bae7426b9095478a3be99dc9ab9a8, type: 3}
@@ -334,8 +468,8 @@ MonoBehaviour:
   attackIntervalMax: 2
   minimumRange: 5
   maximumRange: 20
-  moveAroundSound: {fileID: 7639065133819168433}
-  moveUpAndDownSound: {fileID: 1642598173655889722}
+  attack1Sound: {fileID: 1642598173655889722}
+  attack2Sound: {fileID: 7639065133819168433}
 --- !u!65 &7077181277425263472
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -417,6 +551,7 @@ Transform:
   m_Children:
   - {fileID: 3009322999932274673}
   - {fileID: 4260107117766849755}
+  - {fileID: 6521262676168375128}
   m_Father: {fileID: 7077181277425263475}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

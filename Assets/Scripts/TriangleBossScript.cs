@@ -1,15 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TriangleBossScript : AliveObject
 {
     private const float UPDATE_INTERVAL = 1.0f;
     private const float ACTION_TIMEOUT = 10.0f;
-    private const float DEATH_ANIMATION_TIME = 8.0f;
+    private const float DEATH_ANIMATION_TIME = 5.0f;
     private const float DEATH_ANIMATION_TARGET_HEIGHT = -2.0f;
     private const float DEATH_ANIMATION_INTENSITY = 0.15f;
 
@@ -20,11 +18,23 @@ public class TriangleBossScript : AliveObject
         Attack
     }
 
-    [HeaderAttribute("Movement")]
+    public enum AttackType
+    {
+        Attack1,
+        Attack2,
+        Attack3
+    }
+
+    [Header("ExitDoor")]
+    public GameObject exitDoor;
+    public float exitDoorStartHeight;
+    public float exitDoorEndHeight;
+
+    [Header("Movement")]
     public float movementDelay;
     public float movementDuration;
 
-    [HeaderAttribute("Attack")]
+    [Header("Attack")]
     public GameObject projectilePrefab;
     public float projectileDamage;
     public float projectileSpeed;
@@ -45,37 +55,42 @@ public class TriangleBossScript : AliveObject
     public float minimumRange;
     public float maximumRange;
 
-    [HeaderAttribute("Action Weights")]
+    [Header("Audio")]
+    public AudioSource attack1Sound;
+    public AudioSource attack2Sound;
+
+    [Header("Action Weights")]
     public Dictionary<BossState, float> actionWeights = new Dictionary<BossState, float>()
     {
         {BossState.Move, 10},
         {BossState.Attack, 20}
     };
-
-    Dictionary<string, float> attackWeights = new Dictionary<string, float>()
+    Dictionary<AttackType, float> attackWeights = new Dictionary<AttackType, float>()
     {
-        {"Attack1", 20.0f},
-        {"Attack2", 10.0f},
-        {"Attack3", 0.0f}
+        {AttackType.Attack1, 20.0f},
+        {AttackType.Attack2, 10.0f},
+        {AttackType.Attack3, 0.0f}
     };
 
-    GameObject target;
-
-    public AudioSource moveAroundSound, moveUpAndDownSound;
+    private GameObject target;
 
     private BossState state;
     private bool inAction;
     private float actionStartTime;
 
-    private float nextAttackTime = 0.0f;
-
     private float lastUpdateTime;
 
-    bool dead = false;
+    void Awake()
+    {
+        onDeath += OnDeath;
+    }
 
     void Start()
     {
-        globals.boss = true;
+        Globals.boss = true;
+
+        SetExitDoorHeight(exitDoorStartHeight);
+        exitDoor.SetActive(false);
 
         state = BossState.Decide;
         lastUpdateTime = Time.time - UPDATE_INTERVAL + 1.5f;
@@ -83,14 +98,15 @@ public class TriangleBossScript : AliveObject
 
     void OnDestroy()
     {
+        // Set exit door active if it isn't already
+
+        SetExitDoorHeight(exitDoorEndHeight);
+        exitDoor.SetActive(true);
+
         // Cleanup objects if necessary
 
-        globals.pyramid = true;
-        globals.boss = false;
-
-        globals.bossBeatenDict["triangle"] = true;
-        Debug.Log("trangle beaten!");
-
+        Globals.pyramid = true;
+        Globals.boss = false;
     }
 
     void FixedUpdate()
@@ -111,6 +127,11 @@ public class TriangleBossScript : AliveObject
         CheckSafety();
         GetTarget();
 
+        if (target == null)
+        {
+            return;
+        }
+
         if (state == BossState.Decide)
         {
             // Choose next state randomly based on weights
@@ -126,19 +147,37 @@ public class TriangleBossScript : AliveObject
         switch (state)
         {
             case BossState.Move:
-                StartAction("Move");
+                StartAction(Move());
 
                 break;
             case BossState.Attack:
-                string attackName = GetRandomWeighted(attackWeights);
+                AttackType attack = GetRandomWeighted(attackWeights);
 
-                StartAction(attackName);
+                switch (attack)
+                {
+                    case AttackType.Attack1:
+                        StartAction(Attack1());
+
+                        break;
+                    case AttackType.Attack2:
+                        StartAction(Attack2());
+
+                        break;
+                    case AttackType.Attack3:
+                        StartAction(Attack3());
+
+                        break;
+                    default:
+                        // Should never happen
+                        Debug.Log("Triangle boss has encountered an unknown attack state");
+
+                        break;
+                }
 
                 break;
             default:
                 // Should never happen
-                Debug.Log("Triangle boss encountered an unknown error");
-                Debug.Log("This should never happen");
+                Debug.Log("Triangle boss encountered an unknown boss state");
 
                 break;
         }
@@ -175,20 +214,23 @@ public class TriangleBossScript : AliveObject
         return choices[(int)Random.Range(0.0f, choices.Count)].Key;
     }
 
-    public override void Kill()
+    void OnDeath()
     {
-        if (dead)
-        {
-            return;
-        }
-
-        dead = true;
-
         StopAllCoroutines();
+
+        SetExitDoorHeight(exitDoorStartHeight);
+        exitDoor.SetActive(true);
 
         Debug.Log("Death throes");
 
         StartCoroutine(KillCoroutine());
+    }
+
+    void SetExitDoorHeight(float y)
+    {
+        Vector3 position = exitDoor.transform.position;
+
+        exitDoor.transform.position = new Vector3(position.x, y, position.z);
     }
 
     void GetTarget()
@@ -196,12 +238,15 @@ public class TriangleBossScript : AliveObject
         // In case there are >1 objects tagged with player, we want to select them randomly
         GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
 
-        int i = Random.Range(0, targets.Length);
+        if (targets.Length > 0)
+        {
+            int i = Random.Range(0, targets.Length);
 
-        target = targets[i];
+            target = targets[i];
+        }
     }
 
-    void StartAction(string actionName)
+    void StartAction(IEnumerator routine)
     {
         if (inAction)
         {
@@ -211,7 +256,7 @@ public class TriangleBossScript : AliveObject
         inAction = true;
         actionStartTime = Time.time;
 
-        StartCoroutine(actionName);
+        StartCoroutine(routine);
     }
 
     void EndAction()
@@ -232,6 +277,19 @@ public class TriangleBossScript : AliveObject
         }
     }
 
+    void FireProjectile(Vector3 position, Vector3 velocity)
+    {
+        GameObject projectileInstance = Instantiate(projectilePrefab);
+        Projectile projectile = projectileInstance.GetComponent<Projectile>();
+        ContactDamagePlayer contactDamage = projectileInstance.GetComponent<ContactDamagePlayer>(); ;
+
+        contactDamage.damageAmount = projectileDamage;
+
+        projectile.position = position;
+        projectile.velocity = velocity;
+        projectile.lifeTime = projectileLifetime;
+    }
+
     IEnumerator Move()
     {
         // Get random position and height around a circle of random radius centered around the player
@@ -246,16 +304,13 @@ public class TriangleBossScript : AliveObject
 
         Vector3 startPosition = transform.position;
 
-
-
         for (float alpha = 0.0f; alpha < movementDelay; alpha += Time.fixedDeltaTime / movementDuration)
         {
-            if (moveAroundSound.isPlaying == false)
+            if (!attack2Sound.isPlaying)
             {
-                moveAroundSound.Play();
-                Debug.Log("played move around sound");
-
+                attack2Sound.Play();
             }
+
             transform.position = Vector3.Lerp(startPosition, nextPosition, alpha);
             transform.LookAt(target.transform.position);
 
@@ -268,19 +323,6 @@ public class TriangleBossScript : AliveObject
         //yield return new WaitForSeconds(1.0f);
 
         EndAction();
-    }
-
-    void FireProjectile(Vector3 position, Vector3 velocity)
-    {
-        GameObject projectileInstance = Instantiate(projectilePrefab);
-        Projectile projectile = projectileInstance.GetComponent<Projectile>();
-        ContactDamagePlayer contactDamage = projectileInstance.GetComponent<ContactDamagePlayer>(); ;
-
-        contactDamage.damageAmount = projectileDamage;
-
-        projectile.position = position;
-        projectile.velocity = velocity;
-        projectile.lifeTime = projectileLifetime;
     }
 
     IEnumerator CardinalProjectiles()
@@ -296,9 +338,11 @@ public class TriangleBossScript : AliveObject
         while (true)
         {
             currentRotation = transform.rotation.eulerAngles;
-            if (moveUpAndDownSound.isPlaying == false)
-                moveUpAndDownSound.Play();
 
+            if (!attack1Sound.isPlaying)
+            {
+                attack1Sound.Play();
+            }
 
             foreach (float angle in angles)
             {
@@ -318,8 +362,10 @@ public class TriangleBossScript : AliveObject
 
         while (true)
         {
-            if (moveAroundSound.isPlaying == false)
-                moveAroundSound.Play();
+            if (!attack2Sound.isPlaying)
+            {
+                attack2Sound.Play();
+            }
 
             dir = target.transform.position - transform.position;
             speed = Mathf.Max(projectileSpeed, dir.magnitude);
@@ -346,9 +392,6 @@ public class TriangleBossScript : AliveObject
 
     IEnumerator Attack1()
     {
-        Debug.Log("attack 1");
-
-
         if (!target)
         {
             yield return null;
@@ -372,15 +415,11 @@ public class TriangleBossScript : AliveObject
 
         Coroutine projectileLoop = null;
 
-
-
         for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / attack1Duration)
         {
-            if (moveUpAndDownSound.isPlaying == false)
+            if (!attack1Sound.isPlaying)
             {
-                moveUpAndDownSound.Play();
-                Debug.Log("played move up and down sound");
-
+                attack1Sound.Play();
             }
 
             pos = startPosition + new Vector3(0.0f, Mathf.Cos(i * Mathf.PI * attack1Waves) * 2.0f, 0.0f);
@@ -390,9 +429,9 @@ public class TriangleBossScript : AliveObject
             rot = startRotation + new Vector3(pitch, i * 360.0f * attack1Rotations, 0.0f);
 
             // Starts projectiles after the first wave
-            if (projectileLoop == null && i > 1.0f / (float)attack1Waves)
+            if (projectileLoop == null && i > 1.0f / attack1Waves)
             {
-                projectileLoop = StartCoroutine("CardinalProjectiles", projectileDelay);
+                projectileLoop = StartCoroutine(CardinalProjectiles());
             }
 
             transform.position = pos;
@@ -420,8 +459,6 @@ public class TriangleBossScript : AliveObject
 
     IEnumerator Attack2()
     {
-        Debug.Log("attack 2");
-
         if (!target)
         {
             yield return null;
@@ -432,12 +469,14 @@ public class TriangleBossScript : AliveObject
 
         yield return InterpolateTo(targetPosition + Vector3.forward * attack2Distance, 1.0f);
 
-        Coroutine projectileLoop = StartCoroutine("ForwardProjectiles");
+        Coroutine projectileLoop = StartCoroutine(ForwardProjectiles());
 
         for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / attack2Duration)
         {
-            if (moveAroundSound.isPlaying == false)
-                moveAroundSound.Play();
+            if (!attack2Sound.isPlaying)
+            {
+                attack2Sound.Play();
+            }
 
             Quaternion offsetRotation = Quaternion.Euler(0.0f, i * 360.0f * attack2Rotations, 0.0f);
             Vector3 offset = offsetRotation * Vector3.forward * attack2Distance;
@@ -497,6 +536,8 @@ public class TriangleBossScript : AliveObject
         Vector3 v;
         float h;
 
+        float exitDoorHeight;
+
         for (float i = 0.0f; i < 1.0f; i += Time.fixedDeltaTime / DEATH_ANIMATION_TIME)
         {
             // Linear interpolation
@@ -504,6 +545,10 @@ public class TriangleBossScript : AliveObject
             v = new Vector3(startPosition.x, h, startPosition.z);
 
             transform.position = v + (Random.insideUnitSphere * DEATH_ANIMATION_INTENSITY);
+
+            exitDoorHeight = (1 - i) * exitDoorStartHeight + i * exitDoorEndHeight;
+
+            SetExitDoorHeight(exitDoorHeight);
 
             yield return new WaitForFixedUpdate();
         }
