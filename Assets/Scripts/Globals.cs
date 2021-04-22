@@ -96,6 +96,11 @@ public class Globals : MonoBehaviour
     {
         public float musicVolume;
     }
+    //
+    public struct MouseSettings
+    {
+        public float mouseSensitivity;
+    }
 
     public static VideoSettings videoSettings = new VideoSettings()
     {
@@ -106,5 +111,10 @@ public class Globals : MonoBehaviour
     public static AudioSettings audioSettings = new AudioSettings()
     {
         musicVolume = 0.2f
+    };
+    //
+    public static MouseSettings mouseSettings = new MouseSettings()
+    {
+        mouseSensitivity = 90.0f
     };
 }
