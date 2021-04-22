@@ -29,7 +29,7 @@ public class SpawnPointManager : MonoBehaviour
                     SetSpawn(sp);
                 });
 
-                if (Globals.desiredSpawnName == sp.spawnName)
+                if (sp.spawnName == Globals.desiredSpawnName)
                 {
                     currentSpawn = sp;
                 }
@@ -48,7 +48,7 @@ public class SpawnPointManager : MonoBehaviour
             currentSpawn = defaultSpawn;
         }
 
-        currentSpawn.SetActiveSilent(true);
+        currentSpawn.SetActive(true);
         currentSpawn.SpawnPlayer();
     }
 
@@ -59,19 +59,21 @@ public class SpawnPointManager : MonoBehaviour
             return;
         }
 
+        if (sp.IsActive())
+        {
+            return;
+        }
+
         foreach (SpawnPoint other in spawnPoints)
         {
-            if (other == sp)
-            {
-                continue;
-            }
-
-            other.SetActiveSilent(false);
+            other.SetActive(false);
         }
 
         sp.SetActive(true);
+        sp.PlayActivationSound();
+
         currentSpawn = sp;
 
-        Globals.desiredSpawnName = sp.name;
+        Globals.desiredSpawnName = sp.spawnName;
     }
 }

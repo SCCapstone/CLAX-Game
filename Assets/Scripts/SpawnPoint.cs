@@ -39,17 +39,12 @@ public class SpawnPoint : MonoBehaviour
         }
     }
 
-    public void SetActive(bool active)
+    public void PlayActivationSound()
     {
-        if (!this.active)
-        {
-            this.active = active;
-
-            activationSound.Play();
-        }
+        activationSound.Play();
     }
 
-    public void SetActiveSilent(bool active)
+    public void SetActive(bool active)
     {
         this.active = active;
     }
@@ -61,7 +56,7 @@ public class SpawnPoint : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        SetActiveSilent(true);
+        SetActive(true);
 
         playerPrefab = Instantiate(playerPrefab, transform.position + spawnOffset, Quaternion.identity);
 
