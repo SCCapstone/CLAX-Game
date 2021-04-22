@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnName: 
-  spawnOffset: {x: 0, y: 0, z: 0}
+  spawnOffset: {x: 0, y: 1, z: 0}
   spawnRotation: {x: 0, y: 0, z: 0}
   playerPrefab: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
   inactiveMaterial: {fileID: 2100000, guid: 3867060d33576514ab7b189ffdd4a36a, type: 2}
