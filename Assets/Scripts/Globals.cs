@@ -115,6 +115,6 @@ public class Globals : MonoBehaviour
     //
     public static MouseSettings mouseSettings = new MouseSettings()
     {
-        mouseSensitivity = 90.0f
+        mouseSensitivity = 1f
     };
 }
