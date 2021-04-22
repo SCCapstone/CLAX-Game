@@ -304,17 +304,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6863668397980549511, guid: 9704d4a84ee5a6347b078d1ec988f894, type: 3}
   m_PrefabInstance: {fileID: 122810289}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &173672886 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5988284553503884944, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
-  m_PrefabInstance: {fileID: 1514439891}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33b8f1cc077072a4fa7b8c6572bbadae, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
 --- !u!1 &336735920
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,8 +726,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -1632,8 +1621,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 208f823ac8522804cb1facfc5d6b8a78, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1414778361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1761,30 +1750,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6863668397980549511, guid: 9704d4a84ee5a6347b078d1ec988f894, type: 3}
   m_PrefabInstance: {fileID: 1428356338}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1445765613 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1291953114213808240, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
-  m_PrefabInstance: {fileID: 1514439891}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1445765614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1445765613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4226b5af0cc3cab419071a269d3d3b52, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  doorTrigger: {fileID: 173672886}
-  nextSceneName: PillBossScene
-  nextDesiredSpawnName:
-  blockDuringBoss: 0
-  doorRenderer: {fileID: 1160116197}
-  inactiveMaterial: {fileID: 2100000, guid: 1bd2e1ff22fefbd4ca4f74eb35a47c73, type: 2}
-  activeMaterial: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
 --- !u!1001 &1451252359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1879,8 +1844,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
   m_BlockingMask:
@@ -1896,8 +1861,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
@@ -1942,7 +1907,7 @@ RectTransform:
   m_Children:
   - {fileID: 897264754}
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2020,7 +1985,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1291953114213808240, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_Name
-      value: BossDoorHubSide
+      value: Portal
       objectReference: {fileID: 0}
     - target: {fileID: 2629026170949491087, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2066,6 +2031,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4022302395371374556, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
+      propertyPath: nextSceneName
+      value: PillBossScene
+      objectReference: {fileID: 0}
     - target: {fileID: 4383664376304351456, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: spawnNum
       value: 2
@@ -2076,7 +2045,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4383664376304351456, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: playerPrefab
-      value:
+      value: 
       objectReference: {fileID: 4320024602640257482, guid: 73adbb006c97cd84b9fae52b955e6ad5, type: 3}
     - target: {fileID: 7760532460988004268, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: nextSceneName
@@ -2084,11 +2053,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760532460988004268, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: activeMaterial
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: d5438f3e42d8bcf4584ea5bec2be579b, type: 2}
     - target: {fileID: 7760532460988004268, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: inactiveMaterial
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 1bd2e1ff22fefbd4ca4f74eb35a47c73, type: 2}
     - target: {fileID: 9188190719262124982, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: BossDoor
@@ -2150,7 +2119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8665566686288218957, guid: 777ca26ea3829dd499bb7fa0168e0568, type: 3}
       propertyPath: defaultSpawn
-      value:
+      value: 
       objectReference: {fileID: 1369373917}
     - target: {fileID: 8665566686288218958, guid: 777ca26ea3829dd499bb7fa0168e0568, type: 3}
       propertyPath: m_Name
