@@ -1657,6 +1657,10 @@ PrefabInstance:
       propertyPath: inactiveMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 1bd2e1ff22fefbd4ca4f74eb35a47c73, type: 2}
+    - target: {fileID: 8958613044866611234, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
+      propertyPath: nextSceneName
+      value: PillBossScene
+      objectReference: {fileID: 0}
     - target: {fileID: 9188190719262124982, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
       propertyPath: BossDoor
       value: 1

@@ -2,8 +2,8 @@
 
 public class PortalBodge : MonoBehaviour
 {
-    public DoorScript cubeDoor;
-    public DoorScript triangleDoor;
+    public Portal cubeDoor;
+    public Portal triangleDoor;
 
     void Start()
     {

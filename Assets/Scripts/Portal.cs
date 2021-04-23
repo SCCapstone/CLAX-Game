@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DoorScript : MonoBehaviour
+public class Portal : MonoBehaviour
 {
-    public DoorTrigger doorTrigger;
+    public PortalTrigger portalTrigger;
 
     public string nextSceneName;
     public string nextDesiredSpawnName;
@@ -19,7 +19,7 @@ public class DoorScript : MonoBehaviour
 
     void Start()
     {
-        doorTrigger.OnPlayerEnter.AddListener(delegate
+        portalTrigger.OnPlayerEnter.AddListener(delegate
         {
             if (IsActive())
             {

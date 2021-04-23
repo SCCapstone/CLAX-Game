@@ -83,6 +83,8 @@ public class Globals : MonoBehaviour
     }
 
     public static bool timerEnabled = true;
+    public static bool timerCounting = true;
+    public static float timerCounter = 0.0f;
 
     public static bool colorBlindEnabled = false;
 

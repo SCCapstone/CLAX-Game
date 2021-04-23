@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class DoorTrigger : MonoBehaviour
+public class PortalTrigger : MonoBehaviour
 {
     public UnityEvent OnPlayerEnter = new UnityEvent();
 

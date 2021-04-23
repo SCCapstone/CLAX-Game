@@ -95,14 +95,6 @@ public class PauseMenu : MonoBehaviour
         timerButton.onClick.AddListener(ToggleTimer);
     }
 
-    void Update()
-    {
-        if (timerText != null)
-        {
-            timerText.SetText(Time.time.ToString("0.00"));
-        }
-    }
-
     private void ChangeMusicVolume(float value)
     {
         Globals.audioSettings.musicVolume = value;

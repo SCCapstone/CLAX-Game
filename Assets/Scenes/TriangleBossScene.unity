@@ -588,6 +588,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8958613044866611234, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
+      propertyPath: nextSceneName
+      value: Hub2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958613044866611234, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
+      propertyPath: nextDesiredSpawnName
+      value: Triangle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958613044866611234, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
+      propertyPath: blockDuringBoss
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f72a1de69764b5b44b3d8f54fbfd1afd, type: 3}
 --- !u!1001 &1556640158

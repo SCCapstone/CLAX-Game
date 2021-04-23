@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class HubSide : MonoBehaviour
 {
-    public DoorTrigger doorTrigger;
+    public PortalTrigger doorTrigger;
 
     public string nextSceneName;
     public string nextDesiredSpawnName;
