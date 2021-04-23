@@ -8,6 +8,7 @@ public class SpawnPoint : MonoBehaviour
     public Vector3 spawnOffset;
     public Vector3 spawnRotation;
 
+
     [Header("Prefabs")]
     public GameObject playerPrefab;
 
