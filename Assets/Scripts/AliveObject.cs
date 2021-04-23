@@ -96,7 +96,7 @@ public class AliveObject : MonoBehaviour
         if (onDeath == null)
         {
             // Default behaviour
-            Destroy(gameObject, 0.0f);
+            Destroy(gameObject);
         }
         else
         {
