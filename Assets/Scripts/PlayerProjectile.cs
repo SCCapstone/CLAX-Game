@@ -19,6 +19,7 @@ public class PlayerProjectile : Projectile
                 enemy.Damage(damage);
             }
         }
+
         Destroy(gameObject, .5f);
     }
 }

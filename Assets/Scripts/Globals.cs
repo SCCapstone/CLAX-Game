@@ -110,11 +110,11 @@ public class Globals : MonoBehaviour
 
     public static AudioSettings audioSettings = new AudioSettings()
     {
-        musicVolume = 0.2f
+        musicVolume = 1.0f
     };
-    //
+    
     public static MouseSettings mouseSettings = new MouseSettings()
     {
-        mouseSensitivity = 1f
+        mouseSensitivity = 1.0f
     };
 }

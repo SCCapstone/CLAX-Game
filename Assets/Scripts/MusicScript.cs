@@ -2,6 +2,7 @@
 
 public class MusicScript : MonoBehaviour
 {
+    const float MULTIPLIER = 0.087f;
     AudioSource backgroundMusic;
 
     void Awake()
@@ -16,6 +17,6 @@ public class MusicScript : MonoBehaviour
 
     void Update()
     {
-        backgroundMusic.volume = Globals.audioSettings.musicVolume;
+        backgroundMusic.volume = Globals.audioSettings.musicVolume * MULTIPLIER;
     }
 }

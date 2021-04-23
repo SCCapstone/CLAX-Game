@@ -74,13 +74,21 @@ public class PauseMenu : MonoBehaviour
 
         UpdateText();
 
+        // Initial values
+
+        musicSlider.SetValueWithoutNotify(Globals.audioSettings.musicVolume);
+        fovSlider.SetValueWithoutNotify(Globals.videoSettings.fieldOfView);
+        mouseSlider.SetValueWithoutNotify(Globals.mouseSettings.mouseSensitivity);
+
+        // Event listeners
+
         musicSlider.onValueChanged.AddListener(ChangeMusicVolume);
 
         fovSlider.onValueChanged.AddListener(ChangeFOV);
         fovResetButton.onClick.AddListener(ResetFOV);
-        //
+        
         mouseSlider.onValueChanged.AddListener(ChangeMouseSlider);
-        //
+        
         vsyncButton.onClick.AddListener(ToggleVSync);
         colorblindButton.onClick.AddListener(ToggleColorBlind);
         difficultyButton.onClick.AddListener(ChangeDifficulty);

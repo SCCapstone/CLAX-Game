@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
     [Header("Camera")]
     public bool cameraEnabled = true;
 
-    //
     public float lookSensitivityScale = Globals.mouseSettings.mouseSensitivity;
     public float lookSensitivityX = 0.6f;
     public float lookSensitivityY = 0.6f;
@@ -24,7 +23,6 @@ public class PlayerController : MonoBehaviour
     public float maxPitch = 89.9f;
 
     public Vector3 cameraTargetOffset = Vector3.zero;
-    //public Vector3 cameraOffsets = Vector3.zero;
     public Vector3 cameraOffsets = new Vector3(0, 0, -5);
     // Not implemented yet
     public float hideCharacterDistance = 1.0f;
@@ -168,7 +166,6 @@ public class PlayerController : MonoBehaviour
     {
         playerCamera.fieldOfView = Globals.videoSettings.fieldOfView;
         QualitySettings.vSyncCount = Globals.videoSettings.vsyncEnabled ? 1 : 0;
-        //
         lookSensitivityScale = Globals.mouseSettings.mouseSensitivity;
 
         if (!cameraEnabled || !Application.isFocused || Globals.IsPaused())
