@@ -15,8 +15,6 @@ public class PlayerProjectile : Projectile
             return;
         }
 
-        dead = true;
-
         if (other.gameObject.layer == Globals.enemyLayerNum)
         {
             AliveObject enemy = other.gameObject.GetComponent<AliveObject>();
@@ -30,6 +28,8 @@ public class PlayerProjectile : Projectile
 
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<SphereCollider>().enabled = false;
+
+            dead = true;
 
             Destroy(gameObject, 1.0f);
         }
