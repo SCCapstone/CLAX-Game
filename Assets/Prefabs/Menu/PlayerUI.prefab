@@ -1693,6 +1693,7 @@ GameObject:
   - component: {fileID: 7040316266177518064}
   - component: {fileID: 5047388646534096560}
   - component: {fileID: 6236291008297901797}
+  - component: {fileID: 8508124003132133891}
   m_Layer: 5
   m_Name: TimerText
   m_TagString: Untagged
@@ -1816,6 +1817,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8508124003132133891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760976304871751686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fb61f7584d00e143bdbb552451dd4fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7835037417643390036
 GameObject:
   m_ObjectHideFlags: 0
