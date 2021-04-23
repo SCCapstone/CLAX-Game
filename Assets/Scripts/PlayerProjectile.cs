@@ -6,20 +6,32 @@ public class PlayerProjectile : Projectile
 
     public AudioSource hitBoss;
 
+    private bool dead = false;
+
     private void OnTriggerEnter(Collider other)
     {
+        if (dead)
+        {
+            return;
+        }
+
+        dead = true;
+
         if (other.gameObject.layer == Globals.enemyLayerNum)
         {
-            hitBoss.Play();
-
             AliveObject enemy = other.gameObject.GetComponent<AliveObject>();
 
             if (enemy != null)
             {
                 enemy.Damage(damage);
             }
+
+            hitBoss.Play();
         }
 
-        Destroy(gameObject, .5f);
+        GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
+
+        Destroy(gameObject, 1.0f);
     }
 }
