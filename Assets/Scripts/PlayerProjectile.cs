@@ -27,11 +27,11 @@ public class PlayerProjectile : Projectile
             }
 
             hitBoss.Play();
+
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<SphereCollider>().enabled = false;
+
+            Destroy(gameObject, 1.0f);
         }
-
-        GetComponent<MeshRenderer>().enabled = false;
-        GetComponent<SphereCollider>().enabled = false;
-
-        Destroy(gameObject, 1.0f);
     }
 }
