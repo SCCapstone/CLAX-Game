@@ -45,7 +45,7 @@ namespace Tests
             SceneManager.LoadScene(sceneName);
 
             // Wait just in case that the physics may need to settle after loading a scene
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(1);
         }
 
         private IEnumerator GetPlayer()
@@ -125,7 +125,7 @@ namespace Tests
          * Movement input test for keyboard
          */
         [UnityTest]
-        public IEnumerator JumpTest()
+        public IEnumerator SingleJumpTest()
         {
             yield return LoadScene("Test");
             yield return GetPlayer();
@@ -211,6 +211,108 @@ namespace Tests
             }
             Vector3 afterPos = player.transform.position;
             Assert.True(afterPos.y > posAfterFirst.y, "y was not greater after jumping");
+
+        }
+
+        /*
+         * Test primary attack
+         */
+        [UnityTest]
+        public IEnumerator PrimaryAttack()
+        {
+            yield return LoadScene("Test");
+            yield return GetPlayer();
+
+            // How long to hold each key
+            float holdDuration = 2.5f;
+            // How long to wait before checking the next key
+            float waitDuration = 0.5f;
+
+            // For checking difference between initial and final positions
+            Vector3 initialPosition = player.transform.position;
+
+            UnityEngine.InputSystem.Controls.ButtonControl[] sequence =
+            {
+                // Test Normal Jump
+                mouse.leftButton
+
+            };
+
+            Debug.Log("Testing movement consistency");
+            foreach (var k in sequence)
+            {
+                Press(k);
+                yield return new WaitForSeconds(holdDuration);
+                Release(k);
+            }
+            //var bulletCount = GameObject.FindObjectOfType()
+            int bulletCount = 0;
+            foreach (var a in GameObject.FindObjectsOfType(typeof(MonoBehaviour)))
+            {
+                if (a.name.Contains("Projectile"))
+                {
+                    bulletCount += 1;
+                }
+            }
+
+            Debug.Log("bullet count " + bulletCount);
+
+
+            Assert.Greater(bulletCount, 2);
+
+        }
+
+        [UnityTest]
+        public IEnumerator SecondaryAttack()
+        {
+            yield return LoadScene("Test");
+            yield return GetPlayer();
+
+            // How long to hold each key
+            float holdDuration = 2.5f;
+            // How long to wait before checking the next key
+            float waitDuration = 0.5f;
+
+            // For checking difference between initial and final positions
+            Vector3 initialPosition = player.transform.position;
+
+            UnityEngine.InputSystem.Controls.ButtonControl[] sequence =
+            {
+                // Test Normal Jump
+                mouse.rightButton,
+                mouse.rightButton,
+                mouse.rightButton,
+                mouse.rightButton,
+                mouse.rightButton,
+                mouse.rightButton,
+
+            };
+
+            Debug.Log("Testing movement consistency");
+            foreach (var k in sequence)
+            {
+                Press(k);
+
+                Release(k);
+                yield return new WaitForSeconds(.1f);
+            }
+            //var bulletCount = GameObject.FindObjectOfType()
+            int bulletCount = 0;
+            foreach (var a in GameObject.FindObjectsOfType(typeof(MonoBehaviour)))
+            {
+                if (a.name.Contains("Explosion"))
+                {
+                    bulletCount += 1;
+                }
+            }
+
+            yield return new WaitForSeconds(1);
+
+
+            Debug.Log("bullet count " + bulletCount);
+
+
+            Assert.AreEqual(bulletCount, 3);
 
         }
     }
