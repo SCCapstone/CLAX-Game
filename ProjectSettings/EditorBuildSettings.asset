@@ -8,9 +8,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/Scenes/Test.unity
-    guid: 6b2c7c4e3700b3547986d00fecd57ce9
   - enabled: 1
     path: Assets/Scenes/Hub1.unity
     guid: 31109d8bc29959c43b2a5712b90b2493
@@ -21,13 +18,16 @@ EditorBuildSettings:
     path: Assets/Scenes/Hub2.unity
     guid: 8f936d80870ba1d42b7d10fcfdc8452b
   - enabled: 1
-    path: Assets/Scenes/cubeBossScene.unity
+    path: Assets/Scenes/CubeBossScene.unity
     guid: 196162e3272bfcc4198b196210f23816
   - enabled: 1
-    path: Assets/Scenes/triangleBossScene.unity
+    path: Assets/Scenes/TriangleBossScene.unity
     guid: 3de17acefdc39ac4098d39f1ed560571
   - enabled: 1
     path: Assets/Scenes/WinScreen.unity
     guid: 023689e17ae9af84083b85526be22e98
+  - enabled: 1
+    path: Assets/Scenes/Test.unity
+    guid: 6b2c7c4e3700b3547986d00fecd57ce9
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: abe12e3f1ae92d742a389fda4871e0bb, type: 2}
