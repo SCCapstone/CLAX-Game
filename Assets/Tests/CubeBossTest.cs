@@ -49,34 +49,34 @@ public class CubeBossTest
         Debug.Log("Got GameObject as cubeBoss: " + cubeBoss.ToString());
     }
 
-    [UnityTest]
-    public IEnumerator CubeBossAttackTest()
-    {
-        yield return LoadScene("Test");
-        yield return GetBoss();
-        //Assert.AreEqual(5, 6);
-        float delayBeforeAllAtGoal = 6.5f + initialDelay;
+    //[UnityTest]
+    //public IEnumerator CubeBossAttackTest()
+    //{
+    //    yield return LoadScene("Test");
+    //    yield return GetBoss();
+    //    //Assert.AreEqual(5, 6);
+    //    float delayBeforeAllAtGoal = 6.5f + initialDelay;
 
-        yield return new WaitForSeconds(delayBeforeAllAtGoal);
-        var cubeAttacks = GameObject.FindGameObjectsWithTag("cubeAttack");
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+    //    yield return new WaitForSeconds(delayBeforeAllAtGoal);
+    //    var cubeAttacks = GameObject.FindGameObjectsWithTag("cubeAttack");
+    //    GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-        //check that all of the cubes fired reached the player before the next batch
-        var spaceAllowedBetween = .5;
-        foreach (var cube in cubeAttacks)
-        {
-            var realSpaceBetween = Vector3.Distance(cube.transform.position, player.transform.position);
-            if (realSpaceBetween > spaceAllowedBetween)
-            {
-                Assert.Fail("cube was too far from goal. Space was " + realSpaceBetween);
-            }
-        }
-        Debug.Log("all cubes were within range");
+    //    //check that all of the cubes fired reached the player before the next batch
+    //    var spaceAllowedBetween = .5;
+    //    foreach (var cube in cubeAttacks)
+    //    {
+    //        var realSpaceBetween = Vector3.Distance(cube.transform.position, player.transform.position);
+    //        if (realSpaceBetween > spaceAllowedBetween)
+    //        {
+    //            Assert.Fail("cube was too far from goal. Space was " + realSpaceBetween);
+    //        }
+    //    }
+    //    Debug.Log("all cubes were within range");
 
 
 
-        yield return null;
-    }
+    //    yield return null;
+    //}
 
 
 }

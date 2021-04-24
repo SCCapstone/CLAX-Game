@@ -120,5 +120,98 @@ namespace Tests
                 Assert.Fail("Player did not return within " + MAX_DISTANCE_ERROR + " to initial position");
             }
         }
+
+        /*
+         * Movement input test for keyboard
+         */
+        [UnityTest]
+        public IEnumerator JumpTest()
+        {
+            yield return LoadScene("Test");
+            yield return GetPlayer();
+
+            // How long to hold each key
+            float holdDuration = 0.5f;
+            // How long to wait before checking the next key
+            float waitDuration = 0.5f;
+
+            // For checking difference between initial and final positions
+            Vector3 initialPosition = player.transform.position;
+
+            UnityEngine.InputSystem.Controls.KeyControl[] sequence =
+            {
+                // Test Normal Jump
+                keyboard.spaceKey
+
+            };
+
+            Debug.Log("Testing movement consistency");
+
+            foreach (var k in sequence)
+            {
+                Press(k);
+                yield return new WaitForSeconds(holdDuration);
+                Release(k);
+            }
+            Vector3 afterPos = player.transform.position;
+            Assert.True(afterPos.y > initialPosition.y, "y was not greater after jumping");
+            //Assert.True(afterPos.y > initialPosition.y);
+
+
+
+            // Final wait for physics to settle
+            //yield return new WaitForSeconds(3);
+
+            //float distanceError = (player.transform.position - initialPosition).magnitude;
+
+            //if (distanceError < MAX_DISTANCE_ERROR)
+            //{
+            //    Debug.Log("Distance error is below threshold of " + MAX_DISTANCE_ERROR);
+            //}
+            //else
+            //{
+            //    Assert.Fail("Player did not return within " + MAX_DISTANCE_ERROR + " to initial position");
+            //}
+        }
+
+        /*
+         * Test double jump works
+         */
+        [UnityTest]
+        public IEnumerator DoubleJumpTest()
+        {
+            yield return LoadScene("Test");
+            yield return GetPlayer();
+
+            // How long to hold each key
+            float holdDuration = 0.5f;
+            // How long to wait before checking the next key
+            float waitDuration = 0.5f;
+
+            // For checking difference between initial and final positions
+            Vector3 initialPosition = player.transform.position;
+
+            UnityEngine.InputSystem.Controls.KeyControl[] sequence =
+            {
+                // Test Normal Jump
+                keyboard.spaceKey,
+                keyboard.spaceKey
+
+            };
+
+            Debug.Log("Testing movement consistency");
+            Vector3 posAfterFirst = new Vector3(0, 100000, 0);
+            foreach (var k in sequence)
+            {
+                Press(k);
+                yield return new WaitForSeconds(holdDuration);
+                Release(k);
+                if (posAfterFirst.y > 1000)
+                    posAfterFirst = player.transform.position;
+            }
+            Vector3 afterPos = player.transform.position;
+            Assert.True(afterPos.y > posAfterFirst.y, "y was not greater after jumping");
+
+        }
     }
 }
