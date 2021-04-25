@@ -101,7 +101,8 @@ public class TriangleBossScript : AliveObject
         // Set exit door active if it isn't already
 
         SetExitDoorHeight(exitDoorEndHeight);
-        exitDoor.SetActive(true);
+        if (exitDoor != null)
+            exitDoor.SetActive(true);
 
         // Cleanup objects if necessary
 
@@ -228,9 +229,13 @@ public class TriangleBossScript : AliveObject
 
     void SetExitDoorHeight(float y)
     {
-        Vector3 position = exitDoor.transform.position;
+        if (exitDoor != null)
+        {
 
-        exitDoor.transform.position = new Vector3(position.x, y, position.z);
+            Vector3 position = exitDoor.transform.position;
+
+            exitDoor.transform.position = new Vector3(position.x, y, position.z);
+        }
     }
 
     void GetTarget()

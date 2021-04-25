@@ -107,7 +107,7 @@ namespace Tests
             }
 
             // Final wait for physics to settle
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2);
 
             float distanceError = (player.transform.position - initialPosition).magnitude;
 
@@ -133,7 +133,7 @@ namespace Tests
             // How long to hold each key
             float holdDuration = 0.5f;
             // How long to wait before checking the next key
-            float waitDuration = 0.5f;
+            //float waitDuration = 0.5f;
 
             // For checking difference between initial and final positions
             Vector3 initialPosition = player.transform.position;
@@ -145,7 +145,7 @@ namespace Tests
 
             };
 
-            Debug.Log("Testing movement consistency");
+            Debug.Log("Testing single jump");
 
             foreach (var k in sequence)
             {
@@ -186,7 +186,7 @@ namespace Tests
             // How long to hold each key
             float holdDuration = 0.5f;
             // How long to wait before checking the next key
-            float waitDuration = 0.5f;
+            //float waitDuration = 0.5f;
 
             // For checking difference between initial and final positions
             Vector3 initialPosition = player.transform.position;
@@ -199,7 +199,7 @@ namespace Tests
 
             };
 
-            Debug.Log("Testing movement consistency");
+            Debug.Log("Testing double jump");
             Vector3 posAfterFirst = new Vector3(0, 100000, 0);
             foreach (var k in sequence)
             {
@@ -226,7 +226,7 @@ namespace Tests
             // How long to hold each key
             float holdDuration = 2.5f;
             // How long to wait before checking the next key
-            float waitDuration = 0.5f;
+            //float waitDuration = 0.5f;
 
             // For checking difference between initial and final positions
             Vector3 initialPosition = player.transform.position;
@@ -238,7 +238,7 @@ namespace Tests
 
             };
 
-            Debug.Log("Testing movement consistency");
+            Debug.Log("Testing primary attack");
             foreach (var k in sequence)
             {
                 Press(k);
@@ -269,9 +269,9 @@ namespace Tests
             yield return GetPlayer();
 
             // How long to hold each key
-            float holdDuration = 2.5f;
+            //float holdDuration = 2.5f;
             // How long to wait before checking the next key
-            float waitDuration = 0.5f;
+            //float waitDuration = 0.5f;
 
             // For checking difference between initial and final positions
             Vector3 initialPosition = player.transform.position;
@@ -288,7 +288,7 @@ namespace Tests
 
             };
 
-            Debug.Log("Testing movement consistency");
+            Debug.Log("Testing secondary attack");
             foreach (var k in sequence)
             {
                 Press(k);

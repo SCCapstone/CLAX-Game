@@ -259,7 +259,7 @@ public class CubeBossScript : AliveObject
             launchSound.Play();
         }
 
-        delayBetweenNewGrid = 3;
+        delayBetweenNewGrid = 4;
     }
 
     void MakeNewBatch()
