@@ -287,7 +287,7 @@ public class CubeBossScript : AliveObject
     {
         int totalPhases = System.Enum.GetNames(typeof(BossPhase)).Length;
         //currentPhase = (bossPhases)((((int)currentPhase) + 1) % totalPhases);
-        currentPhase = (BossPhase)Random.Range(0, totalPhases - 1);
+        currentPhase = (BossPhase)Random.Range(0, totalPhases);
 
         timesDestinationReached = 0;
     }
