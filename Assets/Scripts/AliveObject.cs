@@ -3,6 +3,11 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
+
+
+/*
+ * Controls the behavior of the game objects that need to be destroyed or have a health bar
+ */
 public class AliveObject : MonoBehaviour
 {
     public float health;
@@ -24,7 +29,9 @@ public class AliveObject : MonoBehaviour
     {
         health = maxHealth;
     }
-
+    /*
+     * If the health is 0 or below destroy, checks every frame
+     */
     void FixedUpdate()
     {
         if (health <= 0.0f)
@@ -70,7 +77,11 @@ public class AliveObject : MonoBehaviour
             health = maxHealth;
         }
     }
-
+    /*
+     * sets the health of the object
+     * 
+     * takes a number to set the health
+     */
     public void SetMaxHealth(float amount)
     {
         maxHealth = amount;

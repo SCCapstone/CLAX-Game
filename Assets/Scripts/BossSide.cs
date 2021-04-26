@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+/**
+ * controls the behavior of the doors on the boss arenas
+ */
 public class BossSide : MonoBehaviour
 {
     [Header("Prefabs")]
@@ -15,11 +19,18 @@ public class BossSide : MonoBehaviour
 
     public AudioSource bossDeathSound;
 
+
+    /*
+     * gets the renderer for the inside of the doorway
+     */
     void Start()
     {
         doorRenderer = doorway.transform.GetChild(0).GetComponentInChildren<Renderer>();
     }
 
+    /*
+     * on boss death change the door material and play boss death sound
+     */
     void Update()
     {
         if (!Globals.boss)
@@ -30,6 +41,11 @@ public class BossSide : MonoBehaviour
         }
     }
     
+
+    /*
+     * on player collision, load the next scene with the set spawn.
+     * 
+     */
     void OnTriggerEnter(Collider other)
     {
         if (!Globals.boss && other.gameObject.CompareTag("Player"))

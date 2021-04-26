@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-
+/**
+ * controls the non boss arena doors
+ */
 public class HubSide : MonoBehaviour
 {
     public PortalTrigger doorTrigger;
@@ -17,6 +19,9 @@ public class HubSide : MonoBehaviour
 
     private bool isSpawn = false;
     
+    /**
+     * spawns the player if the door is the desired spawn point of the previous level
+     */
     void Start()
     {
         doorRenderer = GetComponentInChildren<Renderer>();
@@ -42,6 +47,9 @@ public class HubSide : MonoBehaviour
         doorRenderer.material = IsActive() ? activeMaterial : inactiveMaterial;
     }
 
+    /**
+     * sets the door to active or inactive based on wether they were a spawn or boss door
+     */
     private bool IsActive()
     {
         if (blockDuringBoss)

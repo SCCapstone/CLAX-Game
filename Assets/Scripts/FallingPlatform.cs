@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-
+/**
+ * Controls falling platform behavior, holds sound and movement
+ */
 public class FallingPlatform : MonoBehaviour
 {
     [Header("Prefabs")]
@@ -33,6 +35,10 @@ public class FallingPlatform : MonoBehaviour
         platformCollider = platform.GetComponentInChildren<BoxCollider>();
     }
 
+
+    /**
+     * Platform falls when player collides with it
+     */
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -44,6 +50,9 @@ public class FallingPlatform : MonoBehaviour
         }
     }
 
+    /**
+     * causes the platform to fall for a bit, de render wait a period of time, and then reset.
+     */
     void FixedUpdate()
     {
         if (isFalling)
@@ -98,6 +107,9 @@ public class FallingPlatform : MonoBehaviour
         }
     }
 
+    /**
+     * changes the color of the material
+     */
     private void colorChange(float change)
     {
         if (change > 1)

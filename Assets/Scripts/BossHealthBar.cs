@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 
+/**
+ * decorator for the Alive object to give the object a health bar
+ */
 public class BossHealthBar : MonoBehaviour
 {
     public AliveObject target;
     public GameObject bar;
 
     // Update is called once per frame
+    /*
+     * inheirits from alive object, adds a health bar to the boss alive object based on their health
+     */
     void Update()
     {
         RectTransform rectTrans = bar.GetComponent<RectTransform>();

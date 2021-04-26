@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-
+/**
+ * Script to control the Expanding wall of the Pill Boss Enemy
+ */
 public class ExpandingWallScript : MonoBehaviour
 {
 
@@ -29,6 +31,9 @@ public class ExpandingWallScript : MonoBehaviour
 
     }
 
+    /**
+     * Expands the bosses wall based on the health of the boss.
+     */
     void wallExpand()
     {
         if (isGrowing && transform.localScale.x >= maxHorizontalLength)

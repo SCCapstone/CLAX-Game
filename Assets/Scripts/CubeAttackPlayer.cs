@@ -1,10 +1,18 @@
 ﻿using UnityEngine;
 
+/**
+ * Allows for the boss to target the player with thrown objects
+ */
 public class CubeAttackPlayer : MonoBehaviour
 {
     public Vector3 goalCoords = Vector3.zero;
     public bool shouldMove = false;
 
+    /**
+     * aims the cube attack at the player with slight offset
+     * 
+     * takes in a (X,Y,Z) coordinate for how to offset the aim
+     */
     void SetGoalRelative(int xOffset = 0, int yOffset = 0, int zOffset = 0)
     {
         GameObject target = GameObject.FindGameObjectWithTag("Player");
@@ -14,6 +22,7 @@ public class CubeAttackPlayer : MonoBehaviour
             Random.Range(-yOffset, yOffset),
             Random.Range(-zOffset, zOffset));
     }
+
 
     private void FixedUpdate()
     {

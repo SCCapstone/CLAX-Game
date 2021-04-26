@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-
+/**
+ * Controls the movement and attack pattern of the Cube boss, holds all the functionality that requires
+ */
 public class CubeBossScript : AliveObject
 {
     Transform target;
@@ -52,6 +54,10 @@ public class CubeBossScript : AliveObject
         Globals.boss = true;
     }
 
+
+    /**
+     * on boss death set globals
+     */
     private void OnDestroy()
     {
         DestroyCubes();
@@ -60,6 +66,10 @@ public class CubeBossScript : AliveObject
         Globals.cube = true;
     }
 
+
+    /**
+     * controls boss phases
+     */
     private void FixedUpdate()
     {
         if (dead)
@@ -94,7 +104,9 @@ public class CubeBossScript : AliveObject
                 break;
         }
     }
-
+    /**
+     * on boss death destroy all boss spawns
+     */
     void OnDeath()
     {
         DestroyCubes();
@@ -102,6 +114,9 @@ public class CubeBossScript : AliveObject
         Destroy(gameObject, 1.0f);
     }
 
+    /**
+     * sets the player instance as the boss target
+     */
     void Setup()
     {
         var playerObject = GameObject.FindGameObjectWithTag("Player");
@@ -131,6 +146,9 @@ public class CubeBossScript : AliveObject
         }
     }
 
+    /**
+     * spawns cubes in front of boss in 3X3 formation
+     */
     void SpawnCubes()
     {
         //Vector3 midPoint = new Vector3((transform.position.x + target.position.x) / 2,
@@ -214,6 +232,11 @@ public class CubeBossScript : AliveObject
         }
     }
 
+
+    /**
+     * launches the cubes till they are all gone
+     * 
+     */
     void LaunchAsNeeded()
     {
         // Launch the cubes one at a time
@@ -236,6 +259,10 @@ public class CubeBossScript : AliveObject
         }
     }
 
+
+    /**
+     * launches a full row of cubes till they are all gone
+     */
     void LaunchRowAsNeeded()
     {
         // Launch the cubes one at a time
@@ -262,6 +289,10 @@ public class CubeBossScript : AliveObject
         delayBetweenNewGrid = 4;
     }
 
+
+    /**
+     * creates a new batch of 3X3 cubes
+     */
     void MakeNewBatch()
     {
         if (Time.time - lastSpawnTime > delayBetweenNewGrid)
@@ -283,6 +314,10 @@ public class CubeBossScript : AliveObject
         }
     }
 
+
+    /**
+     * Moves the cube boss to a new phase
+     */
     void GoToNextPhase()
     {
         int totalPhases = System.Enum.GetNames(typeof(BossPhase)).Length;
@@ -291,6 +326,7 @@ public class CubeBossScript : AliveObject
 
         timesDestinationReached = 0;
     }
+
 
     void ComputeDestination()
     {
@@ -307,6 +343,9 @@ public class CubeBossScript : AliveObject
         timesDestinationReached += 1;
     }
 
+    /**
+     * moves the boss at the same height they spawned in on
+     */
     void MoveOnAxis()
     {
         // Set the target at the beginning
