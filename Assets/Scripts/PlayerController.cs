@@ -413,6 +413,10 @@ public class PlayerController : MonoBehaviour
     {
         if (Globals.IsPaused())
         {
+            if (shootLoop != null)
+            {
+                StopCoroutine(shootLoop);
+            }
             return;
         }
 
