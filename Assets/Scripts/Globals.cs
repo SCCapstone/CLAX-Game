@@ -98,6 +98,7 @@ public class Globals : MonoBehaviour
 
     public struct AudioSettings
     {
+        public float gameVolume;
         public float musicVolume;
     }
     //
@@ -114,6 +115,7 @@ public class Globals : MonoBehaviour
 
     public static AudioSettings audioSettings = new AudioSettings()
     {
+        gameVolume = 1.0f,
         musicVolume = 1.0f
     };
     

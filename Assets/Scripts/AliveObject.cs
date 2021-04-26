@@ -1,9 +1,4 @@
-﻿using System;
-using System.Reflection;
-using UnityEngine;
-using UnityEngine.Events;
-
-
+﻿using UnityEngine;
 
 /**
  * Controls the behavior of the game objects that need to be destroyed or have a health bar
@@ -29,9 +24,7 @@ public class AliveObject : MonoBehaviour
     {
         health = maxHealth;
     }
-    /*
-     * If the health is 0 or below destroy, checks every frame
-     */
+
     void FixedUpdate()
     {
         if (health <= 0.0f)
@@ -44,7 +37,7 @@ public class AliveObject : MonoBehaviour
         }
     }
 
-    /*
+    /**
      * Deal damage this object
      */
     public void Damage(float amount)
@@ -58,7 +51,7 @@ public class AliveObject : MonoBehaviour
         }
     }
 
-    /*
+    /**
      * Sets the health of the object
      * Does not trigger hit cooldowns
      */
@@ -77,17 +70,18 @@ public class AliveObject : MonoBehaviour
             health = maxHealth;
         }
     }
-    /*
-     * sets the health of the object
-     * 
-     * takes a number to set the health
+
+    /**
+     * Sets the max health of the object
      */
     public void SetMaxHealth(float amount)
     {
         maxHealth = amount;
     }
 
-    // Kills the object
+    /**
+     * Kills object
+     */
     virtual public void Kill()
     {
         if (dead)
@@ -97,10 +91,9 @@ public class AliveObject : MonoBehaviour
 
         dead = true;
 
-        // TODO: Death events and animations
-
         if (deathSound != null && !deathSound.isPlaying)
         {
+            deathSound.volume = Globals.audioSettings.gameVolume;
             deathSound.Play();
         }
 

@@ -255,6 +255,8 @@ public class CubeBossScript : AliveObject
             lastIdLaunched += 1;
             lastCubeLaunchTime = Time.time;
             delayBetweenNewGrid = 5;
+
+            launchSound.volume = Globals.audioSettings.gameVolume;
             launchSound.Play();
         }
     }
@@ -283,6 +285,7 @@ public class CubeBossScript : AliveObject
                 }
             }
 
+            launchSound.volume = Globals.audioSettings.gameVolume;
             launchSound.Play();
         }
 

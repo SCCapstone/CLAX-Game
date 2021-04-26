@@ -356,6 +356,7 @@ public class PlayerController : MonoBehaviour
 
         onGround = false;
 
+        playerJumpSound.volume = Globals.audioSettings.gameVolume;
         playerJumpSound.Play();
     }
 
@@ -488,6 +489,7 @@ public class PlayerController : MonoBehaviour
 
         instance.transform.position = transform.position + facing;
 
+        playerSecondaryShootSound.volume = Globals.audioSettings.gameVolume;
         playerSecondaryShootSound.Play();
     }
     /*
@@ -516,6 +518,7 @@ public class PlayerController : MonoBehaviour
             projectile.position += facing;
         }
 
+        playerShootSound.volume = Globals.audioSettings.gameVolume;
         playerShootSound.Play();
     }
     /*

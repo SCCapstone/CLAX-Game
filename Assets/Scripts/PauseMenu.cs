@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject settingsMenu;
 
+    public Slider soundSlider;
     public Slider musicSlider;
     public Slider mouseSlider;
     public Slider fovSlider;
@@ -78,12 +79,14 @@ public class PauseMenu : MonoBehaviour
 
         // Initial values
 
+        soundSlider.SetValueWithoutNotify(Globals.audioSettings.gameVolume);
         musicSlider.SetValueWithoutNotify(Globals.audioSettings.musicVolume);
         fovSlider.SetValueWithoutNotify(Globals.videoSettings.fieldOfView);
         mouseSlider.SetValueWithoutNotify(Globals.mouseSettings.mouseSensitivity);
 
         // Event listeners
 
+        soundSlider.onValueChanged.AddListener(ChangeGameVolume);
         musicSlider.onValueChanged.AddListener(ChangeMusicVolume);
 
         fovSlider.onValueChanged.AddListener(ChangeFOV);
@@ -95,6 +98,11 @@ public class PauseMenu : MonoBehaviour
         colorblindButton.onClick.AddListener(ToggleColorBlind);
         difficultyButton.onClick.AddListener(ChangeDifficulty);
         timerButton.onClick.AddListener(ToggleTimer);
+    }
+
+    private void ChangeGameVolume(float value)
+    {
+        Globals.audioSettings.gameVolume = value;
     }
 
     private void ChangeMusicVolume(float value)

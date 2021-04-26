@@ -27,8 +27,9 @@ public class ExpandingWallScript : MonoBehaviour
         lockWallSize = false;
         //Debug.Log("lock wall is " + lockWallSize);
         boss = GameObject.FindGameObjectWithTag("Boss");
-        makeWallSound.Play();
 
+        makeWallSound.volume = Globals.audioSettings.gameVolume;
+        makeWallSound.Play();
     }
 
     /**

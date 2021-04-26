@@ -332,6 +332,7 @@ public class TriangleBossScript : AliveObject
         {
             if (!attack2Sound.isPlaying)
             {
+                attack2Sound.volume = Globals.audioSettings.gameVolume;
                 attack2Sound.Play();
             }
 
@@ -367,6 +368,7 @@ public class TriangleBossScript : AliveObject
 
             if (!attack1Sound.isPlaying)
             {
+                attack1Sound.volume = Globals.audioSettings.gameVolume;
                 attack1Sound.Play();
             }
 
@@ -392,6 +394,7 @@ public class TriangleBossScript : AliveObject
         {
             if (!attack2Sound.isPlaying)
             {
+                attack2Sound.volume = Globals.audioSettings.gameVolume;
                 attack2Sound.Play();
             }
 
@@ -451,6 +454,7 @@ public class TriangleBossScript : AliveObject
         {
             if (!attack1Sound.isPlaying)
             {
+                attack1Sound.volume = Globals.audioSettings.gameVolume;
                 attack1Sound.Play();
             }
 
@@ -509,6 +513,7 @@ public class TriangleBossScript : AliveObject
         {
             if (!attack2Sound.isPlaying)
             {
+                attack2Sound.volume = Globals.audioSettings.gameVolume;
                 attack2Sound.Play();
             }
 

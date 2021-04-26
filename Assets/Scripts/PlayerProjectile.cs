@@ -26,6 +26,7 @@ public class PlayerProjectile : Projectile
                 enemy.Damage(damage);
             }
 
+            hitBoss.volume = Globals.audioSettings.gameVolume;
             hitBoss.Play();
 
             GetComponent<MeshRenderer>().enabled = false;
