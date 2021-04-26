@@ -93,6 +93,8 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputActions inputs;
 
+    GameObject playerWalkParticles;
+
     private void Awake()
     {
         // Event callbacks
@@ -150,6 +152,11 @@ public class PlayerController : MonoBehaviour
         {
             aliveObject.onDeath += RespawnPlayer;
         }
+        playerWalkParticles = GameObject.Find("WalkingParticles");
+
+        InvokeRepeating("stopParticles", 1, 1);
+
+
     }
 
     private void OnEnable()
@@ -251,6 +258,15 @@ public class PlayerController : MonoBehaviour
                 //groundLastRotation = ground.transform.rotation;
             }
         }
+
+        //playerWalkParticles.SetActive(false);
+
+    }
+
+    void stopParticles()
+    {
+        playerWalkParticles.SetActive(false);
+
     }
 
     void RespawnPlayer()
@@ -400,6 +416,8 @@ public class PlayerController : MonoBehaviour
         Vector2 inputAxis = context.ReadValue<Vector2>();
 
         moveAxis = inputAxis.normalized;
+        playerWalkParticles.SetActive(true);
+
     }
     /*
      * Move the player up when they jump
