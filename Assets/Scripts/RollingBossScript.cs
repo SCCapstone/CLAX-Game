@@ -85,7 +85,9 @@ public class RollingBossScript : AliveObject
         Globals.pill = true;
         Globals.boss = false;
     }
-
+    /**
+     * controls the boss behavior
+     */
     void FixedUpdate()
     {
         if (dead)
@@ -115,7 +117,9 @@ public class RollingBossScript : AliveObject
         phaseTimeCooldown = Mathf.Max(phaseTimeCooldown - cooldownUpdateTime, 0);
 
     }
-
+    /**
+     * Controls the size of the pill boss
+     */
     bool ChangeSize()
     {
         if (isGrowing)

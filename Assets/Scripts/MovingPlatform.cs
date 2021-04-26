@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-
+/**
+ * Controls the moving platform behavior
+ */
 public class MovingPlatform : MonoBehaviour
 {
     public GameObject startStage;
@@ -19,7 +21,9 @@ public class MovingPlatform : MonoBehaviour
 
     private float counter = 0.0f;
     private bool reverse = false;
-
+    /**
+     * Moves the platform 
+     */
     void FixedUpdate()
     {
         if (travelDuration <= 0.0f)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-/*
+/**
  * Controls the triangle boss and their attacks
  */
 public class TriangleBossScript : AliveObject
@@ -113,6 +113,9 @@ public class TriangleBossScript : AliveObject
         Globals.boss = false;
     }
 
+    /**
+     * controls the bosses behavior, calls on the frame.
+     */
     void FixedUpdate()
     {
         // TODO: This should really be handled in the parent class
@@ -188,7 +191,7 @@ public class TriangleBossScript : AliveObject
 
         lastUpdateTime = Time.time;
     }
-    /*
+    /**
      * Give each phase a random weight for how often they occur
      */
     T GetRandomWeighted<T>(Dictionary<T, float> weightedChoices)
@@ -220,6 +223,9 @@ public class TriangleBossScript : AliveObject
         return choices[(int)Random.Range(0.0f, choices.Count)].Key;
     }
 
+    /**
+     * respawns the door on boss death
+     */
     void OnDeath()
     {
         StopAllCoroutines();
@@ -232,6 +238,9 @@ public class TriangleBossScript : AliveObject
         StartCoroutine(KillCoroutine());
     }
 
+    /**
+     * sets the door height on respawn
+     */
     void SetExitDoorHeight(float y)
     {
         if (exitDoor != null)
@@ -303,9 +312,11 @@ public class TriangleBossScript : AliveObject
         projectile.lifeTime = projectileLifetime;
     }
 
+    /**
+     *  Get random position and height around a circle of random radius centered around the player
+     */
     IEnumerator Move()
     {
-        // Get random position and height around a circle of random radius centered around the player
 
         Vector3 center = target.transform.position;
 

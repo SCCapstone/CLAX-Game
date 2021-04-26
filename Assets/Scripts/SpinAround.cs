@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-/*
+/**
  * Used for winning screen to make mini versions of bosses spin around
  */
 

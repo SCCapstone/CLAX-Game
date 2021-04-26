@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-
+/**
+ * holds all the game globals, used to create game flags for carry over progression and settings
+ */
 public class Globals : MonoBehaviour
 {
     // Pause

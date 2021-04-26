@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-/*
- * change the player spawn point to this one
+/**
+ * manages the scene collective spawn points and their behavior
  */
 public class SpawnPointManager : MonoBehaviour
 {
@@ -11,6 +11,9 @@ public class SpawnPointManager : MonoBehaviour
 
     private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
+    /**
+     * creates a list of the spawn points in the scene and spawns the player at the desired one
+     */
     void Start()
     {
         foreach (GameObject o in FindObjectsOfType<GameObject>())
@@ -54,6 +57,9 @@ public class SpawnPointManager : MonoBehaviour
         currentSpawn.SpawnPlayer();
     }
 
+    /**
+     * sets the players spawn point
+     */
     private void SetSpawn(SpawnPoint sp)
     {
         if (sp == null)
