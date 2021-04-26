@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/*
+ * Controls the movement and attacks for the rolling boss (pill boss)
+ */
 public class RollingBossScript : AliveObject
 {
     float lastExpandedTime;
@@ -149,7 +152,9 @@ public class RollingBossScript : AliveObject
         //did not attempt to change size
         return true;
     }
-
+    /*
+     * make a wall after target is reached
+     */
     void BallExpandAndMakeWall(bool lockSize)
     {
         if (madeWall != null && madeWall.GetComponent<ExpandingWallScript>().isDone)
@@ -193,7 +198,9 @@ public class RollingBossScript : AliveObject
         //Debug.Log("moved " + distance);
 
     }
-
+    /*
+     * stop moving when target is reached
+     */
     void StopMomentum()
     {
         if (Time.time - startMovingTime > rollTime)

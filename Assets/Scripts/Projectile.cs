@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/*
+ * Controls the logic for projectiles moving and despawning after a certain point
+ */
 public class Projectile : MonoBehaviour
 {
     public Vector3 position;

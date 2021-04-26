@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-
+/*
+ * change the player spawn point to this one
+ */
 public class SpawnPointManager : MonoBehaviour
 {
     public SpawnPoint defaultSpawn;
@@ -42,7 +44,7 @@ public class SpawnPointManager : MonoBehaviour
 
             defaultSpawn = spawnPoints[Random.Range(0, spawnPoints.Count)];
         }
-        
+
         if (currentSpawn == null)
         {
             currentSpawn = defaultSpawn;

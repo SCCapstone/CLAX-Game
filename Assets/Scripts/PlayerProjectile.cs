@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-
+/*
+ * Deal damage to enemies that the bullet collides with
+ */
 public class PlayerProjectile : Projectile
 {
     public float damage = 0;

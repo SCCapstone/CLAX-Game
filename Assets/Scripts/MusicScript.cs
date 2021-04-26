@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-
+/*
+ * Controls the music volume level
+ */
 public class MusicScript : MonoBehaviour
 {
     const float MULTIPLIER = 0.087f;

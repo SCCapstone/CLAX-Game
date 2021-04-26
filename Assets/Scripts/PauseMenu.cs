@@ -2,7 +2,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
+/*
+ * Controls the pause menu objects
+ */
 public class PauseMenu : MonoBehaviour
 {
     [Header("Menus")]
@@ -86,9 +88,9 @@ public class PauseMenu : MonoBehaviour
 
         fovSlider.onValueChanged.AddListener(ChangeFOV);
         fovResetButton.onClick.AddListener(ResetFOV);
-        
+
         mouseSlider.onValueChanged.AddListener(ChangeMouseSlider);
-        
+
         vsyncButton.onClick.AddListener(ToggleVSync);
         colorblindButton.onClick.AddListener(ToggleColorBlind);
         difficultyButton.onClick.AddListener(ChangeDifficulty);
@@ -111,12 +113,16 @@ public class PauseMenu : MonoBehaviour
 
         fovSlider.value = Globals.videoSettings.fieldOfView;
     }
-
+    /*
+     * Changes the FOV
+     */
     private void ChangeFOV(float value)
     {
         Globals.videoSettings.fieldOfView = value;
     }
-
+    /*
+ * When the player quits
+ */
     public void OnQuit()
     {
         Application.Quit();
@@ -125,7 +131,9 @@ public class PauseMenu : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
-
+    /*
+     * When the player pauses the game
+     */
     public void OnPause(InputAction.CallbackContext context)
     {
         if (Globals.IsPaused())
@@ -141,27 +149,35 @@ public class PauseMenu : MonoBehaviour
             Globals.Pause();
         }
     }
-
+    /*
+     * When the player unpauses the game
+     */
     public void OnResume()
     {
         HideAllMenus();
 
         Globals.Unpause();
     }
-
+    /*
+     * Remove the pause overlay from the screen
+     */
     public void HideAllMenus()
     {
         pauseMenu.SetActive(false);
         settingsMenu.SetActive(false);
     }
-
+    /*
+     * When the player pauses the game
+     */
     public void EnterPauseMenu()
     {
         HideAllMenus();
 
         pauseMenu.SetActive(true);
     }
-
+    /*
+     * When the player unpauses the game
+     */
     public void ExitPauseMenu()
     {
         HideAllMenus();
@@ -180,7 +196,9 @@ public class PauseMenu : MonoBehaviour
 
         pauseMenu.SetActive(true);
     }
-
+    /*
+     * Update colors for color blind mode
+     */
     public void ToSubColors()
     {
         foreach (GameObject ob in FindObjectsOfType<GameObject>())
@@ -207,7 +225,9 @@ public class PauseMenu : MonoBehaviour
 
         }
     }
-
+    /*
+     * Change back out of color blind mode
+     */
     public void ToOriginalColors()
     {
         foreach (GameObject ob in FindObjectsOfType<GameObject>())
@@ -233,7 +253,9 @@ public class PauseMenu : MonoBehaviour
             }
         }
     }
-
+    /*
+     * Change button text to reflect changes
+     */
     public void UpdateText()
     {
         SetButtonText(vsyncButton, string.Format("VSync: {0}", Globals.videoSettings.vsyncEnabled ? "ON" : "OFF"));
@@ -241,7 +263,9 @@ public class PauseMenu : MonoBehaviour
         SetButtonText(difficultyButton, string.Format("Difficulty: {0}", Globals.difficulty.ToString()));
         SetButtonText(timerButton, string.Format("Timer: {0}", Globals.timerEnabled ? "ON" : "OFF"));
     }
-
+    /*
+     * Changes the text of button to text
+     */
     private void SetButtonText(Button button, string text)
     {
         TextMeshProUGUI gui = button.GetComponentInChildren<TextMeshProUGUI>();
@@ -251,7 +275,9 @@ public class PauseMenu : MonoBehaviour
             gui.SetText(text);
         }
     }
-
+    /*
+     * Update boss health and player health based on difficulty
+     */
     private void ChangeDifficulty()
     {
         Globals.IncreaseDifficulty();
@@ -266,7 +292,7 @@ public class PauseMenu : MonoBehaviour
         /*
          * EASY
          *  - Boss max health is 60%
-         *  - Player max healt is 100%
+         *  - Player max health is 100%
          * NORMAL
          *  - Boss max health is 100%
          *  - Player max health is 100% 

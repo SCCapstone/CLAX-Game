@@ -2,7 +2,9 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Collections;
-
+/*
+ * Controls the player attacks, normal movement, and cheat mode movement
+ */
 public class PlayerController : MonoBehaviour
 {
     [Header("Prefabs")]
@@ -74,10 +76,8 @@ public class PlayerController : MonoBehaviour
     private bool prevOnGround = false;
     private bool onGround = false;
     private float groundEpsilon = 1e-1f;
-    //private Vector3 groundNormal = Vector3.zero;
     private GameObject ground;
     private Vector3 groundLastPosition;
-    //private Quaternion groundLastRotation;
 
     private bool holdJump = false;
     private int jumpCounter = 0;
@@ -257,7 +257,9 @@ public class PlayerController : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
+    /*
+     * Check if player has fallen off edge
+     */
     private void CheckY()
     {
         if (transform.position.y < dieAtY)
@@ -331,7 +333,9 @@ public class PlayerController : MonoBehaviour
 
         rigidbody.velocity = prevVelocity + (moveDir * accMagnitude);
     }
-
+    /*
+     * Move the player up when they press space
+     */
     private void Jump()
     {
         if (onGroundTime < jumpLandingLag || jumpCounter >= maxJumps)
@@ -355,6 +359,9 @@ public class PlayerController : MonoBehaviour
         playerJumpSound.Play();
     }
 
+    /*
+     * Check if player is on ground
+     */
     public bool GetGrounded()
     {
         //groundNormal = Vector3.zero;
@@ -384,14 +391,18 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
-
+    /*
+     * Move the player left right forward and backward
+     */
     public void OnMove(InputAction.CallbackContext context)
     {
         Vector2 inputAxis = context.ReadValue<Vector2>();
 
         moveAxis = inputAxis.normalized;
     }
-
+    /*
+     * Move the player up when they jump
+     */
     public void OnJump(InputAction.CallbackContext context)
     {
         if (!isTestMode)
@@ -408,7 +419,9 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
+    /*
+     * Fire primary attack
+     */
     public void OnUse(InputAction.CallbackContext context)
     {
         if (Globals.IsPaused())
@@ -445,7 +458,9 @@ public class PlayerController : MonoBehaviour
             FireProjectile();
         }
     }
-
+    /*
+     * Fire secondary attack
+     */
     public void OnRightClick(InputAction.CallbackContext context)
     {
         if (context.phase != InputActionPhase.Performed)
@@ -475,7 +490,9 @@ public class PlayerController : MonoBehaviour
 
         playerSecondaryShootSound.Play();
     }
-
+    /*
+     * Fires a player projectile in the direction they are looking
+     */
     void FireProjectile()
     {
         // Get horizontal facing vector
@@ -501,7 +518,9 @@ public class PlayerController : MonoBehaviour
 
         playerShootSound.Play();
     }
-
+    /*
+     * Continuously fire when the player holds down the left mouse button
+     */
     IEnumerator ShootLoop()
     {
         while (holdUse)
@@ -511,7 +530,9 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(shootDelay);
         }
     }
-
+    /*
+     * Enable or disable cheat (debug) mode
+     */
     void OnToggleTestMode(InputAction.CallbackContext context)
     {
         isTestMode = !isTestMode;
@@ -529,7 +550,9 @@ public class PlayerController : MonoBehaviour
             rigidbody.useGravity = true;
         }
     }
-
+    /*
+     * Move player up
+     */
     IEnumerator Elevate()
     {
         isElevationCoroutineRunning = true;
@@ -547,7 +570,9 @@ public class PlayerController : MonoBehaviour
 
         isElevationCoroutineRunning = false;
     }
-
+    /*
+     * Move player up when in cheat mode
+     */
     void OnAscend(InputAction.CallbackContext context)
     {
         isAscending = context.control.IsPressed();
@@ -557,7 +582,9 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Elevate());
         }
     }
-
+    /*
+     * Move player down when in cheat mode
+     */
     void OnDescend(InputAction.CallbackContext context)
     {
         isDescending = context.control.IsPressed();
@@ -567,12 +594,16 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Elevate());
         }
     }
-
+    /*
+     * Move player quickly when in cheat mode and flying
+     */
     void OnFlyFast(InputAction.CallbackContext context)
     {
         isFlyingFast = context.control.IsPressed();
     }
-
+    /*
+     * Simple camera angle variable changer
+     */
     public void SetCameraAngles(Vector3 euler)
     {
         cameraEulerAngles = euler;

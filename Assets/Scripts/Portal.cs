@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-
+/*
+ * Enable the exit door for each level.
+ */
 public class Portal : MonoBehaviour
 {
     public PortalTrigger portalTrigger;

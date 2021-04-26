@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/*
+ * Controls the triangle boss and their attacks
+ */
 public class TriangleBossScript : AliveObject
 {
     private const float UPDATE_INTERVAL = 1.0f;
@@ -185,7 +188,9 @@ public class TriangleBossScript : AliveObject
 
         lastUpdateTime = Time.time;
     }
-
+    /*
+     * Give each phase a random weight for how often they occur
+     */
     T GetRandomWeighted<T>(Dictionary<T, float> weightedChoices)
     {
         var choices = weightedChoices.ToList();
@@ -271,8 +276,9 @@ public class TriangleBossScript : AliveObject
 
         StopAllCoroutines();
     }
-
-    // Safety checks to ensure the show goes on in the case of exceptional circumstances
+    /*
+    * Safety checks to ensure the show goes on in the case of exceptional circumstances
+    */
     void CheckSafety()
     {
         // If not performing action, or in a deciding state, or action has timed out, then end all actions
@@ -281,7 +287,9 @@ public class TriangleBossScript : AliveObject
             EndAction();
         }
     }
-
+    /*
+     * Generic way for triangle boss to fire projectile
+     */
     void FireProjectile(Vector3 position, Vector3 velocity)
     {
         GameObject projectileInstance = Instantiate(projectilePrefab);
@@ -329,7 +337,9 @@ public class TriangleBossScript : AliveObject
 
         EndAction();
     }
-
+    /*
+     * fire projectiles in all directions
+     */
     IEnumerator CardinalProjectiles()
     {
         float[] angles =
@@ -359,7 +369,9 @@ public class TriangleBossScript : AliveObject
             yield return new WaitForSeconds(projectileDelay);
         }
     }
-
+    /*
+     * fire projectiles in toward player
+     */
     IEnumerator ForwardProjectiles()
     {
         Vector3 dir;
@@ -380,7 +392,9 @@ public class TriangleBossScript : AliveObject
             yield return new WaitForSeconds(projectileDelay);
         }
     }
-
+    /*
+     * Move around
+     */
     IEnumerator InterpolateTo(Vector3 endPosition, float time)
     {
         Vector3 startPosition = transform.position;
@@ -394,7 +408,9 @@ public class TriangleBossScript : AliveObject
 
         transform.position = endPosition;
     }
-
+    /*
+     * Fire in all directions
+     */
     IEnumerator Attack1()
     {
         if (!target)
@@ -461,7 +477,9 @@ public class TriangleBossScript : AliveObject
 
         EndAction();
     }
-
+    /*
+     * fire straight at player
+     */
     IEnumerator Attack2()
     {
         if (!target)

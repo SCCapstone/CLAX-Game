@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-
+/*
+ * Logic for making the player spawn at this spawn point after dying
+ */
 public class SpawnPoint : MonoBehaviour
 {
     [Header("Spawn Properties")]
