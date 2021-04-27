@@ -10,6 +10,7 @@ public class PauseMenu : MonoBehaviour
     [Header("Menus")]
     public GameObject pauseMenu;
     public GameObject settingsMenu;
+    public GameObject controlsMenu;
 
     public Slider soundSlider;
     public Slider musicSlider;
@@ -37,27 +38,8 @@ public class PauseMenu : MonoBehaviour
     public Material greenSub;
     public Material redSub;
 
-    private PlayerInputActions inputs;
-
     private GameObject boss;
     private GameObject player;
-
-    void Awake()
-    {
-        inputs = new PlayerInputActions();
-
-        inputs.World.Pause.performed += OnPause;
-    }
-
-    private void OnEnable()
-    {
-        inputs.Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputs.Disable();
-    }
 
     void Start()
     {
@@ -121,6 +103,7 @@ public class PauseMenu : MonoBehaviour
 
         fovSlider.value = Globals.videoSettings.fieldOfView;
     }
+
     /*
      * Changes the FOV
      */
@@ -128,9 +111,10 @@ public class PauseMenu : MonoBehaviour
     {
         Globals.videoSettings.fieldOfView = value;
     }
+
     /*
- * When the player quits
- */
+     * When the player quits
+     */
     public void OnQuit()
     {
         Application.Quit();
@@ -157,6 +141,7 @@ public class PauseMenu : MonoBehaviour
             Globals.Pause();
         }
     }
+
     /*
      * When the player unpauses the game
      */
@@ -166,6 +151,7 @@ public class PauseMenu : MonoBehaviour
 
         Globals.Unpause();
     }
+
     /*
      * Remove the pause overlay from the screen
      */
@@ -173,7 +159,9 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         settingsMenu.SetActive(false);
+        controlsMenu.SetActive(false);
     }
+
     /*
      * When the player pauses the game
      */
@@ -204,6 +192,21 @@ public class PauseMenu : MonoBehaviour
 
         pauseMenu.SetActive(true);
     }
+
+    public void EnterControlsMenu()
+    {
+        HideAllMenus();
+
+        controlsMenu.SetActive(true);
+    }
+
+    public void ExitControlsMenu()
+    {
+        HideAllMenus();
+
+        pauseMenu.SetActive(true);
+    }
+
     /*
      * Update colors for color blind mode
      */
@@ -233,6 +236,7 @@ public class PauseMenu : MonoBehaviour
 
         }
     }
+
     /*
      * Change back out of color blind mode
      */
@@ -261,6 +265,7 @@ public class PauseMenu : MonoBehaviour
             }
         }
     }
+
     /*
      * Change button text to reflect changes
      */
@@ -271,6 +276,7 @@ public class PauseMenu : MonoBehaviour
         SetButtonText(difficultyButton, string.Format("Difficulty: {0}", Globals.difficulty.ToString()));
         SetButtonText(timerButton, string.Format("Timer: {0}", Globals.timerEnabled ? "ON" : "OFF"));
     }
+
     /*
      * Changes the text of button to text
      */
@@ -283,6 +289,7 @@ public class PauseMenu : MonoBehaviour
             gui.SetText(text);
         }
     }
+
     /*
      * Update boss health and player health based on difficulty
      */

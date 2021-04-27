@@ -86,45 +86,16 @@ public class PlayerController : MonoBehaviour
     private bool holdUse = false;
     private Coroutine shootLoop;
 
+    private Vector2 mouseDelta = Vector3.zero;
     private Vector2 moveAxis = Vector3.zero;
     private Vector3 cameraEulerAngles = Vector3.zero;
 
     new Rigidbody rigidbody;
 
-    private PlayerInputActions inputs;
+    //public PlayerInputActions inputs;
 
     private void Awake()
     {
-        // Event callbacks
-
-        inputs = new PlayerInputActions();
-
-        inputs.World.Move.started += OnMove;
-        inputs.World.Move.performed += OnMove;
-        inputs.World.Move.canceled += OnMove;
-
-        inputs.World.Jump.started += OnJump;
-        inputs.World.Jump.performed += OnJump;
-        inputs.World.Move.canceled += OnJump;
-
-        inputs.World.Use.performed += OnUse;
-
-        inputs.World.Explosion.performed += OnRightClick;
-
-        inputs.World.TestMode.performed += OnToggleTestMode;
-
-        inputs.World.FlyUp.started += OnAscend;
-        inputs.World.FlyUp.performed += OnAscend;
-        inputs.World.FlyUp.canceled += OnAscend;
-
-        inputs.World.FlyDown.started += OnDescend;
-        inputs.World.FlyDown.performed += OnDescend;
-        inputs.World.FlyDown.canceled += OnDescend;
-
-        inputs.World.FlyFast.started += OnFlyFast;
-        inputs.World.FlyFast.performed += OnFlyFast;
-        inputs.World.FlyFast.canceled += OnFlyFast;
-
         // Rigidbody physics
 
         rigidbody = GetComponent<Rigidbody>();
@@ -154,12 +125,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        inputs.Enable();
+        //inputs.Enable();
     }
 
     private void OnDisable()
     {
-        inputs.Disable();
+        //inputs.Disable();
     }
 
     private void Update()
@@ -179,7 +150,6 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        Vector2 mouseDelta = inputs.World.Look.ReadValue<Vector2>();
         float dPitch = mouseDelta.y * lookSensitivityY;
         float dYaw = mouseDelta.x * lookSensitivityX;
 
@@ -333,8 +303,9 @@ public class PlayerController : MonoBehaviour
 
         rigidbody.velocity = prevVelocity + (moveDir * accMagnitude);
     }
+    
     /*
-     * Move the player up when they press space
+     * Jump mechanic
      */
     private void Jump()
     {
@@ -361,7 +332,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /*
-     * Check if player is on ground
+     * Returns if player is on ground
      */
     public bool GetGrounded()
     {
@@ -392,8 +363,17 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
+    
     /*
-     * Move the player left right forward and backward
+     * Update mouse delta
+     */
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        mouseDelta = context.ReadValue<Vector2>();
+    }
+    
+    /*
+     * Update move axis
      */
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -401,8 +381,9 @@ public class PlayerController : MonoBehaviour
 
         moveAxis = inputAxis.normalized;
     }
+    
     /*
-     * Move the player up when they jump
+     * Jump callback
      */
     public void OnJump(InputAction.CallbackContext context)
     {
@@ -420,6 +401,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
     /*
      * Fire primary attack
      */
@@ -536,7 +518,7 @@ public class PlayerController : MonoBehaviour
     /*
      * Enable or disable cheat (debug) mode
      */
-    void OnToggleTestMode(InputAction.CallbackContext context)
+    public void OnToggleTestMode(InputAction.CallbackContext context)
     {
         isTestMode = !isTestMode;
 
@@ -576,7 +558,7 @@ public class PlayerController : MonoBehaviour
     /*
      * Move player up when in cheat mode
      */
-    void OnAscend(InputAction.CallbackContext context)
+    public void OnAscend(InputAction.CallbackContext context)
     {
         isAscending = context.control.IsPressed();
 
@@ -588,7 +570,7 @@ public class PlayerController : MonoBehaviour
     /*
      * Move player down when in cheat mode
      */
-    void OnDescend(InputAction.CallbackContext context)
+    public void OnDescend(InputAction.CallbackContext context)
     {
         isDescending = context.control.IsPressed();
 
@@ -600,7 +582,7 @@ public class PlayerController : MonoBehaviour
     /*
      * Move player quickly when in cheat mode and flying
      */
-    void OnFlyFast(InputAction.CallbackContext context)
+    public void OnFlyFast(InputAction.CallbackContext context)
     {
         isFlyingFast = context.control.IsPressed();
     }
