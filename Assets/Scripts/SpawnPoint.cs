@@ -48,6 +48,7 @@ public class SpawnPoint : MonoBehaviour
     {
         if (playSound)
         {
+            activationSound.volume = Globals.audioSettings.gameVolume;
             activationSound.Play();
         }
     }
