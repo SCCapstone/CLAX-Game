@@ -7,6 +7,7 @@ public class KeybindButton : MonoBehaviour
 {
     public PlayerInput playerInput;
     public int targetBinding;
+    public bool allowMouseBindings;
     public InputActionReference inputAction;
     public Button bindButton;
     public TextMeshProUGUI displayText;
@@ -24,12 +25,17 @@ public class KeybindButton : MonoBehaviour
 
         playerInput.SwitchCurrentActionMap("Interface");
 
-        inputAction.action.PerformInteractiveRebinding()
-            .WithControlsExcluding("Mouse")
+        var operation = inputAction.action.PerformInteractiveRebinding()
             .WithTargetBinding(targetBinding)
             .OnMatchWaitForAnother(0.1f)
-            .OnComplete(OnComplete)
-            .Start();
+            .OnComplete(OnComplete);
+
+        if (!allowMouseBindings)
+        {
+            operation.WithControlsExcluding("Mouse");
+        }
+
+        operation.Start();
     }
 
     void OnComplete(InputActionRebindingExtensions.RebindingOperation operation)

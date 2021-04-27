@@ -378,6 +378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
   targetBinding: 4
+  allowMouseBindings: 0
   inputAction: {fileID: 2619695962764063493, guid: 82d3c986543103f4ea3c35e144758036, type: 3}
   bindButton: {fileID: 6512877493321679723}
   displayText: {fileID: 8346573001190230424}
@@ -1084,6 +1085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
   targetBinding: 2
+  allowMouseBindings: 0
   inputAction: {fileID: 2619695962764063493, guid: 82d3c986543103f4ea3c35e144758036, type: 3}
   bindButton: {fileID: 5913196571216657411}
   displayText: {fileID: 3818140993655732421}
@@ -1783,6 +1785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
   targetBinding: 3
+  allowMouseBindings: 0
   inputAction: {fileID: 2619695962764063493, guid: 82d3c986543103f4ea3c35e144758036, type: 3}
   bindButton: {fileID: 8304777565736682061}
   displayText: {fileID: 1925111167320679895}
@@ -2104,6 +2107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
   targetBinding: 0
+  allowMouseBindings: 1
   inputAction: {fileID: -8997392384824038073, guid: 82d3c986543103f4ea3c35e144758036, type: 3}
   bindButton: {fileID: 2033705104008977883}
   displayText: {fileID: 3853781200385442964}
@@ -2159,6 +2163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
   targetBinding: 0
+  allowMouseBindings: 1
   inputAction: {fileID: 2024915318540775689, guid: 82d3c986543103f4ea3c35e144758036, type: 3}
   bindButton: {fileID: 4547469324443410435}
   displayText: {fileID: 8515774524391163801}
@@ -3359,6 +3364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
   targetBinding: 0
+  allowMouseBindings: 0
   inputAction: {fileID: 3568210182183767475, guid: 82d3c986543103f4ea3c35e144758036, type: 3}
   bindButton: {fileID: 4666181077200632700}
   displayText: {fileID: 5149095894899730066}
@@ -6405,6 +6411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
   targetBinding: 1
+  allowMouseBindings: 0
   inputAction: {fileID: 2619695962764063493, guid: 82d3c986543103f4ea3c35e144758036, type: 3}
   bindButton: {fileID: 6855789469094928445}
   displayText: {fileID: 6287807497626632163}
